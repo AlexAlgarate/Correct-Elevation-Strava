@@ -99,8 +99,8 @@ def main() -> None:
         )
 
         # Get the list of activities from the query
-        id_list = get_ids_from_database(query, ENGINE)
-
+        # id_list = get_ids_from_database(query, ENGINE)
+        id_list = [8040982449]
         # Correct the elevation to the activities
         for activity_id in id_list:
             activity_url = get_activity_url(activity_id)

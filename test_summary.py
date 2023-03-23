@@ -1,5 +1,5 @@
 import pandas as pd
-from utils.summary import Summary
+from utils.ids_to_correct import Summary
 
 # Initialize a Summary object for use in tests
 summary = Summary()

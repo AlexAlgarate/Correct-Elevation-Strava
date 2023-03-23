@@ -12,88 +12,115 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 
 from src.utils.logger import ErrorLogger
+import time
 
 
 class CorrectElevation:
-    '''
+    """
     A class to correct the elevation data of a Strava
     activity using a Selenium webdriver.
 
-    '''
+    """
 
     def __init__(self, activity_ids: List[int]):
         self.activity_ids = activity_ids
         load_dotenv()
-        self.email = config('EMAIL')
-        self.password = config('PASSWORD')
+        self.email = config("EMAIL")
+        self.password = config("PASSWORD")
         self.secs = 10
         self.logger = ErrorLogger()
 
     def get_activity_url(self, activity_id: int) -> str:
-        '''
+        """
         Returns the URL of the Strava activity given an activity ID.
-        '''
-        return f'https://www.strava.com/activities/{activity_id}'
+
+        """
+        return f"https://www.strava.com/activities/{activity_id}"
 
     def login(self, driver) -> None:
-        '''
+        """
         Logs into Strava using the given Selenium webdriver.
-        '''
-        driver.get('https://www.strava.com/login')
+
+        """
+        driver.get("https://www.strava.com/login")
 
         # Fill in the email and password fields
         email_field = WebDriverWait(driver, self.secs).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input#email'))
-        )
+            EC.presence_of_element_located((By.ID, 'email')))
         email_field.send_keys(self.email)
 
         password_field = WebDriverWait(driver, self.secs).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input#password'))
+            EC.presence_of_element_located((
+                By.ID, "password"
+            ))
         )
         password_field.send_keys(self.password)
-
         # Click on the login button
         login_button = driver.find_element(
-            By.CSS_SELECTOR, 'button.btn.btn-primary'
-        )
+            By.ID, 'login-button')
         login_button.click()
 
-    def correct_elevation(self, driver) -> None:
-        '''
-        Corrects the elevation data of a Strava activity
-        using the given Selenium webdriver.
-        '''
+    def is_activity_indoor_cycling(self, driver) -> bool:
+        """
+        Returns whether or not the current activity is an
+        indoor cycling activity.
+
+        """
         try:
-            # Click on the options button
-            options_button = WebDriverWait(driver, self.secs).until(
-                EC.presence_of_element_located((
-                    By.CSS_SELECTOR, 'button.slide-menu.drop-down-menu.enabled.align-top'))
-            )
-            options_button.click()
 
-            # Click on the correct elevation option
-
-            correct_elevation_option = WebDriverWait(driver, self.secs).until(
+            indoor_cycling = "spinning"
+            header = WebDriverWait(driver, self.secs).until(
                 EC.presence_of_element_located((
-                    By.XPATH, '/html/body/div[1]/div[3]/nav/div/button/ul/li[5]/div'))
+                    By.CSS_SELECTOR, 'h2.text-title3.text-book.marginless'
+                ))
             )
-            correct_elevation_option.click()
+            # header = WebDriverWait(driver, self.secs).until(
+            #     EC.presence_of_element_located((
+            #         By.CLASS_NAME, 'text-title3.text-book.marginless'
+            #     ))
+            # )
 
-            # Click on the button to correct the activity
-            correct_activity_button = WebDriverWait(driver, self.secs).until(
+            activity_type = WebDriverWait(header, self.secs).until(
                 EC.presence_of_element_located((
-                    By.XPATH, '/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button'))
-            )
-            correct_activity_button.click()
+                    By.CLASS_NAME, 'title'))
+            ).text
+            if indoor_cycling.casefold() in activity_type.casefold():
+                return True
 
         except NoSuchElementException:
-            self.logger.error(f"Correct Elevation button not found for\
-                activity {driver.current_url}. Moving on to the next activity")
+            return False
+
+    def correct_activity(self, driver) -> None:
+
+        options_button = WebDriverWait(driver, self.secs).until(
+            EC.element_to_be_clickable((
+                By.CLASS_NAME, "slide-menu.drop-down-menu.enabled.align-top"
+            ))
+        )
+        options_button.click()
+
+        correct_elevation_option = WebDriverWait(driver, self.secs).until(
+            EC.element_to_be_clickable((
+                By.XPATH, '(//*[@id="react-list-item"]/div/a)[2]'
+            ))
+        )
+
+        correct_elevation_option.click()
+
+        # Click on the button to correct the activity
+        correct_activity_button = WebDriverWait(driver, self.secs).until(
+            EC.element_to_be_clickable((
+                By.XPATH, "/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button"
+            ))
+        )
+        correct_activity_button.click()
+
+        driver.implicitly_wait(15)
 
     def run(self) -> None:
         # Set the options that you need
         options = Options()
-        options.add_argument('--start-maximized')
+        options.add_argument("--start-maximized")
         options.add_experimental_option("detach", True)
 
         # Start the driver
@@ -101,37 +128,23 @@ class CorrectElevation:
             service=Service(ChromeDriverManager().install()),
             options=options
         ) as driver:
-            wait = WebDriverWait(driver, self.secs)
 
             # Run the log in process
             self.login(driver)
+            for i, activity in enumerate(self.activity_ids):
+                print(f"Processing activity {activity}")
 
-            # Correct the elevation to the activities
-            for activity_id in self.activity_ids:
-                activity_url = self.get_activity_url(activity_id)
+                activity_url = self.get_activity_url(activity)
                 driver.get(activity_url)
+                print(f"Activity: {activity}")
+                time.sleep(5)
+                if self.is_activity_indoor_cycling(driver):
+                    print(f"Detected indoor cycling activity {activity}")
+                    if i < len(self.activity_ids) - 1:
+                        continue
+                else:
+                    self.correct_activity(driver)
+                    print(f"{activity} has the elevation corrected")
 
-                try:
-                    options_button = wait.until(EC.presence_of_element_located((
-                        By.CSS_SELECTOR, 'button.slide-menu.drop-down-menu.enabled.align-top'
-                        ))
-                    )
-                    options_button.click()
-
-                    correct_elevation_option = wait.until(EC.presence_of_element_located((
-                        By.XPATH, '/html/body/div[1]/div[3]/nav/div/button/ul/li[5]/div'
-                        ))
-                    )
-                    correct_elevation_option.click()
-
-                    # Click on the button to correct the activity
-                    correct_activity_button = wait.until(EC.presence_of_element_located((
-                        By.XPATH, '/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button'
-                        ))
-                    )
-                    correct_activity_button.click()
-
-                    driver.implicitly_wait(15)
-                except NoSuchElementException:
-                    self.logger.error(f"An error {driver.current_url}")
-
+            # Close the browser at the end
+        driver.quit()

@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-
+import time
 
 
 load_dotenv()
@@ -28,30 +28,27 @@ def get_activity_url(activity_id) -> str:
 
 
 def login(driver) -> None:
-    '''
+    """
     Logs into Strava using the given Selenium webdriver.
-    '''
-    driver.get('https://www.strava.com/login')
+
+    """
+    driver.get("https://www.strava.com/login")
 
     # Fill in the email and password fields
     email_field = WebDriverWait(driver, SECS).until(
-        EC.presence_of_element_located((
-            By.CSS_SELECTOR,
-            'input#email'))
-    )
+        EC.presence_of_element_located((By.ID, 'email')))
     email_field.send_keys(EMAIL)
 
     password_field = WebDriverWait(driver, SECS).until(
         EC.presence_of_element_located((
-            By.CSS_SELECTOR,
-            'input#password'))
+            By.ID, "password"
+        ))
     )
     password_field.send_keys(PASSWORD)
 
     # Click on the login button
     login_button = driver.find_element(
-        By.CSS_SELECTOR,
-        'button.btn btn-primary'.replace(" ", "."))
+        By.ID, 'login-button')
     login_button.click()
 
 
@@ -59,37 +56,49 @@ def correct_elevation(driver) -> None:
     '''
     Corrects the elevation data of a Strava activity
     using the given Selenium webdriver.
+
     '''
     # Click on the options button
-    options_button = WebDriverWait(driver, SECS).until(
-        EC.presence_of_element_located((
-            By.CSS_SELECTOR,
-            'button.slide-menu drop-down-menu enabled align-top'.replace(" ", ".")))
-    )
-    options_button.click()
-
+    try:
+        options_button = WebDriverWait(driver, SECS).until(
+            EC.presence_of_element_located((
+                By.CSS_SELECTOR,
+                'button.slide-menu.drop-down-menu.enabled.align-top'))
+        )
+        options_button.click()
+        time.sleep(3)
+        print("HA PULSADO EL BOTÓN DE OPCIONES, TEN, UN TRIPI")
+    except:
+        print("NO ENCUENTRA LA CLASS NI A M.D.C.")
     # Click on the correct elevation option
+    try:
+        options_menu = WebDriverWait(driver, SECS).until(
+            EC.presence_of_all_elements_located((
+                By.ID, 'react-list-item'))
+        )
+        correct_elevation_button = WebDriverWait(options_menu[1], SECS).until(
+            EC.presence_of_element_located((
+                By.CLASS_NAME, 'CorrectElevation'
+            ))
+        )
+        correct_elevation_button.click()
 
-    correct_elevation_option = WebDriverWait(driver, SECS).until(
-        EC.presence_of_element_located((
-            By.XPATH,
-            '/html/body/div[1]/div[3]/nav/div/button/ul/li[6]/div/a'))
-    )
-    correct_elevation_option.click()
-
-    # Click on the button to correct the activity
-    correct_activity_button = WebDriverWait(driver, SECS).until(
-        EC.presence_of_element_located((
-            By.XPATH,
-            '/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button'))
-    )
-    correct_activity_button.click()
+        for value, element in enumerate(options_menu):
+            # print(str(value) + "CLASS: " + str(element))
+            print("AHORA EL SEGUNDO ELEMENTO")
+            print(type(element))
+            print(str(value) + str(element))
+    except Exception as e:
+        print("NO LO ENCUENTRA JODEEEEEEEEERRRRRRRRRRR" + e)
+    # correct_elevation_option.click()
+    # print("HA PULSADO EN CORREGIR")
+    # # Click on the button to correct the activity
     # correct_activity_button = WebDriverWait(driver, SECS).until(
     #     EC.presence_of_element_located((
-    #         By.CSS_SELECTOR,
-    #         'button.Button--btn--nJNO1 Button--primary--x47Uv'.replace(' ', '.')))
+    #         By.XPATH, '/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button'))
     # )
     # correct_activity_button.click()
+    # print("HA PULSADO EL BOTÓN Y LA ACTIVIDAD ESTÁ CORREGIDA")
 
 
 def main() -> None:
@@ -110,7 +119,7 @@ def main() -> None:
         login(driver)
 
         # Get the list of activities from the query
-        id_list = [7132224750]
+        id_list = [8040982449]
         # id_list = [435158118, 563961044]
 
         # Correct the elevation to the activities
