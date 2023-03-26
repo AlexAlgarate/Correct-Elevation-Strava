@@ -1,34 +1,15 @@
-from decouple import config, UndefinedValueError
+from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
-from src.utils.logger import ErrorLogger
-from src.utils.credentials import Credentials
-from src.utils.rerfersh_token import RefreshTokenManager
+from config import ACCESS_TOKEN
+from src.utils.generate_credentials import GenerateAccessToken
+from src.utils.logger import ErrorLogger, InfoLogger
+from src.utils.refresh_token import RefreshTokenManager
 
 
-class AccessToken:
+class GetAccessToken:
 
     """
-    A class that manages access tokens for API requests.
-
-    Attributes:
-        - refresh (RefreshTokenManager): an instance of the RefreshTokenManager
-        class to handle token refreshing.
-        - _new_credentials (Credentials): an instance of the Credentials class
-        to handle getting new credentials from the API.
-        - _logger (ErrorLogger): an instance of the ErrorLogger class
-        to handle logging errors.
-    """
-
-    def __init__(self) -> None:
-        self.refresh = RefreshTokenManager()
-        self._new_credentials = Credentials()
-        self._logger = ErrorLogger()
-        load_dotenv()
-
-    def get_access_token(self) -> str:
-
-        """
         Return the access token from the .env file.
         Firstly, check if the access token has expired or not.
         If it has expired, it gets a new access token.
@@ -37,58 +18,94 @@ class AccessToken:
         If there are some kind of error, it gets new credentials and
         a new access token.
 
+    Attributes:
+        - refresh (RefreshTokenManager): an instance of the RefreshTokenManager
+        class to handle token refreshing.
+        - _new_credentials (Credentials): an instance of the Credentials class
+        to handle getting new credentials from the API.
+        - logger (ErrorLogger): an instance of the ErrorLogger class
+        to handle logging errors.
+
+    """
+
+    def __init__(self) -> None:
+        self.refresh = RefreshTokenManager()
+        self.logger_error = ErrorLogger()
+        self.logger_info = InfoLogger()
+
+    def get_strava_access_token(self) -> str:
+
         """
+        Get the access token value from the .env to use the Strava API
+
+        """
+
         if self._access_token_has_expired():
-            new_access_token = self._refresh_the_access_token()
-            return new_access_token
+            self._refresh_the_access_token()
 
-        else:
-            try:
-                access_token = self._get_access_token_from_env()
-                return access_token
+        try:
+            acces_token = self._get_access_token_from_env()
+            self.logger_info.info("Access token retrieved from the .env file")
+            return acces_token
 
-            except FileNotFoundError as e:
-                self._logger.error(f"Error:{e}. Credentials not found")
-                raise
-            except KeyError as e:
-                self._logger.error(
-                    f"Error: {e}. ACCESS_TOKEN not found in the .env file"
-                )
-            except Exception as e:
-                self._logger.error(f"An error has occurred: {e}")
-                self._get_new_credentials()
-                access_token = self._get_access_token_from_env()
-                return access_token
+        except UndefinedValueError:
+            self.logger_error.error("Access token not found in the .env")
+            self._get_new_access_token()
+            acces_token = self._get_access_token_from_env()
+            self.logger_info.info("Access token retrieved from the .env file")
+            return acces_token
 
     def _access_token_has_expired(self) -> bool:
+
         """
         Check if the access token has expired or not
 
+        Returns:
+            bool: True if the access token has expired, False otherwise
+
         """
+
         return self.refresh._check_expired()
 
     def _refresh_the_access_token(self) -> None:
+
         """
         Refresh the access token.
 
         """
-        self._logger.info(
-            "The access token has expired..."
-            "You'll be redirected to the oauth page to get a new access token"
-        )
-        return self.refresh._refresh_access_token()
+
+        self.logger_info.info("The access token has expired."
+                              "Refreshing the access token...")
+        self.refresh._refresh_access_token()
+        self.logger_info.info("Access token refreshed successfully")
 
     def _get_access_token_from_env(self) -> str:
+
         """
         Get the access token from the environment variables
 
-        """
-        access_token = config("ACCESS_TOKEN")
-        return access_token
+        Returns:
+            str: The access token from the environment variables
 
-    def _get_new_credentials(self) -> None:
+        """
+
+        load_dotenv()
+        access_token_from_env = ACCESS_TOKEN
+        if access_token_from_env:
+            return access_token_from_env
+        else:
+            raise UndefinedValueError(
+                "ACCESS_TOKEN not found in the .env file"
+            )
+
+    def _get_new_access_token(self) -> None:
+
         """
         Get new credentials from the API and update the environment variables.
 
         """
-        self._new_credentials.get_credentials()
+
+        self.logger_info.info("Getting new credentials from the Strava API")
+        credentials_handler = GenerateAccessToken()
+        credentials_handler.get_access_token()
+        self.logger_info.info("Credentials updated successfully")

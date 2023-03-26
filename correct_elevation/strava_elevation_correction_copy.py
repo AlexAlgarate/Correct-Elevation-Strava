@@ -14,8 +14,8 @@ import time
 
 load_dotenv()
 
-EMAIL = config('EMAIL')
-PASSWORD = config('PASSWORD')
+EMAIL = config('STRAVA_EMAIL')
+PASSWORD = config('STRAVA_PASSWORD')
 ENGINE = create_engine(config('ENGINE'))
 SECS = 10
 

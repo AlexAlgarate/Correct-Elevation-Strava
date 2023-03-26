@@ -1,15 +1,15 @@
-from src.utils.ids_to_correct import StravaFetcher, SummaryOfActivities
-from strava_elevation_correction_OOP import CorrectElevation
-from src.utils.access_token import AccessToken
+# from src.utils.ids_to_correct import StravaFetcher, SummaryOfActivities
+# from strava_elevation_correction_OOP import CorrectElevation
+
 
 
 def main():
-    ac = AccessToken().get_access_token()
-    print(ac)
-    
+
     # strava_activities = SummaryOfActivities()
     # fetcher = StravaFetcher(strava_activities)
     # filtered_actiities = fetcher.fect_activities_summary()
+
+    #####################
 
     # ids_to_correct = StravaFetcher().fect_activities_summary()
     # print(ids_to_correct)

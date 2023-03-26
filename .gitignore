@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 logger/
 summary.csv
-
+utils_decouple/
+summary_elev_0.csv
 
 # C extensions
 *.so
