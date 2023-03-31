@@ -1,4 +1,3 @@
-import json
 from typing import Dict, Union
 
 import requests
@@ -57,10 +56,16 @@ class GenerateAccessToken:
             set_key(dot_env_file, refresh_token_env, refresh_token)
             set_key(dot_env_file, expires_at_env, str(expires_at))
 
-        except (
-            requests.exceptions.RequestException,
-            KeyError,
-            json.JSONDecodeError
-        ) as e:
-            self.logger.error(f"Error while requesting credentials: {e}")
+        except requests.RequestException as e:
+            error_map = {
+                requests.exceptions.HTTPError: "HTTP error",
+                requests.exceptions.ConnectTimeout: "Timeout error",
+                requests.exceptions.Timeout: "Timeout error",
+                requests.exceptions.ConnectionError: "Connection error"
+            }
+            error = error_map.get(type(e), "Other kind of error")
+            self.logger.error(f"Error: {e}. {error} occurred.")
             raise
+
+        except Exception as e:
+            self.logger.error(f"Other kind of error has occurred: {e}")

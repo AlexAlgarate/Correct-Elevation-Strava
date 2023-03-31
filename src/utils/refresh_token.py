@@ -7,7 +7,6 @@ from dotenv import set_key
 from config import (CLIENT_ID, EXPIRES_AT, REFRESH_TOKEN, SECRET_KEY,
                     access_token_env, dot_env_file, expires_at_env,
                     refresh_token_env, refresh_token_grant_type, token_url)
-# from src.utils.generate_credentials import GenerateAccessToken
 from src.utils.logger import ErrorLogger
 
 
@@ -102,21 +101,20 @@ class RefreshTokenManager:
                 if key not in refresh_response_data:
                     raise ValueError("Missing key in response data: " + key)
 
-            access_token: str = refresh_response_data["access_token"]
-            refresh_token: str = refresh_response_data["refresh_token"]
-            expires_at: int = int(refresh_response_data["expires_at"])
+            access_token: str = refresh_response_data.get("access_token")
+            refresh_token: str = refresh_response_data.get("refresh_token")
+            expires_at: int = int(refresh_response_data.get("expires_at"))
 
             self._update_env(access_token, refresh_token, expires_at)
-
             return access_token
 
-        except (
-            requests.exceptions.RequestException,
-            requests.exceptions.Timeout,
-            requests.exceptions.ConnectionError,
-            requests.exceptions.HTTPError
-        ) as e:
-            self.logger.error(f"Error while making the request to the API:{e}")
+        except requests.RequestException as e:
+            error_map = {
+                requests.exceptions.HTTPError: "HTTP error",
+                requests.exceptions.ConnectTimeout: "Timeout error",
+                requests.exceptions.Timeout: "Timeout error",
+                requests.exceptions.ConnectionError: "Connection error"
+            }
+            error = error_map.get(type(e), "Other kind of error")
+            self.logger.error(f"Error: {e}. {error} occurred.")
             raise
-            # new_credentials = GenerateAccessToken()
-            # new_credentials.generate_access_token()

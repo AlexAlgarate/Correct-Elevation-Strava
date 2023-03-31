@@ -39,7 +39,15 @@ def get_oauth_code() -> str:
 
         return code_match.group(1)
 
-    except requests.exceptions.RequestException as e:
-        logger.error(f"An error has occurred while making\
-            the request: {e}")
+    except requests.RequestException as e:
+        error_map = {
+            requests.exceptions.HTTPError: "HTTP error",
+            requests.exceptions.ConnectTimeout: "Timeout error",
+            requests.exceptions.Timeout: "Timeout error",
+            requests.exceptions.ConnectionError: "Connection error"
+        }
+        error = error_map.get(type(e), "Other kind of error")
+        logger.error(f"Error: {e}. {error} occurred.")
         raise
+    except Exception as e:
+        logger.error(f"Other kind of error has occurred: {e}")

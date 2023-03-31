@@ -1,7 +1,6 @@
 from decouple import config
 
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -16,7 +15,7 @@ load_dotenv()
 
 EMAIL = config('STRAVA_EMAIL')
 PASSWORD = config('STRAVA_PASSWORD')
-ENGINE = create_engine(config('ENGINE'))
+# ENGINE = create_engine(config('ENGINE'))
 SECS = 10
 
 
@@ -61,35 +60,46 @@ def correct_elevation(driver) -> None:
     # Click on the options button
     try:
         options_button = WebDriverWait(driver, SECS).until(
-            EC.presence_of_element_located((
-                By.CSS_SELECTOR,
-                'button.slide-menu.drop-down-menu.enabled.align-top'))
+            EC.presence_of_element_located(
+                (
+                    By.CSS_SELECTOR,
+                    'button.slide-menu.drop-down-menu.enabled.align-top'
+                )
+            )
         )
         options_button.click()
         time.sleep(3)
-        print("HA PULSADO EL BOTÓN DE OPCIONES, TEN, UN TRIPI")
-    except:
+        print("\nHA PULSADO EL BOTÓN DE OPCIONES, TEN, UN TRIPI\n")
+    except Exception:
         print("NO ENCUENTRA LA CLASS NI A M.D.C.")
     # Click on the correct elevation option
     try:
-        options_menu = WebDriverWait(driver, SECS).until(
-            EC.presence_of_all_elements_located((
-                By.ID, 'react-list-item'))
-        )
-        correct_elevation_button = WebDriverWait(options_menu[1], SECS).until(
+        # options_menu = WebDriverWait(driver, SECS).until(
+        #     EC.presence_of_all_elements_located((
+        #         By.ID, 'react-list-item'))
+        # )
+        correct_elevation_button = WebDriverWait(driver, SECS).until(
             EC.presence_of_element_located((
-                By.CLASS_NAME, 'CorrectElevation'
+                By.CSS_SELECTOR, 'ul.options.open-menu'
             ))
         )
-        correct_elevation_button.click()
+        print("\n\nEL BOTÓN\n\n")
+        print(correct_elevation_button)
+        # for value, element in enumerate(options_menu):
+        #     # print(str(value) + "CLASS: " + str(element))
+        #     print("AHORA EL SEGUNDO ELEMENTO")
+        #     print(type(element))
+        #     print(str(value) + str(element))
+        print("\n\nEL BOTÓN\n\n")
 
-        for value, element in enumerate(options_menu):
+        print("\n########\n##########\n###########\n")
+        for value, element in enumerate(correct_elevation_button):
             # print(str(value) + "CLASS: " + str(element))
-            print("AHORA EL SEGUNDO ELEMENTO")
-            print(type(element))
+            # print(f"EL BOTÓN Y SU ELEMENTO: {element[value]}")
+            # print(type(element))
             print(str(value) + str(element))
     except Exception as e:
-        print("NO LO ENCUENTRA JODEEEEEEEEERRRRRRRRRRR" + e)
+        print("NO LO ENCUENTRA JODEEEEEEEEERRRRRRRRRRR", e)
     # correct_elevation_option.click()
     # print("HA PULSADO EN CORREGIR")
     # # Click on the button to correct the activity

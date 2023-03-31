@@ -10,7 +10,7 @@ logger = ErrorLogger()
 
 # Load environment variables
 
- 
+
 try:
     load_dotenv()
     client_id_env: str = "STRAVA_CLIENT_ID"
@@ -51,5 +51,6 @@ try:
         "approval_prompt": "force",
         "scope": scopes
     }
+    seconds = 10
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")
