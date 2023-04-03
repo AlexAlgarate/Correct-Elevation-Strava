@@ -124,33 +124,30 @@ class CorrectElevation:
         self.get_url = GetACtivityURL()
         self.login = LoginStrava()
 
-    @staticmethod
-    def _check_elevation(driver):
-        try:
-            elevation = "m"
-            header = WebDriverWait(driver, seconds).until(
-                EC.presence_of_element_located(
-                    (
-                        By.CSS_SELECTOR,
-                        "div.section.more-stats"
-                    )
-                )
-            )
+    # @staticmethod
+    # def _check_elevation(driver):
+    #     try:
+    #         elevation = "m"
+    #         header = WebDriverWait(driver, seconds).until(
+    #             EC.presence_of_element_located(
+    #                 (
+    #                     By.CSS_SELECTOR,
+    #                     "div.section.more-stats"
+    #                 )
+    #             )
+    #         )
 
-    # spans3
+    # # spans3
 
-            elevation = WebDriverWait(header, seconds).until(
-                EC.presence_of_element_located((
-                    By.CLASS_NAME, "spans3"))
-            ).text
-            if indoor_cycling.casefold() in activity_type.casefold():
-                return True
+    #         elevation = WebDriverWait(header, seconds).until(
+    #             EC.presence_of_element_located((
+    #                 By.CLASS_NAME, "spans3"))
+    #         ).text
+    #         if indoor_cycling.casefold() in activity_type.casefold():
+    #             return True
 
-        except NoSuchElementException:
-            return False
-    @staticmethod
-    def _is_elevation(letter, text):
-        return letter in text
+    #     except NoSuchElementException:
+    #         return False
 
     @staticmethod
     def _is_activity_indoor_cycling(driver) -> bool:

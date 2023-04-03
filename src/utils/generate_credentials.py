@@ -11,8 +11,8 @@ from config import (
     expires_at_env,
     refresh_token_env,
     token_url
-    )
-from src.utils.get_oauth_code import get_oauth_code
+)
+from src.utils.get_oauth_code import GetOAuthCode
 from src.utils.logger import ErrorLogger
 
 
@@ -23,7 +23,7 @@ class GenerateAccessToken:
 
     def __init__(self) -> None:
         self.logger = ErrorLogger()
-        self.code = get_oauth_code()
+        self.code = GetOAuthCode()
 
     def generate_access_token(self) -> None:
 
@@ -35,11 +35,10 @@ class GenerateAccessToken:
 
         """
         try:
-            # Set the data required for the POST request
             data_to_get_access_token: Dict[str, Union[str, int]] = {
                 "client_id": CLIENT_ID,
                 "client_secret": SECRET_KEY,
-                "code": self.code,
+                "code": self.code.get_oauth_code(),
                 "grant_type": "authorization_code"
             }
 
@@ -52,6 +51,7 @@ class GenerateAccessToken:
             refresh_token: str = response.get("refresh_token")
             expires_at: str = response.get("expires_at")
 
+            # Set the environment variables
             set_key(dot_env_file, access_token_env, access_token)
             set_key(dot_env_file, refresh_token_env, refresh_token)
             set_key(dot_env_file, expires_at_env, str(expires_at))
