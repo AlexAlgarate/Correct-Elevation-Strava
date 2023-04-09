@@ -35,7 +35,7 @@ ENGINE=your_sqlalchemy_engine
 2. Run the script python ***strava_elevation_correction.py***
 
 ```
-strava_elevation_correction.py
+main.py
 ```
 
 The script will log into Strava, retrieve a list of activity IDs from the specified database, and correct the elevation data for each activity with an elevation gain of 0.

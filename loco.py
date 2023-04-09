@@ -22,4 +22,3 @@ print(d.replace(string))
 # elevation = extract_elevation(sequence)
 # logger.info("CORRECT")
 # # print(elevation)
-
