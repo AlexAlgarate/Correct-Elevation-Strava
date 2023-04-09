@@ -1,3 +1,6 @@
+![Black](https://img.shields.io/badge/code%20style-black-000000.svg)
+![Flake8](https://img.shields.io/badge/code%20style-flake8-blue)
+
 # Correct-Elevation-Strava
 
 This script is designed to correct elevation data for Strava activities that have an elevation gain of 0. It uses Selenium to log into Strava and correct the elevation data for each activity in a specified database.
@@ -40,6 +43,3 @@ The script will log into Strava, retrieve a list of activity IDs from the specif
 ## Contributing
 
 If you'd like to contribute to Correct-Elevation-Strava, please fork the repository and create a pull request with your changes. We welcome all contributions!
-
-![Black](https://img.shields.io/badge/code%20style-black-000000.svg)
-![Flake8](https://img.shields.io/badge/code%20style-flake8-blue)
