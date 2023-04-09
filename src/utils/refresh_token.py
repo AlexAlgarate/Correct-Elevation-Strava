@@ -4,9 +4,18 @@ from typing import Dict, Optional, Union
 import requests
 from dotenv import set_key
 
-from config import (CLIENT_ID, EXPIRES_AT, REFRESH_TOKEN, SECRET_KEY,
-                    access_token_env, dot_env_file, expires_at_env,
-                    refresh_token_env, refresh_token_grant_type, token_url)
+from config import (
+    CLIENT_ID,
+    EXPIRES_AT,
+    REFRESH_TOKEN,
+    SECRET_KEY,
+    access_token_env,
+    dot_env_file,
+    expires_at_env,
+    refresh_token_env,
+    refresh_token_grant_type,
+    token_url
+)
 from src.utils.logger import ErrorLogger
 
 
@@ -25,7 +34,6 @@ class RefreshTokenManager:
         self.logger = ErrorLogger()
 
     def _check_expired(self) -> bool:
-
         """
         Returns True if the expiration date of the access token is less than
         the current time.
@@ -47,12 +55,8 @@ class RefreshTokenManager:
         return expires_at < current_time
 
     def _update_env(
-        self,
-        access_token: str,
-        refresh_token: str,
-        expires_at: Optional[int]
+        self, access_token: str, refresh_token: str, expires_at: Optional[int]
     ) -> None:
-
         """
         Update the access token and expires_at in the .env file.
 
@@ -72,7 +76,6 @@ class RefreshTokenManager:
             self.logger.error(f"Error while updating the .env: {e}")
 
     def _refresh_access_token(self) -> str:
-
         """
         Refresh the access token by making a POST request to the API and
         saves the new credentials in the .env file.
@@ -89,10 +92,7 @@ class RefreshTokenManager:
             "refresh_token": REFRESH_TOKEN
         }
         try:
-            refresh_response = requests.post(
-                url=token_url,
-                data=refresh_data
-            )
+            refresh_response = requests.post(url=token_url, data=refresh_data)
 
             refresh_response.raise_for_status()
             refresh_response_data = refresh_response.json()

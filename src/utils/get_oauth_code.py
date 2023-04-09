@@ -13,7 +13,6 @@ logger = ErrorLogger()
 class GetOAuthCode:
     @staticmethod
     def get_oauth_code() -> str:
-
         """
         Launches a web browser to retrieve the OAuth code from Strava.
 
@@ -21,9 +20,7 @@ class GetOAuthCode:
 
         try:
             get_url_code = Request(
-                "GET",
-                authorization_url,
-                params=header_code_OAuth
+                "GET", authorization_url, params=header_code_OAuth
             ).prepare()
             # Open the browser to get the URL with the code
             webbrowser.open(get_url_code.url)

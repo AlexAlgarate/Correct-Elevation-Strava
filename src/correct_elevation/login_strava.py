@@ -13,7 +13,6 @@ info_logger = InfoLogger()
 class LoginStrava:
     @staticmethod
     def fill_email(driver) -> None:
-
         """
         Fill in the email field on the Strava login page
 
@@ -35,7 +34,6 @@ class LoginStrava:
 
     @staticmethod
     def fill_password(driver) -> None:
-
         """
         Fill in the password field on the Strava login page
 
@@ -47,18 +45,12 @@ class LoginStrava:
 
         """
         password_field = WebDriverWait(driver, seconds).until(
-            EC.presence_of_element_located(
-                (
-                    By.ID,
-                    "password"
-                )
-            )
+            EC.presence_of_element_located((By.ID, "password"))
         )
         password_field.send_keys(PASSWORD)
 
     @staticmethod
     def click_login_button(driver) -> None:
-
         """
         Clicks on the Strava login page
 
@@ -69,14 +61,12 @@ class LoginStrava:
             None
 
         """
-        login_button = driver.find_element(
-            By.ID,
-            "login-button"
+        login_button = WebDriverWait(driver, seconds).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "button.btn.btn-primary"))
         )
         login_button.click()
 
     def login(self, driver) -> None:
-
         """
         Login into Strava using the given Selenium webdriver.
 
@@ -88,9 +78,5 @@ class LoginStrava:
             self.click_login_button(driver)
             info_logger.info("You are in Stava!")
 
-        except (
-            NoSuchElementException,
-            TimeoutError,
-            Exception
-        ) as e:
+        except (NoSuchElementException, TimeoutError, Exception) as e:
             error_logger.error(f"Error: {e}")

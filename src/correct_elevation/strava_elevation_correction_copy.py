@@ -13,17 +13,17 @@ import time
 
 load_dotenv()
 
-EMAIL = config('STRAVA_EMAIL')
-PASSWORD = config('STRAVA_PASSWORD')
+EMAIL = config("STRAVA_EMAIL")
+PASSWORD = config("STRAVA_PASSWORD")
 # ENGINE = create_engine(config('ENGINE'))
 SECS = 10
 
 
 def get_activity_url(activity_id) -> str:
-    '''
+    """
     Returns the URL of the Strava activity given an activity ID.
-    '''
-    return f'https://www.strava.com/activities/{activity_id}'
+    """
+    return f"https://www.strava.com/activities/{activity_id}"
 
 
 def login(driver) -> None:
@@ -35,36 +35,31 @@ def login(driver) -> None:
 
     # Fill in the email and password fields
     email_field = WebDriverWait(driver, SECS).until(
-        EC.presence_of_element_located((By.ID, 'email')))
+        EC.presence_of_element_located((By.ID, "email"))
+    )
     email_field.send_keys(EMAIL)
 
     password_field = WebDriverWait(driver, SECS).until(
-        EC.presence_of_element_located((
-            By.ID, "password"
-        ))
+        EC.presence_of_element_located((By.ID, "password"))
     )
     password_field.send_keys(PASSWORD)
 
     # Click on the login button
-    login_button = driver.find_element(
-        By.ID, 'login-button')
+    login_button = driver.find_element(By.ID, "login-button")
     login_button.click()
 
 
 def correct_elevation(driver) -> None:
-    '''
+    """
     Corrects the elevation data of a Strava activity
     using the given Selenium webdriver.
 
-    '''
+    """
     # Click on the options button
     try:
         options_button = WebDriverWait(driver, SECS).until(
             EC.presence_of_element_located(
-                (
-                    By.CSS_SELECTOR,
-                    'button.slide-menu.drop-down-menu.enabled.align-top'
-                )
+                (By.CSS_SELECTOR, "button.slide-menu.drop-down-menu.enabled.align-top")
             )
         )
         options_button.click()
@@ -79,9 +74,7 @@ def correct_elevation(driver) -> None:
         #         By.ID, 'react-list-item'))
         # )
         correct_elevation_button = WebDriverWait(driver, SECS).until(
-            EC.presence_of_element_located((
-                By.CSS_SELECTOR, 'ul.options.open-menu'
-            ))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "ul.options.open-menu"))
         )
         print("\n\nEL BOTÓN\n\n")
         print(correct_elevation_button)
@@ -114,17 +107,13 @@ def correct_elevation(driver) -> None:
 def main() -> None:
     # Set the options that you need
     options = Options()
-    options.add_argument('--start-maximized')
+    options.add_argument("--start-maximized")
     options.add_experimental_option("detach", True)
 
     # Start the driver
     with webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager().install()
-        ),
-        options=options
+        service=Service(ChromeDriverManager().install()), options=options
     ) as driver:
-
         # Run the log in process
         login(driver)
 
@@ -140,5 +129,5 @@ def main() -> None:
         driver.implicitly_wait(15)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -20,13 +20,11 @@ load_dotenv()
 
 
 class GenerateAccessToken:
-
     def __init__(self) -> None:
         self.logger = ErrorLogger()
         self.code = GetOAuthCode()
 
     def generate_access_token(self) -> None:
-
         """
         Get the credentials (access_token, refresh_token, and expires_at)
         from by making a POST request to the API.
@@ -43,8 +41,7 @@ class GenerateAccessToken:
             }
 
             response = requests.post(
-                url=token_url,
-                data=data_to_get_access_token
+                url=token_url, data=data_to_get_access_token
             ).json()
 
             access_token: str = response.get("access_token")

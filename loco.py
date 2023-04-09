@@ -1,14 +1,17 @@
-import logging
-from functools import reduce
-
-
-logger = logging.getLogger()
+class ReplaceWhiteSpace:
+    @staticmethod
+    def replace(string):
+        return string.replace(" ", ".")
 
 
 def extract_number(element):
     numbers = element.split()[0]
     return numbers
 
+
+string = "Tengo el corazón contento "
+d = ReplaceWhiteSpace()
+print(d.replace(string))
 
 # sequence = ["123225563 m", "1233"]
 # elevation = sequence[0]

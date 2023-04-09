@@ -7,12 +7,8 @@ class BaseLogger(logging.Logger):
     Base logger class
 
     """
-    def __init__(
-        self,
-        name: str,
-        log_file_path: str,
-        log_level: int
-    ) -> None:
+
+    def __init__(self, name: str, log_file_path: str, log_level: int) -> None:
         super().__init__(name, level=log_level)
         self.log_file_path = log_file_path
         self._create_log_file_directory()
@@ -32,7 +28,8 @@ class BaseLogger(logging.Logger):
         """
         handler = logging.FileHandler(self.log_file_path)
         formatter = logging.Formatter(
-            "%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+            "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+        )
         handler.setFormatter(formatter)
         self.addHandler(handler)
 
@@ -42,6 +39,7 @@ class ErrorLogger(BaseLogger):
     Custom logger class for logging errors to a file.
 
     """
+
     def __init__(
         self,
         name: str = "error_logger",
@@ -55,10 +53,9 @@ class InfoLogger(BaseLogger):
     Custom logger class for logging info to a file.
 
     """
+
     def __init__(
-        self,
-        name: str = "info_logger",
-        log_file_path: str = "logger\\logger_info.log"
+        self, name: str = "info_logger", log_file_path: str = "logger\\logger_info.log"
     ) -> None:
         super().__init__(name, log_file_path, logging.INFO)
 
@@ -68,6 +65,7 @@ class WarningLogger(BaseLogger):
     Custom logger class for logging info to a file.
 
     """
+
     def __init__(
         self,
         name: str = "warning_logger",

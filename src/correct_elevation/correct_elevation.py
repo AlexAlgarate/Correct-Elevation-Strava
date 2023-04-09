@@ -19,7 +19,6 @@ info_logger = InfoLogger()
 class GetACtivityURL:
     @staticmethod
     def get_activity_url(activity_id: int) -> str:
-
         """
         Returns the URL of the Strava activity given an activity ID.
 
@@ -33,7 +32,6 @@ class GetACtivityURL:
 class LoginStrava:
     @staticmethod
     def fill_email(driver) -> None:
-
         """
         Fill in the email field on the Strava login page
 
@@ -44,18 +42,12 @@ class LoginStrava:
             None
         """
         email_field = WebDriverWait(driver, seconds).until(
-            EC.presence_of_element_located(
-                (
-                    By.ID,
-                    "email"
-                )
-            )
+            EC.presence_of_element_located((By.ID, "email"))
         )
         email_field.send_keys(EMAIL)
 
     @staticmethod
     def fill_password(driver) -> None:
-
         """
         Fill in the password field on the Strava login page
 
@@ -67,18 +59,12 @@ class LoginStrava:
 
         """
         password_field = WebDriverWait(driver, seconds).until(
-            EC.presence_of_element_located(
-                (
-                    By.ID,
-                    "password"
-                )
-            )
+            EC.presence_of_element_located((By.ID, "password"))
         )
         password_field.send_keys(PASSWORD)
 
     @staticmethod
     def click_login_button(driver) -> None:
-
         """
         Clicks on the Strava login page
 
@@ -89,14 +75,12 @@ class LoginStrava:
             None
 
         """
-        login_button = driver.find_element(
-            By.ID,
-            "login-button"
+        login_button = WebDriverWait(driver, seconds).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "button.btn.btn-primary"))
         )
         login_button.click()
 
     def login(self, driver) -> None:
-
         """
         Login into Strava using the given Selenium webdriver.
 
@@ -124,60 +108,26 @@ class CorrectElevation:
         self.get_url = GetACtivityURL()
         self.login = LoginStrava()
 
-    # @staticmethod
-    # def _check_elevation(driver):
-    #     try:
-    #         elevation = "m"
-    #         header = WebDriverWait(driver, seconds).until(
-    #             EC.presence_of_element_located(
-    #                 (
-    #                     By.CSS_SELECTOR,
-    #                     "div.section.more-stats"
-    #                 )
-    #             )
-    #         )
-
-    # # spans3
-
-    #         elevation = WebDriverWait(header, seconds).until(
-    #             EC.presence_of_element_located((
-    #                 By.CLASS_NAME, "spans3"))
-    #         ).text
-    #         if indoor_cycling.casefold() in activity_type.casefold():
-    #             return True
-
-    #     except NoSuchElementException:
-    #         return False
-
     @staticmethod
     def _is_activity_indoor_cycling(driver) -> bool:
-
         """
         Returns whether or not the current activity is an
         indoor cycling activity.
 
         """
         try:
-
             indoor_cycling = "spinning"
             header = WebDriverWait(driver, seconds).until(
                 EC.presence_of_element_located(
-                    (
-                        By.CSS_SELECTOR,
-                        "h2.text-title3.text-book.marginless"
-                    )
+                    (By.CSS_SELECTOR, "h2.text-title3.text-book.marginless")
                 )
             )
-            # header = WebDriverWait(driver, seconds).until(
-            #     EC.presence_of_element_located((
-            #         By.CLASS_NAME, "text-title3.text-book.marginless"
-            #     ))
-            # )
+            activity_type = (
+                WebDriverWait(header, seconds)
+                .until(EC.presence_of_element_located((By.CLASS_NAME, "title")))
+                .text
+            )
 
-            activity_type = WebDriverWait(header, seconds).until(
-                EC.presence_of_element_located((
-                    By.CLASS_NAME, "title"))
-            ).text
             if indoor_cycling.casefold() in activity_type.casefold():
                 return True
 
@@ -186,84 +136,74 @@ class CorrectElevation:
 
     @staticmethod
     def _click_options_button(driver) -> None:
+        """
+        _click_options_button _summary_
+
+        Args:
+            driver (_type_): _description_
+        """
         options_button = WebDriverWait(driver, seconds).until(
-            EC.element_to_be_clickable(
-                (
-                    By.CLASS_NAME,
-                    "app-icon.icon-nav-more"
-                )
-            )
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "div.app-icon.icon-nav-more"))
         )
         options_button.click()
+        time.sleep(2)
+        # options_button = WebDriverWait(driver, seconds).until(
+        #     EC.element_to_be_clickable(
+        #         (
+        #             By.CLASS_NAME,
+        #             "app-icon.icon-nav-more"
+        #         )
+        #     )
+        # )
+        # options_button.click()
 
     @staticmethod
     def _click_correct_elevation_option(driver) -> None:
         correct_elevation_option = WebDriverWait(driver, seconds).until(
-            EC.element_to_be_clickable(
-                (
-                    By.CLASS_NAME,
-                    'data-react-class.CorrectElevation'
-
-                )
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
             )
         )
-    # def _click_correct_elevation_option(driver) -> None:
-    #     correct_elevation_option = WebDriverWait(driver, seconds).until(
-    #         EC.element_to_be_clickable(
-    #             (
-    #                 By.XPATH,
-    #                 '(//*[@id="react-list-item"]/div/a)[2]'
-    #             )
-    #         )
-    #     )
         correct_elevation_option.click()
+        time.sleep(2)
 
     @staticmethod
     def _click_correct_elevation(driver) -> None:
+        seconds = 15
         # Click on the button to correct the activity
         correct_activity_button = WebDriverWait(driver, seconds).until(
             EC.element_to_be_clickable(
                 (
                     By.XPATH,
                     "/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button"
+                    # "button.Button--btn--E4CP9.Button--primary--cUgAV"
                 )
             )
         )
         correct_activity_button.click()
 
-        driver.implicitly_wait(15)
-
     def run(self) -> None:
-        # Set the options that you need
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option("detach", True)
-
-        # Start the driver
         with webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
-            options=options
+            service=Service(ChromeDriverManager().install()), options=options
         ) as driver:
-
-            # Run the log in process
             self.login.login(driver)
             for i, activity in enumerate(self.activity_ids):
-                print(f"\n############## \nProcessing activity {activity}\n")
-
+                print(f"#_#_\nProcessing activity {activity}\n")
                 activity_url = self.get_url.get_activity_url(activity)
                 driver.get(activity_url)
-                print(f"\n###### \nActivity: {activity}\n")
-                time.sleep(5)
+                print(f"#_#_\nActivity: {activity}\n")
                 if self._is_activity_indoor_cycling(driver):
-                    print(f"\n##\nDetected indoor cycling activity {activity}")
+                    print(f"#_#_\nDetected indoor cycling activity {activity}")
                     if i < len(self.activity_ids) - 1:
                         continue
                 else:
                     self._click_options_button(driver)
                     self._click_correct_elevation_option(driver)
                     self._click_correct_elevation(driver)
+                    driver.implicitly_wait(20)
                     # self.correct_activity(driver)
                     print(f"\nElevation has corrected for activity:{activity}")
-
-            # Close the browser at the end
         driver.quit()

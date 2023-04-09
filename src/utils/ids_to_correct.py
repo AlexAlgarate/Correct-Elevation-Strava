@@ -22,7 +22,6 @@ class SummaryOfActivities:
         self.logger = ErrorLogger()
 
     def _get_activities(self, page: int) -> Dict:
-
         """
         Makes a GET request to the Strava API for fetching
         activities for a specific page.
@@ -55,7 +54,6 @@ class SummaryOfActivities:
             raise
 
     def get_all_activities(self) -> List[Dict]:
-
         """
         Make a GET request to the Strava API for fetching all activities
         by iterating over all available pages in your profile.
@@ -87,7 +85,6 @@ class StravaFetcher:
 
     @staticmethod
     def filter_activities(df: pd.DataFrame) -> List:
-
         """
         Returns a list of activity ids that have a sport type of "Ride" and
         "Run" and which total elevation gain was 0 meters.
@@ -106,7 +103,6 @@ class StravaFetcher:
         ].to_list()
 
     def fetch_activities_summary(self) -> pd.DataFrame:
-
         """
         Fetches all activities from Strava and returns a list of activity ids
         that need to be corrected for elevation.
