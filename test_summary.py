@@ -1,18 +1,19 @@
-import unittest
-from assertpy import assert_that
 import time
-from config import EXPIRES_AT, ACCESS_TOKEN, REFRESH_TOKEN
-from src.utils.ids_to_correct import SummaryOfActivities
-from src.utils.refresh_token import RefreshTokenManager
-from src.utils.get_oauth_code import get_oauth_code
+import unittest
+
+from assertpy import assert_that
+
+from config import ACCESS_TOKEN, EXPIRES_AT, REFRESH_TOKEN
 from src.utils.generate_credentials import GenerateAccessToken
+from src.utils.get_oauth_code import GetOAuthCode
+# from src.utils.ids_to_correct import SummaryOfActivities
+from src.utils.refresh_token import RefreshTokenManager
 
 refresh = RefreshTokenManager
 generate_credentials = GenerateAccessToken()
 
 
 class TestSummary(unittest.TestCase):
-
     def test_code_oauth_is_str(self):
         """
         Test if the OAuth code is a string
@@ -20,7 +21,8 @@ class TestSummary(unittest.TestCase):
         Returns:
             - str
         """
-        assert_that(get_oauth_code()).is_type_of(str)
+        code = GetOAuthCode()
+        assert_that(code.get_oauth_code()).is_type_of(str)
 
     def test_generate_credentials(self):
         """
@@ -83,6 +85,10 @@ class TestSummary(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
+
+#########################
+# **** TODO ****
+#########################
 # def test_get_activities():
 #     # Test that _get_activities returns a non-empty list
 #     activities = summary._get_activities(1)
