@@ -26,8 +26,8 @@ class IndoorCycling:
                 .until(EC.presence_of_element_located((By.CLASS_NAME, "title")))
                 .text
             )
-            if indoor_cycling.casefold() in activity_type.casefold():
-                return True
+
+            return indoor_cycling.casefold() in activity_type.casefold()
 
         except NoSuchElementException:
             return False

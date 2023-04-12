@@ -31,6 +31,8 @@ class LoginStrava:
             )
         )
         email_field.send_keys(EMAIL)
+        
+        return self
 
     @staticmethod
     def fill_password(driver) -> None:
