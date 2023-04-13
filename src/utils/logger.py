@@ -41,9 +41,9 @@ class ErrorLogger(BaseLogger):
     """
 
     def __init__(
-        self,
-        name: str = "error_logger",
-        log_file_path: str = "logger\\logger_errors.log"
+            self,
+            name: str = "error_logger",
+            log_file_path: str = "logger\\logger_errors.log"
     ) -> None:
         super().__init__(name, log_file_path, logging.ERROR)
 
@@ -55,7 +55,7 @@ class InfoLogger(BaseLogger):
     """
 
     def __init__(
-        self, name: str = "info_logger", log_file_path: str = "logger\\logger_info.log"
+            self, name: str = "info_logger", log_file_path: str = "logger\\logger_info.log"
     ) -> None:
         super().__init__(name, log_file_path, logging.INFO)
 
@@ -67,8 +67,8 @@ class WarningLogger(BaseLogger):
     """
 
     def __init__(
-        self,
-        name: str = "warning_logger",
-        log_file_path: str = "logger\\warning_logger.log"
+            self,
+            name: str = "warning_logger",
+            log_file_path: str = "logger\\warning_logger.log"
     ) -> None:
         super().__init__(name, log_file_path, logging.WARNING)
