@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from config import EMAIL, PASSWORD, seconds
-from src.utils.logger import ErrorLogger, InfoLogger
+from logger.logger import ErrorLogger, InfoLogger
 
 error_logger = ErrorLogger()
 info_logger = InfoLogger()
@@ -82,3 +82,4 @@ class LoginStrava:
 
         except (NoSuchElementException, TimeoutError, Exception) as e:
             error_logger.error(f"Error: {e}")
+ 

@@ -41,14 +41,11 @@ class StravaActivity:
                     (By.CSS_SELECTOR, "h2.text-title3.text-book.marginless")
                 )
             )
-            activity_type = WebDriverWait(header, seconds).until(
-                EC.presence_of_element_located(
-                    (
-                        By.CLASS_NAME,
-                        "title"
-                    )
-                )
-            ).text
+            activity_type = (
+                WebDriverWait(header, seconds)
+                .until(EC.presence_of_element_located((By.CLASS_NAME, "title")))
+                .text
+            )
 
             return indoor_cycling.casefold() in activity_type.casefold()
         except NoSuchElementException:
@@ -57,20 +54,12 @@ class StravaActivity:
     def correct_elevation(self):
         if not self.is_activity_indoor_cycling():
             options_button = self.web_driver_wait.until(
-                EC.element_to_be_clickable(
-                    (
-                        By.CSS_SELECTOR,
-                        "div.app-icon.icon-nav-more"
-                    )
-                )
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "div.app-icon.icon-nav-more"))
             )
 
             correct_elevation_option = self.web_driver_wait.until(
                 EC.presence_of_element_located(
-                    (
-                        By.CSS_SELECTOR,
-                        "div[data-react-class='CorrectElevation']"
-                    )
+                    (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
                 )
             )
 
@@ -79,6 +68,7 @@ class StravaActivity:
                     (
                         By.XPATH,
                         "/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button"
+                        # "button.Button--btn--E4CP9.Button--primary--cUgAV"
                     )
                 )
             )

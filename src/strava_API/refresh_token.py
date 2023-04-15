@@ -16,7 +16,7 @@ from config import (
     refresh_token_grant_type,
     token_url
 )
-from src.utils.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 
 class RefreshTokenManager:

@@ -3,9 +3,9 @@ import os
 from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
-from src.utils.generate_credentials import GenerateAccessToken
-from src.utils.logger import ErrorLogger, InfoLogger
-from src.utils.refresh_token import RefreshTokenManager
+from src.strava_API.generate_credentials import GenerateAccessToken
+from logger.logger import ErrorLogger, InfoLogger
+from src.strava_API.refresh_token import RefreshTokenManager
 
 
 class GetAccessToken:
@@ -95,7 +95,7 @@ class GetAccessToken:
         if access_token_from_env:
             return access_token_from_env
         else:
-            raise UndefinedValueError("ACCESS_TOKEN not found in the .env file")
+            raise UndefinedValueError("ACCESS_TOKEN not found in the env file")
 
     def _get_new_access_token(self) -> None:
         """

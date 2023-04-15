@@ -10,10 +10,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from src.correct_elevation.credentials import Credentials
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_API.StravaFetcher import StravaFetcher
-from src.strava_API.ids_to_correct import SummaryOfActivities
+from src.utils.StravaFetcher import StravaFetcher
+from src.utils.ids_to_correct import SummaryOfActivities
 from logger.logger import ErrorLogger, InfoLogger
-from config import seconds
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
@@ -27,34 +26,20 @@ class Strava:
         driver.get("https://www.strava.com/login")
 
         self.driver = driver
-        self.web_driver_wait = WebDriverWait(driver, seconds)
+        self.web_driver_wait = WebDriverWait(driver)
 
     def login(self, credentials: Credentials) -> Strava:
         try:
             email_field = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (
-                        By.ID,
-                        "email"
-                    )
-                )
+                EC.presence_of_element_located((By.ID, "email"))
             )
             password_field = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (
-                        By.ID,
-                        "password"
-                    )
-                )
+                EC.presence_of_element_located((By.ID, "password"))
             )
             login_button = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (
-                        By.CSS_SELECTOR,
-                        "button.btn.btn-primary"
-                    )
-                )
+                EC.presence_of_element_located((By.CSS_SELECTOR, "button.btn.btn-primary"))
             )
+            login_button.click()
 
             email_field.send_keys(credentials.email)
             password_field.send_keys(credentials.password)

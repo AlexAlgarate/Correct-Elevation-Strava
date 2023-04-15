@@ -12,8 +12,8 @@ from config import (
     refresh_token_env,
     token_url
 )
-from src.utils.get_oauth_code import GetOAuthCode
-from src.utils.logger import ErrorLogger
+from src.strava_API.get_oauth_code import GetOAuthCode
+from logger.logger import ErrorLogger
 
 
 load_dotenv()

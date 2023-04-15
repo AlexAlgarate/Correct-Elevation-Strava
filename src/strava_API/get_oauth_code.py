@@ -5,14 +5,14 @@ import requests
 from requests import Request
 
 from config import authorization_url, header_code_OAuth
-from src.utils.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 logger = ErrorLogger()
 
 
 class GetOAuthCode:
-    @staticmethod
-    def get_oauth_code() -> str:
+
+    def get_oauth_code(self) -> str:
         """
         Launches a web browser to retrieve the OAuth code from Strava.
 

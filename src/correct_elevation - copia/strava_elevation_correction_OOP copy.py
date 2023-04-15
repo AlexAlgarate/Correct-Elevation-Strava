@@ -9,7 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 
-from src.utils.logger import ErrorLogger
+from logger.logger import ErrorLogger
 import time
 
 
