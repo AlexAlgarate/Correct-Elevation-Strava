@@ -3,12 +3,15 @@ import os
 from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
-from src.strava_API.generate_credentials import GenerateAccessToken
+from src.strava_API.tokens_management.generate_credentials import GenerateAccessToken
 from logger.logger import ErrorLogger, InfoLogger
-from src.strava_API.refresh_token import RefreshTokenManager
+from src.strava_API.tokens_management.refresh_token import RefreshTokenManager
 
 
 class GetAccessToken:
+    refresh: RefreshTokenManager
+    logger_error: ErrorLogger
+    logger_info: InfoLogger
 
     """
         Return the access token from the .env file.

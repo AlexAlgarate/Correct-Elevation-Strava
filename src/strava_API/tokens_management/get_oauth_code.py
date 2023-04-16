@@ -11,6 +11,8 @@ logger = ErrorLogger()
 
 
 class GetOAuthCode:
+    authorization_url: str
+    header_code_OAuth: str
 
     def get_oauth_code(self) -> str:
         """

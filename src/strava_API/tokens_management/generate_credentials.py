@@ -12,17 +12,20 @@ from config import (
     refresh_token_env,
     token_url
 )
-from src.strava_API.get_oauth_code import GetOAuthCode
+from src.strava_API.tokens_management.get_oauth_code import GetOAuthCode
 from logger.logger import ErrorLogger
+
+error_logger = ErrorLogger()
 
 
 load_dotenv()
 
 
 class GenerateAccessToken:
+    code: GetOAuthCode
+
     def __init__(self) -> None:
-        self.logger = ErrorLogger()
-        self.code = GetOAuthCode()
+        self.code: str = GetOAuthCode()
 
     def generate_access_token(self) -> None:
         """
@@ -61,8 +64,8 @@ class GenerateAccessToken:
                 requests.exceptions.ConnectionError: "Connection error"
             }
             error = error_map.get(type(e), "Other kind of error")
-            self.logger.error(f"Error: {e}. {error} occurred.")
+            error_logger.error(f"Error: {e}. {error} occurred.")
             raise
 
         except Exception as e:
-            self.logger.error(f"Other kind of error has occurred: {e}")
+            error_logger.error(f"Other kind of error has occurred: {e}")

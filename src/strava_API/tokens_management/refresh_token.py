@@ -20,6 +20,7 @@ from logger.logger import ErrorLogger
 
 
 class RefreshTokenManager:
+    error_logger: ErrorLogger
 
     """
     A class to manage the refreshing proccess of the access token.
@@ -31,7 +32,7 @@ class RefreshTokenManager:
     """
 
     def __init__(self) -> None:
-        self.logger = ErrorLogger()
+        self.error_logger = ErrorLogger()
 
     def _check_expired(self) -> bool:
         """
@@ -48,7 +49,7 @@ class RefreshTokenManager:
             expires_at = int(expires_at_str)
 
         except ValueError:
-            self.logger.error("EXPIRES_AT value should be an integer")
+            self.error_logger.error("EXPIRES_AT value should be an integer")
             return False
 
         current_time = int(time.time())
@@ -69,11 +70,11 @@ class RefreshTokenManager:
                 set_key(dot_env_file, expires_at_env, str(expires_at))
 
         except FileNotFoundError as e:
-            self.logger.error(f"Could not find the .env file: {e}")
+            self.error_logger.error(f"Could not find the .env file: {e}")
         except KeyError as e:
-            self.logger.error(f"Key error while updating the .env: {e}")
+            self.error_logger.error(f"Key error while updating the .env: {e}")
         except Exception as e:
-            self.logger.error(f"Error while updating the .env: {e}")
+            self.error_logger.error(f"Error while updating the .env: {e}")
 
     def _refresh_access_token(self) -> str:
         """
@@ -116,5 +117,5 @@ class RefreshTokenManager:
                 requests.exceptions.ConnectionError: "Connection error"
             }
             error = error_map.get(type(e), "Other kind of error")
-            self.logger.error(f"Error: {e}. {error} occurred.")
+            self.error_logger.error(f"Error: {e}. {error} occurred.")
             raise

@@ -10,8 +10,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from src.correct_elevation.credentials import Credentials
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_API.StravaFetcher import StravaFetcher
-from src.strava_API.ids_to_correct import SummaryOfActivities
+from src.strava_API.activities_management.filter_activities import StravaFetcher
+from src.strava_API.activities_management.API_request_activities import SummaryOfActivities
 from logger.logger import ErrorLogger, InfoLogger
 from config import seconds
 
