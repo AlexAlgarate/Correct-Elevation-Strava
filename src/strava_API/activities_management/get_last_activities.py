@@ -13,11 +13,11 @@ class GetLastActivities:
 
     def get_last_activities(
         self,
-        page_size: int = 50
+        page_size: int = 100
     ) -> List[Dict[str, Union[int, str]]]:
         """
         Make a GET request to the Strava API for fetching
-        the last 50 activities.
+        the last 100 activities.
 
         Args:
             page_size: Maximum number of activities per page. Default is 50.
@@ -29,7 +29,10 @@ class GetLastActivities:
         recent_activities = []
         current_page: int = 1
 
-        page_of_activities = self.get_request.get_activity(current_page, page_size)
+        page_of_activities = self.get_request.get_activity(
+            current_page,
+            page_size
+        )
         recent_activities.extend(page_of_activities)
 
         return recent_activities
