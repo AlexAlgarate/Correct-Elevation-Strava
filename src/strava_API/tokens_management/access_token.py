@@ -37,7 +37,7 @@ class GetAccessToken:
         self.logger_error = ErrorLogger()
         self.logger_info = InfoLogger()
 
-    def get_strava_access_token(self) -> str:
+    def get_access_token(self) -> str:
         """
         Get the access token value from the .env to use the Strava API
 

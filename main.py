@@ -10,12 +10,13 @@
 
 
 from logger.logger import ErrorLogger, InfoLogger
-from src.strava_API.activities_management.API_request_activities import \
-    APIRequesting
-from src.strava_API.tokens_management.access_token import GetAccessToken
+from src.strava_API.activities_management.API_request import \
+    APIGetRequest
+# from src.strava_API.tokens_management.access_token import GetAccessToken
 from src.strava_API.activities_management.filter_activities import \
     FilterActivities
-
+from src.strava_API.activities_management.get_last_activities import \
+    GetLastActivities
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
@@ -54,7 +55,7 @@ error_logger = ErrorLogger()
 
 #     # def get_latest_activities(self, limit: int = 10) -> List[StravaActivity]:
 #     try:
-#         access_token = GetAccessToken().get_strava_access_token()
+#         access_token = GetAccessToken().get_access_token()
 #         summary_of_activities = GetActivities(access_token)
 #         strava_fetcher = StravaFetcher(summary_of_activities).filtered_dataframe()
 #         info_logger.info(strava_fetcher)
@@ -67,10 +68,14 @@ error_logger = ErrorLogger()
 # def main(limit: int = 10) -> List[int]:  # Get all activities and return only firt 10 activities from the list
 def main():
     # try:
-    access_token = GetAccessToken().get_strava_access_token()
-    summary = APIRequesting(access_token).get_all_activities()
-    activities = FilterActivities().filter_of_activities(summary)
+
+    last_activities = GetLastActivities().get_last_activities()
+    activities = FilterActivities().filter_of_activities(last_activities)
     print(activities)
+    # access_token = GetAccessToken().get_access_token()
+    # summary = APIRequesting(access_token).get_all_activities()
+    # activities = FilterActivities().filter_of_activities(summary)
+    # print(activities)
         # df = json_normalize(summary)
         # d = FilterActivities(summary)
         # df_filtered = d._filter_activities(df)

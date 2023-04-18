@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Union
+from typing import Dict, Union
 
 import requests
 
@@ -11,8 +11,8 @@ from src.strava_API.tokens_management.access_token import GetAccessToken
 logger = ErrorLogger()
 
 
-class APIRequesting:
-    access_token: str
+class APIGetRequest:
+    access_token: GetAccessToken
     url: str
 
     """
@@ -22,7 +22,6 @@ class APIRequesting:
 
     def __init__(
         self,
-        access_token: GetAccessToken,
         url: str = api_url
     ) -> None:
         """
@@ -32,10 +31,11 @@ class APIRequesting:
                 access_token (GetAccessToken): The Strava access token.
 
         """
-        self.access_token = access_token
+        # self.access_token = access_token
         self.api_url = url
+        self.access_token = GetAccessToken()
 
-    def _get_activity_API(
+    def get_activity(
         self,
         page: int = 1,
         page_size: int = 200
@@ -43,7 +43,7 @@ class APIRequesting:
         """
         Makes a GET request to the Strava API for fetching
         activities for a specific page.
-
+        Max page size available: 200
         Returns:
             The response from the API in a JSON format.
 
@@ -52,7 +52,7 @@ class APIRequesting:
             response = requests.get(
                 self.api_url,
                 params={
-                    "access_token": self.access_token,
+                    "access_token": self.access_token.get_access_token(),
                     "per_page": page_size,
                     "page": page
                 }
@@ -74,50 +74,3 @@ class APIRequesting:
         except Exception as e:
             logger.error(f"Other error has occurred: {e}")
             raise
-
-    def get_all_activities(self, max_pages: int = 100) -> List[Dict]:
-        """
-        Make a GET request to the Strava API for fetching all activities
-        by iterating over all available pages in your profile.
-
-        Args:
-            max_pages: Maximum number of pages to fetch. Default is 100.
-
-        Returns:
-            a list of activities in JSON format
-
-        """
-        all_activities: List[Dict] = []
-        page: int = 1
-
-        while page <= max_pages:
-            page_of_activities = self._get_activity_API(page)
-
-            # Breaks the loop if there are no more activities
-            if not page_of_activities:
-                break
-
-            all_activities.extend(page_of_activities)
-            page += 1
-
-        return all_activities
-
-    def get_last_100_activities(self, page_size: int = 50) -> List[Dict]:
-        """
-        Make a GET request to the Strava API for fetching
-        the last 50 activities.
-
-        Args:
-            page_size: Maximum number of activities per page. Default is 50.
-
-        Returns:
-            a list of activities in JSON format
-
-        """
-        recent_activities: List[Dict] = []
-        current_page: int = 1
-
-        page_of_activities = self._get_activity_API(current_page, page_size)
-        recent_activities.extend(page_of_activities)
-
-        return recent_activities
