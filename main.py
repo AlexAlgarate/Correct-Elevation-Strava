@@ -1,16 +1,15 @@
-from config import PASSWORD, EMAIL
-from src.correct_elevation.credentials import Credentials
-from config import seconds
+from __future__ import annotations
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from src.correct_elevation.strava import Strava
-
-
+from config import EMAIL, PASSWORD, seconds
 from logger.logger import ErrorLogger, InfoLogger
-
+from src.correct_elevation.credentials import Credentials
+from src.correct_elevation.strava import Strava
+from src.correct_elevation.strava_activity import StravaActivity
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
@@ -27,17 +26,27 @@ def main():
                     ChromeDriverManager().install()),
                 options=options
         ) as driver:
+            driver.implicitly_wait(seconds)
 
             credentials = Credentials(EMAIL, PASSWORD)
             strava = Strava(driver)
 
-            for strava_activity in strava.login(credentials).get_latest_activities():
-                strava_activity.correct_elevation()
+            for activity in strava.login(credentials).get_latest_activities(3):
+                strava_activity = StravaActivity(driver, activity.id)
 
-        driver.implicitly_wait(seconds)
+                if not strava_activity.is_activity_indoor_cycling():
+                    strava_activity.options_button()
+                    strava_activity.correct_button()
+                    strava_activity.click_correct()
+                # strava_activity.correct_elevation_strava()
+                # strava_activity.options_button()
+                # strava_activity.correct_button()
+                # strava_activity.click_correct()
+
+                print(f"TEST 3: AFTER CLICK CORRECT {strava_activity}")
+
         driver.quit()
 
-        info_logger.info(f"{id} has corrected.")
     except Exception as e:
         error_logger.error(f"Error: {e} in '{__name__}'")
 

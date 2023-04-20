@@ -8,12 +8,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from config import seconds
+from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_API.activities_management.filter_activities import StravaFetcher
-from src.strava_API.activities_management.API_request import SummaryOfActivities
-from logger.logger import ErrorLogger, InfoLogger
-from config import seconds
+from src.strava_API.activities_management.filter_activities import \
+    FilterActivities
+from src.strava_API.activities_management.get_last_activities import \
+    GetLastActivities
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
@@ -22,10 +24,13 @@ error_logger = ErrorLogger()
 class Strava:
     driver: WebDriver
     web_driver_wait: WebDriverWait
+    filter: FilterActivities
+    get_activities: GetLastActivities
 
     def __init__(self, driver: WebDriver):
         driver.get("https://www.strava.com/login")
-
+        self.filter = FilterActivities()
+        self.get_activities = GetLastActivities()
         self.driver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
@@ -64,13 +69,14 @@ class Strava:
         finally:
             return self
 
-    def get_latest_activities(self, limit: int = 10) -> List[StravaActivity]:
-        try:
-            summary_of_activities = SummaryOfActivities()
-            strava_fetcher = StravaFetcher(summary_of_activities)
-            filtered_activities = strava_fetcher.fetch_activities_summary()
-            info_logger.info(filtered_activities)
+    # def get_latest_activities(self, limit: int = 10) -> List[StravaActivity]:
+    #     api_activities = GetLastActivities().get_last_activities()
+    #     filter_activities = FilterActivities().filter_of_activities(api_activities)
+    #     print(f"TEST 1 SHOW ACTIVITIES before correct:{filter_activities[:limit]}")
+    #     return [StravaActivity(self.driver, activity_id) for activity_id in filter_activities[limit:]]
 
-            return [StravaActivity(self.driver, activity_id) for activity_id in filtered_activities[limit:]]
-        except Exception as e:
-            error_logger.error(f"Error: {e} in '{__name__}'")
+    def get_latest_activities(self, limit: int = 10) -> List[StravaActivity]:
+        api_activities = self.get_activities.get_last_activities()
+        filtered_activities = self.filter.filter_of_activities(api_activities)[:limit]
+        print(f"TEST 1 SHOW ACTIVITIES before correct:{filtered_activities}")
+        return [StravaActivity(self.driver, activity_id) for activity_id in filtered_activities]

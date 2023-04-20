@@ -15,6 +15,7 @@ class StravaActivity:
 
     def __init__(self, driver: WebDriver, activity_id: int):
         self.id = activity_id
+
         driver.get(self._get_activity_url())
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
@@ -53,45 +54,6 @@ class StravaActivity:
         except NoSuchElementException:
             return False
 
-    def options_button(self):
-        options_button = self.web_driver_wait.until(
-                    EC.presence_of_element_located(
-                        (
-                            By.CSS_SELECTOR,
-                            "div.app-icon.icon-nav-more"
-                        )
-                    )
-                )
-        options_button.click()
-
-    def correct_button(self):
-        correct_elevation_option = self.web_driver_wait.until(
-            EC.presence_of_element_located(
-                (
-                    By.CSS_SELECTOR,
-                    "div[data-react-class='CorrectElevation']"
-                )
-            )
-        )
-        correct_elevation_option.click()
-
-    def click_correct(self):
-        correct_activity_button = self.web_driver_wait.until(
-            EC.presence_of_element_located(
-                (
-                    By.XPATH,
-                    "/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button"
-                )
-            )
-        )
-        correct_activity_button.click()
-
-    def correct_elevation_strava(self):
-        if not self.is_activity_indoor_cycling:
-            self.options_button()
-            self.correct_button()
-            self.click_correct()
-
     def correct_elevation(self):
         try:
             if not self.is_activity_indoor_cycling():
@@ -123,12 +85,43 @@ class StravaActivity:
                 )
 
                 options_button.click()
-                print("Clicked options button")
                 correct_elevation_option.click()
-                print("Clicked correct button")
                 correct_activity_button.click()
-                print("Clicked ACCEPT button")
         except NoSuchElementException as e:
             print(e)
         finally:
             return self
+
+    # def correct_elevation(self):
+    #     if not self.is_activity_indoor_cycling():
+    #         options_button = self.web_driver_wait.until(
+    #             EC.presence_of_element_located(
+    #                 (
+    #                     By.CSS_SELECTOR,
+    #                     "div.app-icon.icon-nav-more"
+    #                 )
+    #             )
+    #         )
+
+    #         correct_elevation_option = self.web_driver_wait.until(
+    #             EC.presence_of_element_located(
+    #                 (
+    #                     By.CSS_SELECTOR,
+    #                     "div[data-react-class='CorrectElevation']"
+    #                 )
+    #             )
+    #         )
+
+    #         correct_activity_button = self.web_driver_wait.until(
+    #             EC.element_to_be_clickable(
+    #                 (
+    #                     By.XPATH,
+    #                     "/html/body/reach-portal/div[2]/div/div/div/form/div[2]/button"
+    #                 )
+    #             )
+    #         )
+
+    #         options_button.click()
+    #         correct_elevation_option.click()
+    #         correct_activity_button.click()
+

@@ -1,4 +1,5 @@
 from typing import List
+
 from src.strava_API.activities_management.filter_activities import \
     FilterActivities
 from src.strava_API.activities_management.get_last_activities import \
@@ -14,4 +15,5 @@ def main(limit: int = 10) -> List[int]:
 
 
 if __name__ == "__main__":
-    main()
+    activities = main()
+    print(activities)
