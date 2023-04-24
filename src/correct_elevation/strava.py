@@ -12,52 +12,37 @@ from config import seconds
 from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_API.activities_management.filter_activities import \
-    FilterActivities
-from src.strava_API.activities_management.get_last_activities import \
-    GetLastActivities
+from src.strava_API.activities_management.filter_activities import FilterActivities
+from src.strava_API.activities_management.get_last_activities import GetLastActivities
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
 
 
 class Strava:
-    driver: WebDriver
-    web_driver_wait: WebDriverWait
+    driver: WebDriver = None
+    web_driver_wait: WebDriverWait = None
     filter: FilterActivities
     get_activities: GetLastActivities
 
     def __init__(self, driver: WebDriver):
+        self.driver = driver
         driver.get("https://www.strava.com/login")
         self.filter = FilterActivities()
         self.get_activities = GetLastActivities()
-        self.driver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
     def login(self, credentials: Credentials) -> Strava:
         try:
             email_field = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (
-                        By.ID,
-                        "email"
-                    )
-                )
+                EC.presence_of_element_located((By.ID, "email"))
             )
             password_field = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (
-                        By.ID,
-                        "password"
-                    )
-                )
+                EC.presence_of_element_located((By.ID, "password"))
             )
             login_button = self.web_driver_wait.until(
                 EC.presence_of_element_located(
-                    (
-                        By.CSS_SELECTOR,
-                        "button.btn.btn-primary"
-                    )
+                    (By.CSS_SELECTOR, "button.btn.btn-primary")
                 )
             )
 
@@ -69,14 +54,10 @@ class Strava:
         finally:
             return self
 
-    # def get_latest_activities(self, limit: int = 10) -> List[StravaActivity]:
-    #     api_activities = GetLastActivities().get_last_activities()
-    #     filter_activities = FilterActivities().filter_of_activities(api_activities)
-    #     print(f"TEST 1 SHOW ACTIVITIES before correct:{filter_activities[:limit]}")
-    #     return [StravaActivity(self.driver, activity_id) for activity_id in filter_activities[limit:]]
-
     def get_latest_activities(self, limit: int = 10) -> List[StravaActivity]:
         api_activities = self.get_activities.get_last_activities()
         filtered_activities = self.filter.filter_of_activities(api_activities)[:limit]
-        print(f"TEST 1 SHOW ACTIVITIES before correct:{filtered_activities}")
-        return [StravaActivity(self.driver, activity_id) for activity_id in filtered_activities]
+        return [
+            StravaActivity(self.driver, activity_id)
+            for activity_id in filtered_activities
+        ]

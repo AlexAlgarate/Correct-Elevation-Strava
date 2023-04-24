@@ -22,28 +22,16 @@ def main():
         options.add_experimental_option("detach", True)
 
         with webdriver.Chrome(
-                service=Service(
-                    ChromeDriverManager().install()),
-                options=options
+            service=Service(ChromeDriverManager().install()), options=options
         ) as driver:
             driver.implicitly_wait(seconds)
 
             credentials = Credentials(EMAIL, PASSWORD)
             strava = Strava(driver)
 
-            for activity in strava.login(credentials).get_latest_activities(3):
+            for activity in strava.login(credentials).get_latest_activities(limit=2):
                 strava_activity = StravaActivity(driver, activity.id)
-
-                if not strava_activity.is_activity_indoor_cycling():
-                    strava_activity.options_button()
-                    strava_activity.correct_button()
-                    strava_activity.click_correct()
-                # strava_activity.correct_elevation_strava()
-                # strava_activity.options_button()
-                # strava_activity.correct_button()
-                # strava_activity.click_correct()
-
-                print(f"TEST 3: AFTER CLICK CORRECT {strava_activity}")
+                strava_activity.correct_elevation()
 
         driver.quit()
 
@@ -51,5 +39,5 @@ def main():
         error_logger.error(f"Error: {e} in '{__name__}'")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
