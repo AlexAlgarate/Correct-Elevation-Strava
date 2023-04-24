@@ -50,7 +50,7 @@ class FilterActivities:
                 self.id
             ].to_list()
         except Exception as e:
-            logging_error.error(f"Error fetching activities from Strava API:{e}")
+            logging_error.error(f"Error fetching activities from Strava:{e}")
             return []
         if not filtered_activities:
             return []
