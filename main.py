@@ -36,7 +36,7 @@ def main():
                 strava_activity = StravaActivity(driver, activity.id)
                 strava_activity.open_url()
                 strava_activity.correct_elevation()
-
+                print(activity.id)
         driver.quit()
 
     except Exception as e:
