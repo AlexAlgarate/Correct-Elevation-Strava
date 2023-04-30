@@ -20,10 +20,7 @@ class APIGetRequest:
 
     """
 
-    def __init__(
-        self,
-        url: str = api_url
-    ) -> None:
+    def __init__(self, url: str = api_url) -> None:
         """
             Initializes a new instance of the class with a Strava access token.
 
@@ -35,11 +32,7 @@ class APIGetRequest:
         self.api_url = url
         self.access_token = GetAccessToken()
 
-    def get_activity(
-        self,
-        page: int = 1,
-        page_size: int = 200
-    ) -> Dict[str, Union[int, str]]:
+    def get_activity(self, page: int = 1, page_size: int = 200) -> Dict[str, Union[int, str]]:
         """
         Makes a GET request to the Strava API for fetching
         activities for a specific page.

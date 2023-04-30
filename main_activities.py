@@ -6,7 +6,7 @@ from src.strava_API.activities_management.get_last_activities import \
     GetLastActivities
 
 
-def main(limit: int = 10) -> List[int]:
+def main(limit: int = 800) -> List[int]:
 
     last_activities = GetLastActivities().get_last_activities()
     strava_activities = FilterActivities().filter_of_activities(last_activities)

@@ -2,8 +2,8 @@ from typing import List
 
 import pandas as pd
 from pandas import json_normalize
-from logger.logger import ErrorLogger
 
+from logger.logger import ErrorLogger
 
 logging_error = ErrorLogger()
 

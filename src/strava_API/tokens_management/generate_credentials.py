@@ -12,21 +12,19 @@ from config import (
     refresh_token_env,
     token_url
 )
-from src.strava_API.tokens_management.get_oauth_code_prueba import get_oauth_code
+from src.strava_API.tokens_management.get_oauth_code import GetOAuthCode
 from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
-
 
 load_dotenv()
 
 
 class GenerateAccessToken:
-    # code: GetOAuthCode
+    code: GetOAuthCode
 
     def __init__(self) -> None:
-        # self.code: str = GetOAuthCode()
-        self.code: str = get_oauth_code()
+        self.code = GetOAuthCode()
 
     def generate_access_token(self) -> None:
         """

@@ -11,10 +11,7 @@ class GetLastActivities:
     def __init__(self) -> None:
         self.get_request = APIGetRequest()
 
-    def get_last_activities(
-        self,
-        page_size: int = 100
-    ) -> List[Dict[str, Union[int, str]]]:
+    def get_last_activities(self, page_size: int = 100) -> List[Dict[str, Union[int, str]]]:
         """
         Make a GET request to the Strava API for fetching
         the last 100 activities.

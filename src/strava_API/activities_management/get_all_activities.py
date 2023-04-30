@@ -3,12 +3,12 @@ from src.strava_API.activities_management.API_request import APIGetRequest
 
 
 class GetAllActivities:
+    get_activity: APIGetRequest
+
     def __init__(self) -> None:
         pass
 
-    def get_all_activities(
-        self, max_pages: int = 100
-    ) -> List[Dict[str, Union[int, str]]]:
+    def get_all_activities(self, max_pages: int = 100) -> List[Dict[str, Union[int, str]]]:
         """
         Make a GET request to the Strava API for fetching all activities
         by iterating over all available pages in your profile.
@@ -24,7 +24,7 @@ class GetAllActivities:
         page: int = 1
 
         while page <= max_pages:
-            page_of_activities = self._get_activity_API(page)
+            page_of_activities = APIGetRequest(page)
 
             # Breaks the loop if there are no more activities
             if not page_of_activities:
