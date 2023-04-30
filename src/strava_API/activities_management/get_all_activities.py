@@ -20,11 +20,11 @@ class GetAllActivities:
             a list of activities in JSON format
 
         """
-        all_activities: List[Dict] = []
+        all_activities = []
         page: int = 1
 
         while page <= max_pages:
-            page_of_activities = APIGetRequest(page)
+            page_of_activities = APIGetRequest().get_activity(page)
 
             # Breaks the loop if there are no more activities
             if not page_of_activities:

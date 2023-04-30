@@ -28,7 +28,6 @@ class APIGetRequest:
                 access_token (GetAccessToken): The Strava access token.
 
         """
-        # self.access_token = access_token
         self.api_url = url
         self.access_token = GetAccessToken()
 
@@ -50,8 +49,7 @@ class APIGetRequest:
                     "page": page
                 }
             )
-            # Raises an exception if there was a HTTP error in the reques
-            response.raise_for_status()
+
             return response.json()
 
         except requests.RequestException as e:
