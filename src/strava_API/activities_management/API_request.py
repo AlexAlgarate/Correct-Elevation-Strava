@@ -31,7 +31,10 @@ class APIGetRequest:
         self.api_url = url
         self.access_token = GetAccessToken()
 
-    def get_activity(self, page: int = 1, page_size: int = 200) -> Dict[str, Union[int, str]]:
+    def get_activity(
+        self, page: int = 1,
+        page_size: int = 200
+    ) -> Dict[str, Union[int, str]]:
         """
         Makes a GET request to the Strava API for fetching
         activities for a specific page.

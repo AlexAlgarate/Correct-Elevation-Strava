@@ -8,7 +8,7 @@ from src.strava_API.activities_management.get_all_activities import \
     GetAllActivities
 
 
-def main(limit: int = 10) -> List[int]:
+def main(limit: int = 20) -> List[int]:
 
     all_activities = GetAllActivities().get_all_activities()
     strava_activities = FilterActivities().filter_of_activities(all_activities)

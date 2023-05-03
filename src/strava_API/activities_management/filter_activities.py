@@ -16,7 +16,9 @@ class FilterActivities:
     sports_column: str = "sport_type"
     df: pd.DataFrame
 
-    def filter_of_activities(self, activities: List[Dict[str, Union[int, str]]]) -> List[int]:
+    def filter_of_activities(
+        self, activities: List[Dict[str, Union[int, str]]]
+    ) -> List[int]:
         """
         Returns a list of activity ids that have a sport type of "Ride" and
         "Run" and which total elevation gain was 0 meters.
@@ -30,6 +32,7 @@ class FilterActivities:
         """
         try:
             self.df = json_normalize(activities)
+            self.df.to_csv("Activities.csv", index=False)
             filtered_activities = self.df.loc[
                 (self.df[self.sports_column].isin(self.sports))
                 & (self.df[self.elevation_column] == self.elevation),

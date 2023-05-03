@@ -8,7 +8,9 @@ class GetAllActivities:
     def __init__(self) -> None:
         pass
 
-    def get_all_activities(self, max_pages: int = 100) -> List[Dict[str, Union[int, str]]]:
+    def get_all_activities(
+        self, max_pages: int = 100
+    ) -> List[Dict[str, Union[int, str]]]:
         """
         Make a GET request to the Strava API for fetching all activities
         by iterating over all available pages in your profile.
