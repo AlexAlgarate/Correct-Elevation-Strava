@@ -8,7 +8,7 @@ utils_decouple/
 summary_elev_0.csv
 start_day.bat
 .vscode
-.idea
+.idea/
 .github
 Activities.csv
 data.ipynb
@@ -33,7 +33,7 @@ var/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
-*.egg-info/
+*.egg-info/.
 .installed.cfg
 *.egg
 MANIFEST
