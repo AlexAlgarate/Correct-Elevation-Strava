@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from config import EMAIL, PASSWORD, seconds
 from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
-from src.correct_elevation.strava import Strava
+from src.correct_elevation.strava_login import Strava
 from src.correct_elevation.strava_activity import StravaActivity
 from src.correct_elevation.get_latest_activities import GetLatestActivities
 

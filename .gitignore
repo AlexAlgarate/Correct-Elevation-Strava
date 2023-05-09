@@ -9,6 +9,7 @@ summary_elev_0.csv
 start_day.bat
 .vscode
 .idea/
+.idea
 .github
 Activities.csv
 data.ipynb

@@ -12,20 +12,30 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from config import (
-    EMAIL,
-    PASSWORD,
-    seconds,
-    url_to_get_OAuth_code
-)
+from config import EMAIL, PASSWORD, seconds, url_to_get_OAuth_code
 from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
-from src.correct_elevation.strava import Strava
+from src.strava_API.tokens_management.oauth_code_management.login_strava import \
+    Strava
 
 logger = ErrorLogger()
 
 
-class GetCode:
+class ClickAuthorize:
+    """
+    Methods:
+        - click_authorize() uses Selenium to click on authorize button.
+        - extract_code_from_url() uses a regular expression to get the code from the URL
+
+    Attributes:
+        - Driver: WebDrivr object
+        - web_driver_wait: WebDriverWait object
+    """
+    web_driver_wait: WebDriverWait
+
+    def __init__(self, driver: WebDriver) -> None:
+        self.driver = driver
+        self.web_driver_wait = WebDriverWait(driver, seconds)
 
     def click_authorize(self, driver: WebDriver) -> bool:
         try:
@@ -39,13 +49,20 @@ class GetCode:
             )
             authorize_button.click()
             return True
-        except Exception:
+        except NoSuchElementException:
             return False
 
-    def get_code_from_url(self, driver: WebDriver) -> str:
-        authorizated_url = driver.current_url
-        code_regex = re.compile("&code=([\a-z]+)&")
-        code_match = code_regex.search(authorizated_url)
+
+class ExtractCode:
+    driver: WebDriver
+
+    def __init__(self, driver: WebDriver) -> None:
+        self.driver = driver
+
+    def extract_code(self) -> str:
+        authorizated_url = self.driver.current_url
+        reg_expression = re.compile("&code=([\a-z]+)&")
+        code_match = reg_expression.search(authorizated_url)
 
         if not code_match:
             logger.error("Could not retrieve OAuth code from URL")
@@ -53,13 +70,7 @@ class GetCode:
         return code_match.group(1)
 
 
-OAuth_page = GetCode()
-
-
-def get_oauth_code() -> str:
-    """
-    Launches a web browser to retrieve the OAuth code from Strava.
-    """
+def main() -> str:
     options = Options()
     options.add_argument("--start-maximized")
     options.add_experimental_option("detach", True)
@@ -72,11 +83,17 @@ def get_oauth_code() -> str:
         try:
             credentials = Credentials(EMAIL, PASSWORD)
             strava = Strava(driver)
+            authorize_button = ClickAuthorize(driver)
+            extract_code = ExtractCode(driver)
             strava.login(credentials)
             print("TEST1 LOG in")
-            if OAuth_page.click_authorize(driver):
+            if authorize_button.click_authorize(driver):
                 print("TEST2: CLICK")
-                code = OAuth_page.get_code_from_url(driver)
+                code = extract_code.extract_code_from_url(driver)
                 return code
         except Exception as e:
             logger.error(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
