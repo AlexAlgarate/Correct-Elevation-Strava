@@ -31,7 +31,6 @@ class ClickAuthorize:
         - Driver: WebDrivr object
         - web_driver_wait: WebDriverWait object
     """
-    web_driver_wait: WebDriverWait
 
     def __init__(self, driver: WebDriver) -> None:
         self.driver = driver
@@ -54,13 +53,12 @@ class ClickAuthorize:
 
 
 class ExtractCode:
-    driver: WebDriver
 
     def __init__(self, driver: WebDriver) -> None:
         self.driver = driver
 
-    def extract_code(self) -> str:
-        authorizated_url = self.driver.current_url
+    def extract_code(self, driver: WebDriver) -> str:
+        authorizated_url = driver.current_url
         reg_expression = re.compile("&code=([\a-z]+)&")
         code_match = reg_expression.search(authorizated_url)
 
@@ -70,30 +68,25 @@ class ExtractCode:
         return code_match.group(1)
 
 
-def main() -> str:
-    options = Options()
-    options.add_argument("--start-maximized")
-    options.add_experimental_option("detach", True)
+class GetCode:
 
-    with webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=options
-    ) as driver:
-        driver.implicitly_wait(seconds)
-        driver.get(url_to_get_OAuth_code)
-        try:
-            credentials = Credentials(EMAIL, PASSWORD)
-            strava = Strava(driver)
-            authorize_button = ClickAuthorize(driver)
-            extract_code = ExtractCode(driver)
-            strava.login(credentials)
-            print("TEST1 LOG in")
-            if authorize_button.click_authorize(driver):
-                print("TEST2: CLICK")
-                code = extract_code.extract_code_from_url(driver)
-                return code
-        except Exception as e:
-            logger.error(f"Error: {e}")
+    def code_to_get_access_token(self) -> str:
+        options = Options()
+        options.add_argument("--start-maximized")
+        options.add_experimental_option("detach", True)
 
-
-if __name__ == "__main__":
-    main()
+        with webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()), options=options
+        ) as driver:
+            driver.implicitly_wait(seconds)
+            try:
+                credentials = Credentials(EMAIL, PASSWORD)
+                strava = Strava(driver)
+                authorize_button = ClickAuthorize(driver)
+                get_code = ExtractCode(driver)
+                strava.login(credentials)
+                driver.get(url_to_get_OAuth_code)
+                authorize_button.click_authorize(driver)
+                return get_code.extract_code(driver)
+            except Exception as e:
+                logger.error(f"Error: {e}")
