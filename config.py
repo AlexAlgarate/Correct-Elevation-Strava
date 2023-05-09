@@ -52,8 +52,6 @@ try:
         "scope": scopes
     }
     seconds = 10
-    url_to_get_OAuth_code: str = f"{authorization_url}?client_id={CLIENT_ID}\
-    &response_type=code&redirect_uri={redirect_url}\
-    &approval_prompt=force&scope={scopes}"
+    url_to_get_OAuth_code: str = f"{authorization_url}?client_id={CLIENT_ID}&response_type=code&redirect_uri={redirect_url}&approval_prompt=force&scope={scopes}"
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")
