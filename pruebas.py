@@ -1,5 +1,9 @@
 # import os
-from src.strava_API.tokens_management.generate_credentials import GenerateAccessToken
+# from src.strava_API.tokens_management.generate_credentials import GenerateAccessToken
+from src.strava_API.tokens_management.get_oauth_code import GetOAuthCode
+from src.strava_API.tokens_management.oauth_code_management.extract_code_selenium import GetCode
+from config import url_to_get_OAuth_code
+ 
 # print(os.getenv('ACTIVITY_ID'))
 # from config import (
 #     CLIENT_ID,
@@ -28,8 +32,14 @@ def main():
     # a = GetOAuthCode()
     # url = get_oauth_code()
     # print(url)
-    GenerateAccessToken().generate_access_token()
+    # GenerateAccessToken().generate_access_token()
     # print(ac)
+    # code = GetOAuthCode().get_oauth_code()
+    # print(code)
+    # print(url_to_get_OAuth_code)
+    code = GetCode().code_to_get_access_token()
+    print(code)
+    print(type(code))
 
 
 if __name__ == "__main__":
