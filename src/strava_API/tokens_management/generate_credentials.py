@@ -12,34 +12,33 @@ from config import (
     refresh_token_env,
     token_url
 )
-from src.strava_API.tokens_management.get_oauth_code import GetOAuthCode
+from src.strava_API.tokens_management.oauth_code_management.GetCode import GetCode
+
 from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
-
 
 load_dotenv()
 
 
 class GenerateAccessToken:
-    code: GetOAuthCode
+    code: GetCode
 
     def __init__(self) -> None:
-        self.code: str = GetOAuthCode()
+        self.code = GetCode()
 
-    def generate_access_token(self) -> None:
+    def _get_access_token_response(self) -> Dict[str, Union[str, int]]:
         """
-        Get the credentials (access_token, refresh_token, and expires_at)
-        from by making a POST request to the API.
-        Finally, these credentials are stored in an .env file
-        using the set_key function.
+        Send a POST request to the API to get the access token response.
 
+        Returns:
+            The access token response as a dictionary.
         """
         try:
-            data_to_get_access_token: Dict[str, Union[str, int]] = {
+            data_to_get_access_token = {
                 "client_id": CLIENT_ID,
                 "client_secret": SECRET_KEY,
-                "code": self.code.get_oauth_code(),
+                "code": self.code.code_to_get_access_token(),
                 "grant_type": "authorization_code"
             }
 
@@ -47,14 +46,7 @@ class GenerateAccessToken:
                 url=token_url, data=data_to_get_access_token
             ).json()
 
-            access_token: str = response.get("access_token")
-            refresh_token: str = response.get("refresh_token")
-            expires_at: str = response.get("expires_at")
-
-            # Set the environment variables
-            set_key(dot_env_file, access_token_env, access_token)
-            set_key(dot_env_file, refresh_token_env, refresh_token)
-            set_key(dot_env_file, expires_at_env, str(expires_at))
+            return response
 
         except requests.RequestException as e:
             error_map = {
@@ -66,6 +58,28 @@ class GenerateAccessToken:
             error = error_map.get(type(e), "Other kind of error")
             error_logger.error(f"Error: {e}. {error} occurred.")
             raise
+
+    def _store_access_token_credentials(self, response: Dict[str, Union[str, int]]) -> None: 
+        """
+        Extract the access token, refresh token, and expires_at from the access token response,
+        and store them in an .env file using the set_key function.
+
+        Args:
+            response: The access token response as a dictionary.
+        """
+        access_token: str = response.get("access_token")
+        refresh_token: str = response.get("refresh_token")
+        expires_at: str = response.get("expires_at")
+
+        # Set the environment variables
+        set_key(dot_env_file, access_token_env, access_token)
+        set_key(dot_env_file, refresh_token_env, refresh_token)
+        set_key(dot_env_file, expires_at_env, str(expires_at))
+
+    def generate_access_token(self) -> None:
+        try:
+            response = self._get_access_token_response()
+            self._store_access_token_credentials(response)
 
         except Exception as e:
             error_logger.error(f"Other kind of error has occurred: {e}")

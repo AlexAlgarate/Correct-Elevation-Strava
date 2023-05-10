@@ -6,7 +6,7 @@ import requests
 
 from config import api_url
 from logger.logger import ErrorLogger
-from src.strava_API.tokens_management.access_token import GetAccessToken
+from src.strava_API.tokens_management.get_access_token import GetAccessToken
 
 logger = ErrorLogger()
 
@@ -20,10 +20,7 @@ class APIGetRequest:
 
     """
 
-    def __init__(
-        self,
-        url: str = api_url
-    ) -> None:
+    def __init__(self, url: str = api_url) -> None:
         """
             Initializes a new instance of the class with a Strava access token.
 
@@ -31,13 +28,11 @@ class APIGetRequest:
                 access_token (GetAccessToken): The Strava access token.
 
         """
-        # self.access_token = access_token
         self.api_url = url
         self.access_token = GetAccessToken()
 
     def get_activity(
-        self,
-        page: int = 1,
+        self, page: int = 1,
         page_size: int = 200
     ) -> Dict[str, Union[int, str]]:
         """
@@ -57,8 +52,7 @@ class APIGetRequest:
                     "page": page
                 }
             )
-            # Raises an exception if there was a HTTP error in the reques
-            response.raise_for_status()
+
             return response.json()
 
         except requests.RequestException as e:

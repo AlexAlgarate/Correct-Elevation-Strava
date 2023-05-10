@@ -3,6 +3,8 @@ from src.strava_API.activities_management.API_request import APIGetRequest
 
 
 class GetAllActivities:
+    get_activity: APIGetRequest
+
     def __init__(self) -> None:
         pass
 
@@ -20,11 +22,11 @@ class GetAllActivities:
             a list of activities in JSON format
 
         """
-        all_activities: List[Dict] = []
+        all_activities = []
         page: int = 1
 
         while page <= max_pages:
-            page_of_activities = self._get_activity_API(page)
+            page_of_activities = APIGetRequest().get_activity(page)
 
             # Breaks the loop if there are no more activities
             if not page_of_activities:

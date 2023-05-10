@@ -3,13 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 logger/
-summary.csv
+some_tests/
 utils_decouple/
 summary_elev_0.csv
 start_day.bat
 .vscode
+.idea/
 .idea
 .github
+Activities.csv
+data.ipynb
 
 
 # C extensions
@@ -31,7 +34,7 @@ var/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
-*.egg-info/
+*.egg-info/.
 .installed.cfg
 *.egg
 MANIFEST

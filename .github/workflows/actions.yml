@@ -8,9 +8,16 @@ on:
       activity_id:
         description: 'Activity Id'
         required: true
-        type: long
-
+        type: string
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint with Flake8
+        run: |
+          python -m flake8 --config=flake8.ini
+
   build:
     runs-on: ubuntu-latest
     steps:

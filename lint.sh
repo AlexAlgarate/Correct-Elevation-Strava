@@ -6,7 +6,7 @@ if [ -d venv ]; then
 fi
 
 # Run linter
-flake8 src
+flake8 src/correct_elevation
 
 # Deactivate virtual environment if necessary
 if [ -n "$VIRTUAL_ENV" ]; then

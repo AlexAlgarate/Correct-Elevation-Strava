@@ -19,7 +19,7 @@ class StravaActivity:
 
     def __init__(self, driver: WebDriver, activity_id: int):
         self.id = activity_id
-        driver.get(self._get_activity_url())
+        self.driver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
     def _get_activity_url(self) -> str:
@@ -31,6 +31,9 @@ class StravaActivity:
 
         """
         return f"https://www.strava.com/activities/{self.id}"
+
+    def open_url(self):
+        self.driver.get(self._get_activity_url())
 
     def is_activity_indoor_cycling(self) -> bool:
         """
@@ -44,12 +47,14 @@ class StravaActivity:
                     (By.CSS_SELECTOR, "h2.text-title3.text-book.marginless")
                 )
             )
-            activity_type = (
-                WebDriverWait(header, seconds)
-                .until(EC.presence_of_element_located((By.CLASS_NAME, "title")))
-                .text
-            )
-
+            activity_type = WebDriverWait(header, seconds).until(
+                EC.presence_of_element_located(
+                    (
+                        By.CLASS_NAME,
+                        "title"
+                    )
+                )
+            ).text
             return indoor_activity_type.casefold() in activity_type.casefold()
         except NoSuchElementException:
             return False
@@ -57,8 +62,11 @@ class StravaActivity:
     def options_button(self) -> bool:
         try:
             options_button = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, "div.app-icon.icon-nav-more")
+                EC.element_to_be_clickable(
+                    (
+                        By.CSS_SELECTOR,
+                        "div.app-icon.icon-nav-more"
+                    )
                 )
             )
             options_button.click()
@@ -73,7 +81,7 @@ class StravaActivity:
                 EC.presence_of_element_located(
                     (
                         By.CSS_SELECTOR,
-                        "div[data-react-class='CorrectElevation']",  # Revert
+                        "div[data-react-class='CorrectElevation']",
                     )
                 )
             ).text
@@ -85,8 +93,11 @@ class StravaActivity:
         if not self.presence_revert_elevation():
             try:
                 correct_elevation_option = self.web_driver_wait.until(
-                    EC.presence_of_element_located(
-                        (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
+                    EC.element_to_be_clickable(
+                        (
+                            By.CSS_SELECTOR,
+                            "div[data-react-class='CorrectElevation']"
+                        )
                     )
                 )
                 correct_elevation_option.click()
@@ -96,12 +107,11 @@ class StravaActivity:
         return True
 
     def click_correct(self):
-        # if not self.presence_revert_elevation():
         correct_activity_button = self.web_driver_wait.until(
-            EC.presence_of_element_located(
+            EC.element_to_be_clickable(
                 (
                     By.CSS_SELECTOR,
-                    "button.Button--primary--cUgAV[type='submit']",  # Correct
+                    "button.Button--primary--cUgAV[type='submit']"
                 )
             )
         )
@@ -119,5 +129,3 @@ class StravaActivity:
             return True
         except NoSuchElementException as e:
             error_logger.error(f"Error: {e}")
-        finally:
-            return self
