@@ -8,10 +8,8 @@ To do this, it first uses the Strava API to get a summary of all sports activiti
 
 ## Requirements
 
-* Python 3.6 or higher
-* Chrome web browser
-* The Chrome version (Settings->Help->Chrome's information)
-(* Download [ChromeDriver](https://chromedriver.chromium.org/))
+* Python 3.10
+* Chrome web browser installed
 * Install the dependencies from the requirements.txt file
 
 ## Setup
