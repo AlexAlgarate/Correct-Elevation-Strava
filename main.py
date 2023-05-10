@@ -32,7 +32,7 @@ def main():
             login_strava.login(credentials)
             get_activities = GetLatestActivities(driver)
 
-            for activity in get_activities.get_latest_activities(limit=10):
+            for activity in get_activities.get_latest_activities(limit=3):
                 strava_activity = StravaActivity(driver, activity.id)
                 strava_activity.open_url()
                 strava_activity.correct_elevation()
