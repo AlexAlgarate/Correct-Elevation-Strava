@@ -5,7 +5,7 @@ import requests
 from requests import Request
 
 from config import authorization_url, header_code_OAuth
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 
 logger = ErrorLogger()
 

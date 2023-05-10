@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from config import seconds
-from logger.logger import ErrorLogger, InfoLogger
+from src.logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
 
 info_logger = InfoLogger()

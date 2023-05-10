@@ -14,7 +14,7 @@ from config import (
 )
 from src.strava_api.tokens_management.oauth_code_management.get_code import GetCode
 
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
 

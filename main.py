@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 from config import EMAIL, PASSWORD, seconds
-from logger.logger import ErrorLogger, InfoLogger
+from src.logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
 from src.correct_elevation.strava_login import Strava
 from src.correct_elevation.strava_activity import StravaActivity

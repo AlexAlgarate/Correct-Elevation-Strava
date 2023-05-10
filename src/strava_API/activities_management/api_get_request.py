@@ -5,7 +5,7 @@ from typing import Dict, Union
 import requests
 
 from config import api_url
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 from src.strava_api.tokens_management.get_access_token import GetAccessToken
 
 logger = ErrorLogger()

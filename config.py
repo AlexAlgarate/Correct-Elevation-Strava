@@ -3,7 +3,7 @@ from typing import Dict, Union
 
 from dotenv import find_dotenv, load_dotenv
 
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 
 
 logger = ErrorLogger()

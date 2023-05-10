@@ -3,7 +3,7 @@ from typing import Dict, List, Union
 import pandas as pd
 from pandas import json_normalize
 
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 
 logging_error = ErrorLogger()
 

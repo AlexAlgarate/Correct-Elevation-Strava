@@ -13,7 +13,7 @@ from config import (
     refresh_token_env,
     token_url,
 )
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 
 
 class RefreshTokenManager:

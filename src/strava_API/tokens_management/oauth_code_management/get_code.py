@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 from config import EMAIL, PASSWORD, seconds, url_to_get_OAuth_code
-from logger.logger import ErrorLogger
+from src.logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
 from src.strava_api.tokens_management.oauth_code_management.click_authorize import (
     ClickAuthorize,
