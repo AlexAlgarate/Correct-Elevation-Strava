@@ -11,7 +11,7 @@ from config import (
     expires_at_env,
     refresh_data,
     refresh_token_env,
-    token_url
+    token_url,
 )
 from logger.logger import ErrorLogger
 
@@ -53,10 +53,7 @@ class RefreshTokenManager:
         return expires_at < current_time
 
     def _update_env(
-        self,
-        access_token: str,
-        refresh_token: str,
-        expires_at: Optional[int]
+        self, access_token: str, refresh_token: str, expires_at: Optional[int]
     ) -> None:
         """
         Update the access token and expires_at in the .env file.
@@ -94,7 +91,7 @@ class RefreshTokenManager:
 
             for key in ("access_token", "refresh_token", "expires_at"):
                 if key not in refresh_response_data:
-                    raise ValueError("Missing key in response data: " + key)
+                    raise ValueError(f"Missing key in response data: {key}")
 
             access_token: str = refresh_response_data.get("access_token")
             refresh_token: str = refresh_response_data.get("refresh_token")
@@ -108,7 +105,7 @@ class RefreshTokenManager:
                 requests.exceptions.HTTPError: "HTTP error",
                 requests.exceptions.ConnectTimeout: "Timeout error",
                 requests.exceptions.Timeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error"
+                requests.exceptions.ConnectionError: "Connection error",
             }
             error = error_map.get(type(e), "Other kind of error")
             self.error_logger.error(f"Error: {e}. {error} occurred.")

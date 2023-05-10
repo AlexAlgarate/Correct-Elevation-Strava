@@ -10,6 +10,9 @@ from config import seconds
 
 
 class ClickAuthorize:
+    driver: WebDriver
+    web_driver_wait: WebDriverWait
+
     """
     Class responsible for clicking on the authorize button in Strava's authentication page.
 
@@ -27,7 +30,7 @@ class ClickAuthorize:
         self.driver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
-    def click_authorize(self, driver: WebDriver) -> bool:
+    def _click_authorize(self, driver: WebDriver) -> bool:
         """
         Clicks on the authorize button in Strava's authentication page.
 
@@ -36,12 +39,7 @@ class ClickAuthorize:
         """
         try:
             authorize_button = WebDriverWait(driver, seconds).until(
-                EC.element_to_be_clickable(
-                    (
-                        By.CSS_SELECTOR,
-                        "button#authorize"
-                    )
-                )
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button#authorize"))
             )
             authorize_button.click()
             return True

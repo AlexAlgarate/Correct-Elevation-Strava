@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import List
 from selenium.webdriver.chrome.webdriver import WebDriver
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_API.activities_management.filter_activities import FilterActivities
-from src.strava_API.activities_management.get_last_activities import GetLastActivities
+from src.strava_api.activities_management.filter_activities import FilterActivities
+from src.strava_api.activities_management.get_last_activities import GetLastActivities
 from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()

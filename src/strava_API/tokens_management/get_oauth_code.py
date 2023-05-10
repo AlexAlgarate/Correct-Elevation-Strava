@@ -45,7 +45,7 @@ class GetOAuthCode:
                 requests.exceptions.HTTPError: "HTTP error",
                 requests.exceptions.ConnectTimeout: "Timeout error",
                 requests.exceptions.Timeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error"
+                requests.exceptions.ConnectionError: "Connection error",
             }
             error = error_map.get(type(e), "Other kind of error")
             logger.error(f"Error: {e}. {error} occurred.")

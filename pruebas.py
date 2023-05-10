@@ -1,9 +1,6 @@
 # import os
-from src.strava_API.tokens_management.get_access_token import GetAccessToken
-from src.strava_API.tokens_management.generate_credentials import GenerateAccessToken
-from src.strava_API.tokens_management.get_oauth_code import GetOAuthCode
-from src.strava_API.tokens_management.oauth_code_management.GetCode import GetCode
-from config import url_to_get_OAuth_code
+from src.strava_api.tokens_management.get_access_token import GetAccessToken
+
 # print(os.getenv('ACTIVITY_ID'))
 
 

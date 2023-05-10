@@ -1,5 +1,5 @@
 from typing import Dict, List, Union
-from src.strava_API.activities_management.API_request import APIGetRequest
+from src.strava_api.activities_management.api_get_request import APIGetRequest
 
 
 class GetLastActivities:
@@ -25,10 +25,7 @@ class GetLastActivities:
         recent_activities = []
         current_page: int = 1
 
-        page_of_activities = self.get_request.get_activity(
-            current_page,
-            page_size
-        )
+        page_of_activities = self.get_request.get_activity(current_page, page_size)
         recent_activities.extend(page_of_activities)
 
         return recent_activities

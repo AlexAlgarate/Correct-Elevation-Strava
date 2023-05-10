@@ -10,9 +10,9 @@ from config import (
     dot_env_file,
     expires_at_env,
     refresh_token_env,
-    token_url
+    token_url,
 )
-from src.strava_API.tokens_management.oauth_code_management.GetCode import GetCode
+from src.strava_api.tokens_management.oauth_code_management.get_code import GetCode
 
 from logger.logger import ErrorLogger
 
@@ -39,7 +39,7 @@ class GenerateAccessToken:
                 "client_id": CLIENT_ID,
                 "client_secret": SECRET_KEY,
                 "code": self.code.code_to_get_access_token(),
-                "grant_type": "authorization_code"
+                "grant_type": "authorization_code",
             }
 
             response = requests.post(
@@ -53,13 +53,15 @@ class GenerateAccessToken:
                 requests.exceptions.HTTPError: "HTTP error",
                 requests.exceptions.ConnectTimeout: "Timeout error",
                 requests.exceptions.Timeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error"
+                requests.exceptions.ConnectionError: "Connection error",
             }
             error = error_map.get(type(e), "Other kind of error")
             error_logger.error(f"Error: {e}. {error} occurred.")
             raise
 
-    def _store_access_token_credentials(self, response: Dict[str, Union[str, int]]) -> None: 
+    def _store_access_token_credentials(
+        self, response: Dict[str, Union[str, int]]
+    ) -> None:
         """
         Extract the access token, refresh token, and expires_at from the access token response,
         and store them in an .env file using the set_key function.

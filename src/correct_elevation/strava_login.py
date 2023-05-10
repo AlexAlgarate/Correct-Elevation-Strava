@@ -12,8 +12,8 @@ from config import seconds
 from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_API.activities_management.filter_activities import FilterActivities
-from src.strava_API.activities_management.get_last_activities import GetLastActivities
+from src.strava_api.activities_management.filter_activities import FilterActivities
+from src.strava_api.activities_management.get_last_activities import GetLastActivities
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
@@ -35,28 +35,13 @@ class Strava:
     def login(self, credentials: Credentials) -> Strava:
         try:
             email_field = self.web_driver_wait.until(
-                EC.visibility_of_element_located(
-                    (
-                        By.ID,
-                        "email"
-                    )
-                )
+                EC.visibility_of_element_located((By.ID, "email"))
             )
             password_field = self.web_driver_wait.until(
-                EC.visibility_of_element_located(
-                    (
-                        By.ID,
-                        "password"
-                    )
-                )
+                EC.visibility_of_element_located((By.ID, "password"))
             )
             login_button = self.web_driver_wait.until(
-                EC.element_to_be_clickable(
-                    (
-                        By.CSS_SELECTOR,
-                        "button.btn.btn-primary"
-                    )
-                )
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary"))
             )
 
             email_field.send_keys(credentials.email)

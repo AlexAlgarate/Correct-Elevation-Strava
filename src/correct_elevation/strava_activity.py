@@ -47,14 +47,11 @@ class StravaActivity:
                     (By.CSS_SELECTOR, "h2.text-title3.text-book.marginless")
                 )
             )
-            activity_type = WebDriverWait(header, seconds).until(
-                EC.presence_of_element_located(
-                    (
-                        By.CLASS_NAME,
-                        "title"
-                    )
-                )
-            ).text
+            activity_type = (
+                WebDriverWait(header, seconds)
+                .until(EC.presence_of_element_located((By.CLASS_NAME, "title")))
+                .text
+            )
             return indoor_activity_type.casefold() in activity_type.casefold()
         except NoSuchElementException:
             return False
@@ -63,10 +60,7 @@ class StravaActivity:
         try:
             options_button = self.web_driver_wait.until(
                 EC.element_to_be_clickable(
-                    (
-                        By.CSS_SELECTOR,
-                        "div.app-icon.icon-nav-more"
-                    )
+                    (By.CSS_SELECTOR, "div.app-icon.icon-nav-more")
                 )
             )
             options_button.click()
@@ -94,10 +88,7 @@ class StravaActivity:
             try:
                 correct_elevation_option = self.web_driver_wait.until(
                     EC.element_to_be_clickable(
-                        (
-                            By.CSS_SELECTOR,
-                            "div[data-react-class='CorrectElevation']"
-                        )
+                        (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
                     )
                 )
                 correct_elevation_option.click()
@@ -109,10 +100,7 @@ class StravaActivity:
     def click_correct(self):
         correct_activity_button = self.web_driver_wait.until(
             EC.element_to_be_clickable(
-                (
-                    By.CSS_SELECTOR,
-                    "button.Button--primary--cUgAV[type='submit']"
-                )
+                (By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']")
             )
         )
         correct_activity_button.click()

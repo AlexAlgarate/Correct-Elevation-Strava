@@ -32,11 +32,11 @@ class FilterActivities:
         """
         try:
             self.df = json_normalize(activities)
-            self.df.to_csv("Activities.csv", index=False)
+
             filtered_activities = self.df.loc[
                 (self.df[self.sports_column].isin(self.sports))
                 & (self.df[self.elevation_column] == self.elevation),
-                self.id
+                self.id,
             ].to_list()
         except Exception as e:
             logging_error.error(f"Error fetching activities from Strava:{e}")

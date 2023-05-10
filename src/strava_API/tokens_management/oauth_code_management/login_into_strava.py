@@ -26,28 +26,13 @@ class Strava:
     def login(self, credentials: Credentials) -> Strava:
         try:
             email_field = self.web_driver_wait.until(
-                EC.visibility_of_element_located(
-                    (
-                        By.ID,
-                        "email"
-                    )
-                )
+                EC.visibility_of_element_located((By.ID, "email"))
             )
             password_field = self.web_driver_wait.until(
-                EC.visibility_of_element_located(
-                    (
-                        By.ID,
-                        "password"
-                    )
-                )
+                EC.visibility_of_element_located((By.ID, "password"))
             )
             login_button = self.web_driver_wait.until(
-                EC.element_to_be_clickable(
-                    (
-                        By.CSS_SELECTOR,
-                        "button.btn.btn-primary"
-                    )
-                )
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary"))
             )
 
             email_field.send_keys(credentials.email)

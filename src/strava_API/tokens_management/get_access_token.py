@@ -3,9 +3,9 @@ import os
 from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
-from src.strava_API.tokens_management.generate_credentials import GenerateAccessToken
+from src.strava_api.tokens_management.generate_credentials import GenerateAccessToken
 from logger.logger import ErrorLogger, InfoLogger
-from src.strava_API.tokens_management.refresh_token_copy import RefreshTokenManager
+from src.strava_api.tokens_management.refresh_token_copy import RefreshTokenManager
 
 
 class GetAccessToken:
