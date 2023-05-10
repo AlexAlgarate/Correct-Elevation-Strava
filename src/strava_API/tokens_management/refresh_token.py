@@ -1,19 +1,16 @@
 import time
-from typing import Dict, Optional, Union
+from typing import Optional
 
 import requests
 from dotenv import set_key
 
 from config import (
-    CLIENT_ID,
     EXPIRES_AT,
-    REFRESH_TOKEN,
-    SECRET_KEY,
     access_token_env,
     dot_env_file,
     expires_at_env,
+    refresh_data,
     refresh_token_env,
-    refresh_token_grant_type,
     token_url
 )
 from logger.logger import ErrorLogger
@@ -56,7 +53,10 @@ class RefreshTokenManager:
         return expires_at < current_time
 
     def _update_env(
-        self, access_token: str, refresh_token: str, expires_at: Optional[int]
+        self,
+        access_token: str,
+        refresh_token: str,
+        expires_at: Optional[int]
     ) -> None:
         """
         Update the access token and expires_at in the .env file.
@@ -86,12 +86,6 @@ class RefreshTokenManager:
 
         """
 
-        refresh_data: Dict[str, Union[str, int]] = {
-            "client_id": CLIENT_ID,
-            "client_secret": SECRET_KEY,
-            "grant_type": refresh_token_grant_type,
-            "refresh_token": REFRESH_TOKEN
-        }
         try:
             refresh_response = requests.post(url=token_url, data=refresh_data)
 

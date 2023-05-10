@@ -53,5 +53,12 @@ try:
     }
     seconds = 10
     url_to_get_OAuth_code: str = f"{authorization_url}?client_id={CLIENT_ID}&response_type=code&redirect_uri={redirect_url}&approval_prompt=force&scope={scopes}"
+    refresh_data: Dict[str, Union[str, int]] = {
+        "client_id": CLIENT_ID,
+        "client_secret": SECRET_KEY,
+        "grant_type": refresh_token_grant_type,
+        "refresh_token": REFRESH_TOKEN
+    }
+
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")
