@@ -25,7 +25,7 @@ jobs:
       STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
       STRAVA_SECRET_KEY: ${{ secrets.STRAVA_SECRET_KEY }}
      run: |
-      ls -R
+      pwd
       python -m pip install --upgrade pip
       pip install -r requirements.txt
       python main.py
