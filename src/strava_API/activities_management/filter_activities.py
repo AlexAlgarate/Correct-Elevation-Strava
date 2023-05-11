@@ -3,7 +3,7 @@ from typing import Dict, List, Union
 import pandas as pd
 from pandas import json_normalize
 
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 logging_error = ErrorLogger()
 
@@ -16,15 +16,13 @@ class FilterActivities:
     sports_column: str = "sport_type"
     df: pd.DataFrame
 
-    def filter_of_activities(
-        self, activities: List[Dict[str, Union[int, str]]]
-    ) -> List[int]:
+    def filter_of_activities(self, activities: List[Dict[str, Union[int, str]]]) -> List[int]:
         """
-        Returns a list of activity ids that have a sport type of "Ride" and
+        Filter a given activities object which sports type are "Ride" and
         "Run" and which total elevation gain was 0 meters.
 
         Args:
-            df : Pandas DataFrame containing activity data.
+            activities : list which contains sports information.
 
         Returns:
             List of activity ids
@@ -38,6 +36,7 @@ class FilterActivities:
                 & (self.df[self.elevation_column] == self.elevation),
                 self.id,
             ].to_list()
+
         except Exception as e:
             logging_error.error(f"Error fetching activities from Strava:{e}")
             return []

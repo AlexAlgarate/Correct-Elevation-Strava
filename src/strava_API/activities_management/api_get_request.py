@@ -5,7 +5,7 @@ from typing import Dict, Union
 import requests
 
 from config import api_url
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 from src.strava_api.tokens_management.get_access_token import GetAccessToken
 
 logger = ErrorLogger()
@@ -16,7 +16,7 @@ class APIGetRequest:
     url: str
 
     """
-    A class fro fetching activities from Strava API
+    A class for fetching activities from Strava API
 
     """
 
@@ -31,13 +31,11 @@ class APIGetRequest:
         self.api_url = url
         self.access_token = GetAccessToken()
 
-    def get_activity(
-        self, page: int = 1, page_size: int = 200
-    ) -> Dict[str, Union[int, str]]:
+    def get_activity(self, page: int = 1, page_size: int = 200) -> Dict[str, Union[int, str]]:
         """
-        Makes a GET request to the Strava API for fetching
-        activities for a specific page.
+        Makes a GET request to the Strava API for fetching activities for a specific page.
         Max page size available: 200
+
         Returns:
             The response from the API in a JSON format.
 

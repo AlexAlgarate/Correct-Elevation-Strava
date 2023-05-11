@@ -2,7 +2,7 @@ import re
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
 

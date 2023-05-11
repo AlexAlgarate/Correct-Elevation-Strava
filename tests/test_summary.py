@@ -4,10 +4,10 @@ import unittest
 from assertpy import assert_that
 
 from config import ACCESS_TOKEN, EXPIRES_AT, REFRESH_TOKEN
-from src.strava_api.tokens_management.generate_credentials import GenerateAccessToken
-from src.strava_api.tokens_management.get_oauth_code import GetOAuthCode
-
-# from src.utils.ids_to_correct import SummaryOfActivities
+from src.strava_api.tokens_management.generate_credentials import \
+    GenerateAccessToken
+from src.strava_api.tokens_management.oauth_code_management.get_oauth_code import \
+    GetOauthCode
 from src.strava_api.tokens_management.refresh_token import RefreshTokenManager
 
 refresh = RefreshTokenManager
@@ -22,7 +22,7 @@ class TestSummary(unittest.TestCase):
         Returns:
             - str
         """
-        code = GetOAuthCode()
+        code = GetOauthCode()
         assert_that(code.get_oauth_code()).is_type_of(str)
 
     def test_generate_credentials(self):

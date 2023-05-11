@@ -2,21 +2,19 @@ from typing import Dict, List, Union
 from src.strava_api.activities_management.api_get_request import APIGetRequest
 
 
-class GetLastActivities:
+class GetLatestActivities:
     get_request: APIGetRequest
 
     def __init__(self) -> None:
         self.get_request = APIGetRequest()
 
-    def get_last_activities(
-        self, page_size: int = 100
-    ) -> List[Dict[str, Union[int, str]]]:
+    def get_latest_100_activities(self, page_size: int = 100) -> List[Dict[str, Union[int, str]]]:
         """
-        Make a GET request to the Strava API for fetching
-        the last 100 activities.
+        Use the method get_activity() from the module api_get_requests to make a GET request
+        to the Strava API for fetching the last 100 activities.
 
         Args:
-            page_size: Maximum number of activities per page. Default is 50.
+            page_size: Maximum number of activities per page. Default is 100.
 
         Returns:
             a list of activities in JSON format

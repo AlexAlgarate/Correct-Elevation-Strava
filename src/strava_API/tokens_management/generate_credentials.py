@@ -12,9 +12,9 @@ from config import (
     refresh_token_env,
     token_url,
 )
-from src.strava_api.tokens_management.oauth_code_management.get_code import GetCode
+from src.strava_api.tokens_management.oauth_code_management.get_oauth_code import GetOauthCode
 
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
 
@@ -22,12 +22,12 @@ load_dotenv()
 
 
 class GenerateAccessToken:
-    code: GetCode
+    code: GetOauthCode
 
     def __init__(self) -> None:
-        self.code = GetCode()
+        self.code = GetOauthCode()
 
-    def _get_access_token_response(self) -> Dict[str, Union[str, int]]:
+    def _access_token_get_request(self) -> Dict[str, Union[str, int]]:
         """
         Send a POST request to the API to get the access token response.
 
@@ -38,7 +38,7 @@ class GenerateAccessToken:
             data_to_get_access_token = {
                 "client_id": CLIENT_ID,
                 "client_secret": SECRET_KEY,
-                "code": self.code.code_to_get_access_token(),
+                "code": self.code.get_oauth_code(),
                 "grant_type": "authorization_code",
             }
 
@@ -80,7 +80,7 @@ class GenerateAccessToken:
 
     def generate_access_token(self) -> None:
         try:
-            response = self._get_access_token_response()
+            response = self._access_token_get_request()
             self._store_access_token_credentials(response)
 
         except Exception as e:

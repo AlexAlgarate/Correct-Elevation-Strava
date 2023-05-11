@@ -4,32 +4,28 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 from config import EMAIL, PASSWORD, seconds, url_to_get_OAuth_code
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
-from src.strava_api.tokens_management.oauth_code_management.click_authorize import (
-    ClickAuthorize,
-)
-from src.strava_api.tokens_management.oauth_code_management.extract_code import (
-    ExtractCode,
-)
-from src.strava_api.tokens_management.oauth_code_management.login_into_strava import (
-    Strava,
-)
+from src.strava_api.tokens_management.oauth_code_management.click_authorize import ClickAuthorize
+from src.strava_api.tokens_management.oauth_code_management.extract_code import ExtractCode
+from src.strava_api.tokens_management.oauth_code_management.strava_login_code import Strava
 
 error_logger = ErrorLogger()
 
 
-class GetCode:
+class GetOauthCode:
     """
     Class responsible for getting the OAuth code required to obtain the access token.
+
     Methods:
         - code_to_get_access_token() -> str: gets the OAuth code required
         to obtain the access token.
     """
 
-    def code_to_get_access_token(self) -> str:
+    def get_oauth_code(self) -> str:
         """
         Gets the OAuth code required to obtain the access token.
+
         Returns:
             - The OAuth code required to obtain the access token.
         """

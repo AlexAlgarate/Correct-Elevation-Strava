@@ -3,7 +3,7 @@ from typing import Dict, Union
 
 from dotenv import find_dotenv, load_dotenv
 
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 
 logger = ErrorLogger()
@@ -55,8 +55,12 @@ try:
 
     client_id = f"client_id={CLIENT_ID}"
     redirect_url = f"redirect_uri={redirect_url}"
+    response_type = "response_type=code"
+    approval_prompt = "approval_prompt=force"
+    scope = f"scope={scopes}"
 
-    url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{redirect_url}&response_type=code&approval_prompt=force&scope={scopes}"
+    url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{redirect_url}&{response_type}&{approval_prompt}&{scope}"
+
     refresh_data: Dict[str, Union[str, int]] = {
         "client_id": CLIENT_ID,
         "client_secret": SECRET_KEY,

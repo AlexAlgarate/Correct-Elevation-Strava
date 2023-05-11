@@ -4,8 +4,8 @@ from typing import List
 from selenium.webdriver.chrome.webdriver import WebDriver
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.activities_management.filter_activities import FilterActivities
-from src.strava_api.activities_management.get_last_activities import GetLastActivities
-from src.logger.logger import ErrorLogger
+from src.strava_api.activities_management.get_latest_activities import GetLastActivities
+from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
 
@@ -20,7 +20,7 @@ class GetLatestActivities:
         self.driver = driver
 
     def get_latest_activities(self, limit: int = 20) -> List[StravaActivity]:
-        api_activities = self.get_activities.get_last_activities()
+        api_activities = self.get_activities.get_latest_100_activities()
         filtered_activities = self.filter.filter_of_activities(api_activities)[:limit]
         return [
             StravaActivity(self.driver, activity_id)

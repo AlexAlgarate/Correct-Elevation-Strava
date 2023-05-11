@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from config import seconds
-from src.logger.logger import ErrorLogger
+from logger.logger import ErrorLogger
 
 
 error_logger = ErrorLogger()
@@ -57,6 +57,12 @@ class StravaActivity:
             return False
 
     def options_button(self) -> bool:
+        """
+        Clicks the options button on the Strava activity page.
+
+        Returns:
+            bool: True if the options button was successfully clicked, False otherwise.
+        """
         try:
             options_button = self.web_driver_wait.until(
                 EC.element_to_be_clickable(
@@ -69,6 +75,12 @@ class StravaActivity:
             return False
 
     def presence_revert_elevation(self) -> bool:
+        """
+        Checks if the "Revert" button is present on the page indicating elevation correction.
+
+        Returns:
+            bool: True if the "Revert" button is present, False otherwise.
+        """
         try:
             revert_text = "Revertir"
             revert_button = self.web_driver_wait.until(
@@ -84,6 +96,12 @@ class StravaActivity:
             return False
 
     def correct_button(self) -> bool:
+        """
+        Clicks the correct elevation button on the Strava activity page.
+
+        Returns:
+            bool: True if the correct elevation button was successfully clicked, False otherwise.
+        """
         if not self.presence_revert_elevation():
             try:
                 correct_elevation_option = self.web_driver_wait.until(
@@ -97,7 +115,10 @@ class StravaActivity:
                 return False
         return True
 
-    def click_correct(self):
+    def click_correct(self) -> bool:
+        """
+        Clicks the "Correct" button to apply elevation correction on the Strava activity page.
+        """
         correct_activity_button = self.web_driver_wait.until(
             EC.element_to_be_clickable(
                 (By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']")
@@ -106,6 +127,12 @@ class StravaActivity:
         correct_activity_button.click()
 
     def correct_elevation(self) -> bool:
+        """
+        Corrects the elevation of the Strava activity.
+
+        Returns:
+            bool: True if the elevation correction was successful, False otherwise.
+        """
         try:
             if self.is_activity_indoor_cycling():
                 return False
