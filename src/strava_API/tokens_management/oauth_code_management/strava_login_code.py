@@ -14,7 +14,7 @@ info_logger = InfoLogger()
 error_logger = ErrorLogger()
 
 
-class Strava:
+class LoginStravaOauthCode:
     driver: WebDriver = None
     web_driver_wait: WebDriverWait = None
 
@@ -23,22 +23,45 @@ class Strava:
         driver.get("https://www.strava.com/login")
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
-    def login(self, credentials: Credentials) -> Strava:
+    def _fill_fields(self, locator: By, selector: str) -> None:
+        field = self.web_driver_wait.until(
+            EC.visibility_of_element_located((locator, selector))
+        )
+        return field
+
+    def _click_button(self, locator: By, selector: str) -> None:
+        click = self.web_driver_wait.until(
+            EC.element_to_be_clickable((locator, selector))
+        )
+        return click
+
+    def login(self, credentials: Credentials) -> LoginStravaOauthCode:
         try:
-            email_field = self.web_driver_wait.until(
-                EC.visibility_of_element_located((By.ID, "email"))
-            )
-            password_field = self.web_driver_wait.until(
-                EC.visibility_of_element_located((By.ID, "password"))
-            )
-            login_button = self.web_driver_wait.until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary"))
-            )
+            email_field = self._fill_fields(By.ID, "email")
+            password_field = self._fill_fields(By.ID, "password")
+            login_button = self._click_button(By.CSS_SELECTOR, "button.btn.btn-primary")
 
             email_field.send_keys(credentials.email)
             password_field.send_keys(credentials.password)
             login_button.click()
-        except (NoSuchElementException, TimeoutError, Exception) as e:
+        except (NoSuchElementException, TimeoutError) as e:
             error_logger.error(f"Error: {e}")
-        finally:
-            return self
+    # def login(self, credentials: Credentials) -> LoginStravaOauthCode:
+    #     try:
+    #         email_field = self.web_driver_wait.until(
+    #             EC.visibility_of_element_located((By.ID, "email"))
+    #         )
+    #         password_field = self.web_driver_wait.until(
+    #             EC.visibility_of_element_located((By.ID, "password"))
+    #         )
+    #         login_button = self.web_driver_wait.until(
+    #             EC.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary"))
+    #         )
+
+    #         email_field.send_keys(credentials.email)
+    #         password_field.send_keys(credentials.password)
+    #         login_button.click()
+    #     except (NoSuchElementException, TimeoutError, Exception) as e:
+    #         error_logger.error(f"Error: {e}")
+    #     finally:
+    #         return self

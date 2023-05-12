@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from config import EMAIL, PASSWORD, seconds
 from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.credentials import Credentials
-from src.correct_elevation.strava_login_correct import Strava
+from src.correct_elevation.strava_login_correct import StravaLogin
 from src.correct_elevation.strava_activity import StravaActivity
 from src.correct_elevation.get_latest_activities import GetLatestActivities
 
@@ -28,7 +28,7 @@ def main():
             driver.implicitly_wait(seconds)
 
             credentials = Credentials(EMAIL, PASSWORD)
-            login_strava = Strava(driver)
+            login_strava = StravaLogin(driver)
             login_strava.login(credentials)
             get_activities = GetLatestActivities(driver)
 

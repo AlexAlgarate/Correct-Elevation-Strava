@@ -8,7 +8,7 @@ from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
 from src.strava_api.tokens_management.oauth_code_management.click_authorize import ClickAuthorize
 from src.strava_api.tokens_management.oauth_code_management.extract_code import ExtractCode
-from src.strava_api.tokens_management.oauth_code_management.strava_login_code import Strava
+from src.strava_api.tokens_management.oauth_code_management.strava_login_code import LoginStravaOauthCode
 
 error_logger = ErrorLogger()
 
@@ -39,7 +39,7 @@ class GetOauthCode:
             driver.implicitly_wait(seconds)
             try:
                 credentials = Credentials(EMAIL, PASSWORD)
-                strava = Strava(driver)
+                strava = LoginStravaOauthCode(driver)
                 authorize_button = ClickAuthorize(driver)
                 get_code = ExtractCode(driver)
                 strava.login(credentials)
