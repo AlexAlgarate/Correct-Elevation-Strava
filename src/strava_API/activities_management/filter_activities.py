@@ -1,45 +1,48 @@
-from typing import Dict, List, Union
+from typing import List
 
 import pandas as pd
 from pandas import json_normalize
 
 from logger.logger import ErrorLogger
+from src.strava_api.activities_management.activity_fetcher import ActivityFetcher
 
-logging_error = ErrorLogger()
+logger = ErrorLogger()
 
 
-class FilterActivities:
+class ActivityFilter:
     elevation: int = 0
     elevation_column: str = "total_elevation_gain"
     id: str = "id"
     sports: List[str] = ["Ride", "Run"]
     sports_column: str = "sport_type"
     df: pd.DataFrame
+    activities: ActivityFetcher
 
-    def filter_of_activities(self, activities: List[Dict[str, Union[int, str]]]) -> List[int]:
+    def __init__(self) -> None:
+        self.activities = ActivityFetcher()
+
+    def filter_activities(self) -> List[int]:
         """
-        Filter a given activities object which sports type are "Ride" and
-        "Run" and which total elevation gain was 0 meters.
-
-        Args:
-            activities : list which contains sports information.
+        Filter activities based on the sports type "Ride" and "Run" and
+        a total elevation gain of 0 meters.
 
         Returns:
             List of activity ids
 
         """
         try:
-            self.df = json_normalize(activities)
+            self.dataframe = json_normalize(self.activities.get_latest_activities())
 
-            filtered_activities = self.df.loc[
-                (self.df[self.sports_column].isin(self.sports))
-                & (self.df[self.elevation_column] == self.elevation),
+            filtered_activities = self.dataframe.loc[
+                (self.dataframe[self.sports_column].isin(self.sports))
+                & (self.dataframe[self.elevation_column] == self.elevation),
                 self.id,
             ].to_list()
 
         except Exception as e:
-            logging_error.error(f"Error fetching activities from Strava:{e}")
+            logger.error(f"Error fetching activities from Strava:{e}")
             return []
+
         if not filtered_activities:
             return []
 

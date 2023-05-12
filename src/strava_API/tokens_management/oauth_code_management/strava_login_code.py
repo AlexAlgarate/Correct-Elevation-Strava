@@ -30,10 +30,10 @@ class LoginStravaOauthCode:
         return field
 
     def _click_button(self, locator: By, selector: str) -> None:
-        click = self.web_driver_wait.until(
+        button = self.web_driver_wait.until(
             EC.element_to_be_clickable((locator, selector))
         )
-        return click
+        return button
 
     def login(self, credentials: Credentials) -> LoginStravaOauthCode:
         try:

@@ -1,4 +1,4 @@
-from src.strava_api.tokens_management.get_access_token import GetAccessToken
+from src.strava_api.tokens_management.access_token import GetAccessToken
 
 
 def main():

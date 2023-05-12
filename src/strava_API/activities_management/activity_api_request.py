@@ -6,26 +6,26 @@ import requests
 
 from config import api_url
 from logger.logger import ErrorLogger
-from src.strava_api.tokens_management.get_access_token import GetAccessToken
+from src.strava_api.tokens_management.access_token import GetAccessToken
 
 logger = ErrorLogger()
 
 
-class APIGetRequest:
+class ActivityAPIRequest:
     access_token: GetAccessToken
     url: str
 
     """
-    A class for fetching activities from Strava API
+    A class for making GET requests to the Strava API
 
     """
 
     def __init__(self, url: str = api_url) -> None:
         """
-        Initializes a new instance of the class with a Strava access token.
+        Initializes a new instance of the class with a Strava API URL.
 
         Parameters:
-            access_token (GetAccessToken): The Strava access token.
+            url (str): The URL of the Strava API.
 
         """
         self.api_url = url
