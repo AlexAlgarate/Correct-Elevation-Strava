@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import List
 from selenium.webdriver.chrome.webdriver import WebDriver
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_api.activities_management.filter_activities import ActivityFilter
+from src.strava_api.activities_management.filter_activities import\
+    ActivityFilter
 from logger.logger import ErrorLogger
 
 logger = ErrorLogger()

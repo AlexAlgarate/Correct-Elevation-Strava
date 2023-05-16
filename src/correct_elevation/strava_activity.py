@@ -61,7 +61,8 @@ class StravaActivity:
         Clicks the options button on the Strava activity page.
 
         Returns:
-            bool: True if the options button was successfully clicked, False otherwise.
+            bool: True if the options button was successfully clicked,
+            False otherwise.
         """
         try:
             options_button = self.web_driver_wait.until(
@@ -76,7 +77,8 @@ class StravaActivity:
 
     def presence_revert_elevation(self) -> bool:
         """
-        Checks if the "Revert" button is present on the page indicating elevation correction.
+        Checks if the "Revert" button is present on the page
+        indicating elevation correction.
 
         Returns:
             bool: True if the "Revert" button is present, False otherwise.
@@ -100,13 +102,17 @@ class StravaActivity:
         Clicks the correct elevation button on the Strava activity page.
 
         Returns:
-            bool: True if the correct elevation button was successfully clicked, False otherwise.
+            bool: True if the correct elevation button was
+            successfully clicked, False otherwise.
         """
         if not self.presence_revert_elevation():
             try:
                 correct_elevation_option = self.web_driver_wait.until(
                     EC.element_to_be_clickable(
-                        (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
+                        (
+                            By.CSS_SELECTOR,
+                            "div[data-react-class='CorrectElevation']"
+                        )
                     )
                 )
                 correct_elevation_option.click()
@@ -117,11 +123,15 @@ class StravaActivity:
 
     def click_correct(self) -> bool:
         """
-        Clicks the "Correct" button to apply elevation correction on the Strava activity page.
+        Clicks the "Correct" button to apply elevation
+        correction on the Strava activity page.
         """
         correct_activity_button = self.web_driver_wait.until(
             EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']")
+                (
+                    By.CSS_SELECTOR,
+                    "button.Button--primary--cUgAV[type='submit']"
+                )
             )
         )
         correct_activity_button.click()
@@ -131,7 +141,8 @@ class StravaActivity:
         Corrects the elevation of the Strava activity.
 
         Returns:
-            bool: True if the elevation correction was successful, False otherwise.
+            bool: True if the elevation correction was successful,
+            False otherwise.
         """
         try:
             if self.is_activity_indoor_cycling():

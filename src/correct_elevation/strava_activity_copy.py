@@ -56,9 +56,11 @@ class StravaActivity:
                     (By.CSS_SELECTOR, "h2.text-title3.text-book.marginless")
                 )
             )
-            activity_type = WebDriver(header, seconds).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "tittle"))
-            ).text
+            activity_type = (
+                WebDriver(header, seconds)
+                .until(EC.presence_of_element_located((By.CLASS_NAME, "tittle")))
+                .text
+            )
 
             return indoor_activity_type.casefold() in activity_type.casefold()
         except NoSuchElementException:
@@ -144,21 +146,21 @@ class StravaActivity:
         try:
             if self.is_activity_indoor_cycling():
                 return False
-
             options = self._click_button(By.CSS_SELECTOR, "div.app-icon.icon-nav-more")
             options.click()
             print("1st button")
             if self.presence_revert_elevation():
                 return False
             self.correct_button()
-
-            confirm_correct_elevation = self._click_button(By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']")
+            confirm_correct_elevation = self._click_button(
+                By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']"
+            )
             confirm_correct_elevation.click()
             print("3th button")
-
             return True
         except NoSuchElementException as e:
             logger.error(f"Error: {e}")
+
     # def correct_elevation(self) -> bool:
     #     """
     #     Corrects the elevation of the Strava activity.

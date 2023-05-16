@@ -67,6 +67,6 @@ try:
         "grant_type": refresh_token_grant_type,
         "refresh_token": REFRESH_TOKEN,
     }
-
+    strava_login_url: str = "https://www.strava.com/login"
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")

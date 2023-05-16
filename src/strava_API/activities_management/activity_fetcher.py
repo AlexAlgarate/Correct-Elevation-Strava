@@ -8,7 +8,9 @@ class ActivityFetcher:
     def __init__(self) -> None:
         self.api_request = ActivityAPIRequest()
 
-    def get_latest_activities(self, page_size: int = 100) -> List[Dict[str, Union[int, str]]]:
+    def get_latest_activities(
+        self, page_size: int = 100
+    ) -> List[Dict[str, Union[int, str]]]:
         """
         Use the method request_get_activity() from the module APIGetRequest to make a GET request
         to the Strava API for fetching the latest activities.

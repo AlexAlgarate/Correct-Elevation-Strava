@@ -23,8 +23,7 @@ def main():
         options.add_experimental_option("detach", True)
 
         with webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
-            options=options
+            service=Service(ChromeDriverManager().install()), options=options
         ) as driver:
             driver.implicitly_wait(seconds)
 
