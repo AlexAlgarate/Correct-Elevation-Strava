@@ -3,11 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 logger/
-.vscode
-.idea/
-.idea
 .github
 activities_prueba.py
+.vscode/
+
+
 
 # C extensions
 *.so
