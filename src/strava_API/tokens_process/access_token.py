@@ -3,15 +3,17 @@ import os
 from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
-from src.strava_API.tokens_management.generate_credentials import GenerateAccessToken
 from logger.logger import ErrorLogger, InfoLogger
-from src.strava_API.tokens_management.refresh_token_copy import RefreshTokenManager
+from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken
+from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
+
+
+error_logger = ErrorLogger()
+info_logger = InfoLogger()
 
 
 class GetAccessToken:
     refresh: RefreshTokenManager
-    logger_error: ErrorLogger
-    logger_info: InfoLogger
 
     """
         Return the access token from the .env file.
@@ -34,8 +36,6 @@ class GetAccessToken:
 
     def __init__(self) -> None:
         self.refresh = RefreshTokenManager()
-        self.logger_error = ErrorLogger()
-        self.logger_info = InfoLogger()
 
     def get_access_token(self) -> str:
         """
@@ -53,10 +53,10 @@ class GetAccessToken:
             return new_access_token
 
         except UndefinedValueError:
-            self.logger_error.error("Access token not found in the .env")
+            error_logger.error("Access token not found in the .env")
             self._get_new_access_token()
             access_token = self._get_access_token_from_env()
-            self.logger_info.info("Access token retrieved from the .env file")
+            info_logger.info("Access token retrieved from the .env file")
             return access_token
 
     def _access_token_has_expired(self) -> bool:
@@ -78,12 +78,10 @@ class GetAccessToken:
             str: A new access token string
         """
 
-        self.logger_info.info(
-            "The access token has expired. Refreshing the access token..."
-        )
+        info_logger.info("The access token has expired. Refreshing the access token...")
         access_token = self.refresh.refresh_access_token()
         return access_token
-        # self.logger_info.info("Access token refreshed successfully")
+        # info_logger.info("Access token refreshed successfully")
 
     def _get_access_token_from_env(self) -> str:
         """
@@ -106,7 +104,7 @@ class GetAccessToken:
 
         """
 
-        self.logger_info.info("Getting new credentials from the Strava API")
+        info_logger.info("Getting new credentials from the Strava API")
         credentials_handler = GenerateAccessToken()
         credentials_handler.generate_access_token()
-        self.logger_info.info("Credentials updated successfully")
+        info_logger.info("Credentials updated successfully")

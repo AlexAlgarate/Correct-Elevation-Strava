@@ -3,17 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 logger/
-some_tests/
-utils_decouple/
-summary_elev_0.csv
-start_day.bat
 .vscode
 .idea/
 .idea
 .github
-Activities.csv
-data.ipynb
-
+activities_prueba.py
 
 # C extensions
 *.so

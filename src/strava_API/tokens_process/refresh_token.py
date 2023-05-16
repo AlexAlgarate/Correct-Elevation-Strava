@@ -11,7 +11,7 @@ from config import (
     expires_at_env,
     refresh_data,
     refresh_token_env,
-    token_url
+    token_url,
 )
 from logger.logger import ErrorLogger
 
@@ -52,10 +52,7 @@ class RefreshTokenManager:
         return expires_at < current_time
 
     def _update_env(
-        self,
-        access_token: str,
-        refresh_token: str,
-        expires_at: Optional[int]
+        self, access_token: str, refresh_token: str, expires_at: Optional[int]
     ) -> None:
         """
         Update the access token and expires_at in the .env file.
@@ -75,29 +72,8 @@ class RefreshTokenManager:
         except Exception as e:
             error_logger.error(f"Error while updating the .env: {e}")
 
-    def refresh_access_token(self):
-        try:
-            params = refresh_data
-            request_to_refresh_token = self._make_refresh_request(params)
-            response_from_request = self._parse_refresh_request(request_to_refresh_token)
-            access_token, refresh_token, expires_at = self._extract_credentials(response_from_request)
-            self._update_env(access_token, refresh_token, expires_at)
-            return access_token
-
-        except requests.RequestException as e:
-            error_map = {
-                requests.exceptions.HTTPError: "HTTP error",
-                requests.exceptions.ConnectTimeout: "Timeout error",
-                requests.exceptions.Timeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error"
-            }
-            error = error_map.get(type(e), "Other kind of error")
-            error_logger.error(f"Error: {e}. {error} occurred.")
-            raise
-
-    def _make_refresh_request(
-        self,
-        params: Dict[str, Union[str, int]]
+    def _make_refresh_post_request(
+        self, params: Dict[str, Union[str, int]]
     ) -> requests.Response:
         """
         Make a POST request to the token URL using the provided refresh data.
@@ -111,8 +87,7 @@ class RefreshTokenManager:
         return requests.post(url=token_url, data=params)
 
     def _parse_refresh_request(
-        self,
-        refresh_response: requests.Response
+        self, refresh_response: requests.Response
     ) -> Dict[str, Union[str, int]]:
         """
         Parse the refresh response JSON data.
@@ -131,8 +106,7 @@ class RefreshTokenManager:
         return refresh_response_data
 
     def _extract_credentials(
-        self,
-        refresh_response_data: Dict[str, Union[str, int]]
+        self, refresh_response_data: Dict[str, Union[str, int]]
     ) -> Tuple[str, str, int]:
         """
            Extract the access token, refresh token, and expiration time from the response data.
@@ -149,3 +123,27 @@ class RefreshTokenManager:
         expires_at: int = int(refresh_response_data.get("expires_at"))
 
         return access_token, refresh_token, expires_at
+
+    def refresh_access_token(self):
+        try:
+            params = refresh_data
+            request_to_refresh_token = self._make_refresh_post_request(params)
+            response_from_request = self._parse_refresh_request(
+                request_to_refresh_token
+            )
+            access_token, refresh_token, expires_at = self._extract_credentials(
+                response_from_request
+            )
+            self._update_env(access_token, refresh_token, expires_at)
+            return access_token
+
+        except requests.RequestException as e:
+            error_map = {
+                requests.exceptions.HTTPError: "HTTP error",
+                requests.exceptions.ConnectTimeout: "Timeout error",
+                requests.exceptions.Timeout: "Timeout error",
+                requests.exceptions.ConnectionError: "Connection error",
+            }
+            error = error_map.get(type(e), "Other kind of error")
+            error_logger.error(f"Error: {e}. {error} occurred.")
+            raise

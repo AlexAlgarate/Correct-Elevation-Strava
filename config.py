@@ -49,16 +49,24 @@ try:
         "response_type": "code",
         "redirect_uri": redirect_url,
         "approval_prompt": "force",
-        "scope": scopes
+        "scope": scopes,
     }
     seconds = 10
-    url_to_get_OAuth_code: str = f"{authorization_url}?client_id={CLIENT_ID}&response_type=code&redirect_uri={redirect_url}&approval_prompt=force&scope={scopes}"
+
+    client_id = f"client_id={CLIENT_ID}"
+    redirect_url = f"redirect_uri={redirect_url}"
+    response_type = "response_type=code"
+    approval_prompt = "approval_prompt=force"
+    scope = f"scope={scopes}"
+
+    url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{redirect_url}&{response_type}&{approval_prompt}&{scope}"
+
     refresh_data: Dict[str, Union[str, int]] = {
         "client_id": CLIENT_ID,
         "client_secret": SECRET_KEY,
         "grant_type": refresh_token_grant_type,
-        "refresh_token": REFRESH_TOKEN
+        "refresh_token": REFRESH_TOKEN,
     }
-
+    strava_login_url: str = "https://www.strava.com/login"
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")
