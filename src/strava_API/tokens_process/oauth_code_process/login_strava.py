@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from config import seconds, strava_login_url, EMAIL, PASSWORD
+from config import EMAIL, PASSWORD, seconds, strava_login_url
 from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
 
@@ -23,7 +23,7 @@ class LoginStrava:
         self.web_driver_wait = WebDriverWait(driver, seconds)
         self.credentials = Credentials(EMAIL, PASSWORD)
 
-    def _open_login_url(self):
+    def _open_login_url(self) -> None:
         """
         Open the login URL in the browser.
         """
@@ -66,14 +66,11 @@ class LoginStrava:
         """
         try:
             self._open_login_url()
-            # FIll the email
             email = self._fill_fields(By.ID, "email")
             email.send_keys(self.credentials.email)
-            # Fill the password
             password = self._fill_fields(By.ID, "password")
             password.send_keys(self.credentials.password)
-            # Click login button
             self._click_button(By.CSS_SELECTOR, "button.btn.btn-primary")
 
         except (NoSuchElementException, TimeoutError) as e:
-            ErrorLogger.error(f"Error: {e}")
+            ErrorLogger.error(f"Error:  {e}")

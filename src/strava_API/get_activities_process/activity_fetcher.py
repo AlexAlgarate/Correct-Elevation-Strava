@@ -1,5 +1,5 @@
 from typing import Dict, List, Union
-from src.strava_api.activities_management.activity_api_request import ActivityAPIRequest
+from src.strava_api.get_activities_process.activity_api_request import ActivityAPIRequest
 
 
 class ActivityFetcher:

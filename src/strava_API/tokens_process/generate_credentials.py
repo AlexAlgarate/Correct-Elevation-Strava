@@ -12,7 +12,7 @@ from config import (
     refresh_token_env,
     token_url,
 )
-from src.strava_api.tokens_management.oauth_code_management.get_oauth_code import GetOauthCode
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
 
 from logger.logger import ErrorLogger
 

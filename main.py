@@ -5,12 +5,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from config import EMAIL, PASSWORD, seconds
+from config import seconds
 from logger.logger import ErrorLogger, InfoLogger
-from src.correct_elevation.credentials import Credentials
-from src.correct_elevation.strava_login_elevation import StravaLogin
-from src.correct_elevation.strava_activity_copy import StravaActivity
 from src.correct_elevation.get_latest_activities import LatestActivities
+from src.correct_elevation.strava_activity import StravaActivity
+from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+
 
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
@@ -26,17 +26,15 @@ def main():
             service=Service(ChromeDriverManager().install()), options=options
         ) as driver:
             driver.implicitly_wait(seconds)
-
-            credentials = Credentials(EMAIL, PASSWORD)
-            login_strava = StravaLogin(driver)
-            login_strava.login(credentials)
+            login = LoginStrava(driver)
+            login.login()
             get_activities = LatestActivities(driver)
 
             for activity in get_activities.get_latest_activities(limit=3):
                 strava_activity = StravaActivity(driver, activity.id)
                 strava_activity.open_url()
                 strava_activity.correct_elevation()
-                info_logger(activity.id)
+                info_logger.info(f"Activity id: {activity.id}")
         driver.quit()
 
     except Exception as e:

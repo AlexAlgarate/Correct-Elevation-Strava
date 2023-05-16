@@ -4,11 +4,11 @@ import unittest
 from assertpy import assert_that
 
 from config import ACCESS_TOKEN, EXPIRES_AT, REFRESH_TOKEN
-from src.strava_api.tokens_management.generate_credentials import GenerateAccessToken
-from src.strava_api.tokens_management.oauth_code_management.get_oauth_code import (
+from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
     GetOauthCode,
 )
-from src.strava_api.tokens_management.refresh_token import RefreshTokenManager
+from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
 
 refresh = RefreshTokenManager
 generate_credentials = GenerateAccessToken()

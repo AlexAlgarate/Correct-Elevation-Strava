@@ -4,7 +4,7 @@ import pandas as pd
 from pandas import json_normalize
 
 from logger.logger import ErrorLogger
-from src.strava_api.activities_management.activity_fetcher import ActivityFetcher
+from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
 
 logger = ErrorLogger()
 

@@ -6,8 +6,8 @@ from selenium.webdriver.common.by import By
 
 from config import seconds, url_to_get_OAuth_code
 from logger.logger import ErrorLogger
-from src.strava_api.tokens_management.oauth_code_management.extract_code import ExtractCode
-from src.strava_api.tokens_management.oauth_code_management.strava_login import LoginStrava
+from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
+from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 import time
 
 error_logger = ErrorLogger()

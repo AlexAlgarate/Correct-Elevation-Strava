@@ -6,7 +6,7 @@ import requests
 
 from config import api_url
 from logger.logger import ErrorLogger
-from src.strava_api.tokens_management.access_token import GetAccessToken
+from src.strava_api.tokens_process.access_token import GetAccessToken
 
 logger = ErrorLogger()
 

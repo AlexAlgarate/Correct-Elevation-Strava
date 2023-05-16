@@ -4,8 +4,8 @@ from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
 from logger.logger import ErrorLogger, InfoLogger
-from src.strava_api.tokens_management.generate_credentials import GenerateAccessToken
-from src.strava_api.tokens_management.refresh_token import RefreshTokenManager
+from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken
+from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
 
 
 error_logger = ErrorLogger()
