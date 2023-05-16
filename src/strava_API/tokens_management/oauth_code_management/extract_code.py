@@ -4,8 +4,6 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 
 from logger.logger import ErrorLogger
 
-error_logger = ErrorLogger()
-
 
 class ExtractCode:
     driver: WebDriver
@@ -31,6 +29,6 @@ class ExtractCode:
         code_match = reg_expression.search(authorizated_url)
 
         if not code_match:
-            error_logger.error("Could not retrieve OAuth code from URL")
+            ErrorLogger.error("Could not retrieve OAuth code from URL")
 
         return code_match.group(1)
