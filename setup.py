@@ -41,7 +41,7 @@ setup(
         "python-decouple==3.8",
         "python-dotenv==1.0.0",
         "pytz==2022.7.1",
-        "requests==2.28.2",
+        "requests==2.31.0",
         "selenium==4.8.2",
         "six==1.16.0",
         "sniffio==1.3.0",
