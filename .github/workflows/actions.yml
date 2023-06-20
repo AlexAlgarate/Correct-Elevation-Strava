@@ -1,31 +1,31 @@
-name: run main.py
+#name: run main.py
 
-on:
- schedule:
-  - cron: '0 20 * * *'
- workflow_dispatch:
+#on:
+ #schedule:
+ # - cron: '0 20 * * *'
+# workflow_dispatch:
 #  push:
 
-jobs:
- build:
-  runs-on: ubuntu-latest
-  steps:
-   - uses: browser-actions/setup-chrome@v1
-   - name: checkout repo content
-     uses: actions/checkout@v2 # checkout the repository content
-   - name: setup python
-     uses: actions/setup-python@v4
-     with:
-      python-version: '3.10' # install the python version needed
-      cache: 'pip'
-   - name: install python packages
-     env:
-      STRAVA_EMAIL: ${{ secrets.STRAVA_EMAIL }}
-      STRAVA_PASSWORD: ${{ secrets.STRAVA_PASSWORD }}
-      STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
-      STRAVA_SECRET_KEY: ${{ secrets.STRAVA_SECRET_KEY }}
-     run: |
-      export PYTHONPATH="${PYTHONPATH}:/home/runner/work/Correct-Elevation-Strava/Correct-Elevation-Strava"
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-      python main.py
+#jobs:
+# build:
+ # runs-on: ubuntu-latest
+  #steps:
+  # - uses: browser-actions/setup-chrome@v1
+  # - name: checkout repo content
+  #   uses: actions/checkout@v2 # checkout the repository content
+  # - name: setup python
+  #   uses: actions/setup-python@v4
+  #   with:
+  #    python-version: '3.10' # install the python version needed
+  #    cache: 'pip'
+  # - name: install python packages
+  #   env:
+  #    STRAVA_EMAIL: ${{ secrets.STRAVA_EMAIL }}
+  #    STRAVA_PASSWORD: ${{ secrets.STRAVA_PASSWORD }}
+  #    STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+  #    STRAVA_SECRET_KEY: ${{ secrets.STRAVA_SECRET_KEY }}
+  #   run: |
+   #   export PYTHONPATH="${PYTHONPATH}:/home/runner/work/Correct-Elevation-Strava/Correct-Elevation-Strava"
+  #    python -m pip install --upgrade pip
+ #     pip install -r requirements.txt
+#      python main.py
