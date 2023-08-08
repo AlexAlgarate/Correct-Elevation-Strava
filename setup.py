@@ -10,7 +10,7 @@ setup(
         "async-generator==1.10",
         "attrs==22.2.0",
         "black==23.3.0",
-        "certifi==2022.12.7",
+        "certifi==2023.7.22",
         "cffi==1.15.1",
         "charset-normalizer==3.1.0",
         "click==8.1.3",
