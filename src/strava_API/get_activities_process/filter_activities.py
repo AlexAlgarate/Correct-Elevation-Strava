@@ -3,19 +3,21 @@ from typing import List
 import pandas as pd
 from pandas import json_normalize
 
+from config import elevation, elevation_column, id_activity, sports, sports_column
 from logger.logger import ErrorLogger
 from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
+
 
 logger = ErrorLogger()
 
 
 class ActivityFilter:
-    elevation: int = 0
-    elevation_column: str = "total_elevation_gain"
-    id: str = "id"
-    sports: List[str] = ["Ride", "Run"]
-    sports_column: str = "sport_type"
-    df: pd.DataFrame
+    # elevation: int = 0
+    # elevation_column: str = "total_elevation_gain"
+    # id: str = "id"
+    # sports: List[str] = ["Ride", "Run"]
+    # sports_column: str = "sport_type"
+    dataframe: pd.DataFrame
     activities: ActivityFetcher
 
     def __init__(self) -> None:
@@ -34,9 +36,9 @@ class ActivityFilter:
             self.dataframe = json_normalize(self.activities.get_latest_activities())
 
             filtered_activities = self.dataframe.loc[
-                (self.dataframe[self.sports_column].isin(self.sports))
-                & (self.dataframe[self.elevation_column] == self.elevation),
-                self.id,
+                (self.dataframe[sports_column].isin(sports))
+                & (self.dataframe[elevation_column] == elevation),
+                id_activity,
             ].to_list()
 
         except Exception as e:

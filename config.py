@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Union
+from typing import Dict, List, Union
 
 from dotenv import find_dotenv, load_dotenv
 
@@ -7,8 +7,6 @@ from logger.logger import ErrorLogger
 
 
 logger = ErrorLogger()
-
-# Load environment variables
 
 
 try:
@@ -53,11 +51,11 @@ try:
     }
     seconds = 10
 
-    client_id = f"client_id={CLIENT_ID}"
-    redirect_url = f"redirect_uri={redirect_url}"
-    response_type = "response_type=code"
-    approval_prompt = "approval_prompt=force"
-    scope = f"scope={scopes}"
+    client_id: str = f"client_id={CLIENT_ID}"
+    redirect_url: str = f"redirect_uri={redirect_url}"
+    response_type: str = "response_type=code"
+    approval_prompt: str = "approval_prompt=force"
+    scope: str = f"scope={scopes}"
 
     url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{redirect_url}&{response_type}&{approval_prompt}&{scope}"
 
@@ -68,5 +66,13 @@ try:
         "refresh_token": REFRESH_TOKEN,
     }
     strava_login_url: str = "https://www.strava.com/login"
+
+    elevation: int = 0
+    elevation_column: str = "total_elevation_gain"
+    id_activity: str = "id"
+    sports: List[str] = ["Ride", "Run"]
+    sports_column: str = "sport_type"
+
+
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")

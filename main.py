@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 
 from config import seconds
 from logger.logger import ErrorLogger, InfoLogger
@@ -18,13 +18,13 @@ error_logger = ErrorLogger()
 
 def main():
     try:
-        options = Options()
+        service = Service()
+
+        options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
         options.add_experimental_option("detach", True)
 
-        with webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()), options=options
-        ) as driver:
+        with webdriver.Chrome(service=service, options=options) as driver:
             driver.implicitly_wait(seconds)
             login = LoginStrava(driver)
             login.login()

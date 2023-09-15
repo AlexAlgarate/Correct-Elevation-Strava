@@ -19,7 +19,7 @@ class GetOauthCode:
     required to obtain the access token.
 
     Methods:
-        - code_to_get_access_token() -> str: gets the OAuth code required
+        - get_oauth_code() -> str: gets the OAuth code required
         to obtain the access token.
     """
 
