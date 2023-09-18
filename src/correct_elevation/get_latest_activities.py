@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from typing import List
+
 from selenium.webdriver.chrome.webdriver import WebDriver
-from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_api.get_activities_process.filter_activities import\
-    ActivityFilter
+
 from logger.logger import ErrorLogger
+from src.correct_elevation.strava_activity import StravaActivity
+from src.strava_api.get_activities_process.filter_activities import ActivityFilter
 
 logger = ErrorLogger()
 
@@ -15,11 +16,11 @@ class LatestActivities:
 
     def __init__(self, driver: WebDriver) -> None:
         self.filter = ActivityFilter()
-        self.driver = driver
+        self.driver: WebDriver = driver
 
     def get_latest_activities(self, limit: int = 20) -> List[StravaActivity]:
         try:
-            filtered_activities = self.filter.filter_activities()[:limit]
+            filtered_activities: List[int] = self.filter.filter_activities()[:limit]
             return [
                 StravaActivity(self.driver, activity_id)
                 for activity_id in filtered_activities

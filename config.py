@@ -5,7 +5,6 @@ from dotenv import find_dotenv, load_dotenv
 
 from logger.logger import ErrorLogger
 
-
 logger = ErrorLogger()
 
 
@@ -52,12 +51,12 @@ try:
     seconds = 10
 
     client_id: str = f"client_id={CLIENT_ID}"
-    redirect_url: str = f"redirect_uri={redirect_url}"
+    redirect_uri: str = f"redirect_uri={redirect_url}"
     response_type: str = "response_type=code"
     approval_prompt: str = "approval_prompt=force"
     scope: str = f"scope={scopes}"
 
-    url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{redirect_url}&{response_type}&{approval_prompt}&{scope}"
+    url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
 
     refresh_data: Dict[str, Union[str, int]] = {
         "client_id": CLIENT_ID,
@@ -72,7 +71,6 @@ try:
     id_activity: str = "id"
     sports: List[str] = ["Ride", "Run"]
     sports_column: str = "sport_type"
-
 
 except KeyError as e:
     logger.error(f"Error trying to load the variable: {e}")

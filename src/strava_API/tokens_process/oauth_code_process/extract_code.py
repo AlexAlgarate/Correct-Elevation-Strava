@@ -1,4 +1,4 @@
-import re
+from re import Match, Pattern, compile
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
@@ -24,9 +24,9 @@ class ExtractCode:
         Returns:
             - The OAuth code extracted from the URL.
         """
-        authorizated_url = self.driver.current_url
-        reg_expression = re.compile("&code=([\a-z]+)&")
-        code_match = reg_expression.search(authorizated_url)
+        authorizated_url: str = self.driver.current_url
+        reg_expression: Pattern[str] = compile("&code=([\a-z]+)&")
+        code_match: Match[str] | None = reg_expression.search(authorizated_url)
 
         if not code_match:
             ErrorLogger.error("Could not retrieve OAuth code from URL")

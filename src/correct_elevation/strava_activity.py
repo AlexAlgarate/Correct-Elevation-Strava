@@ -9,7 +9,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from config import seconds
 from logger.logger import ErrorLogger
 
-
 error_logger = ErrorLogger()
 
 
@@ -17,9 +16,9 @@ class StravaActivity:
     id: int
     web_driver_wait: WebDriverWait
 
-    def __init__(self, driver: WebDriver, activity_id: int):
+    def __init__(self, driver: WebDriver, activity_id: int) -> None:
         self.id = activity_id
-        self.driver = driver
+        self.driver: WebDriver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
     def _get_activity_url(self) -> str:
@@ -32,7 +31,7 @@ class StravaActivity:
         """
         return f"https://www.strava.com/activities/{self.id}"
 
-    def open_url(self):
+    def open_url(self) -> None:
         self.driver.get(self._get_activity_url())
 
     def is_activity_indoor_cycling(self) -> bool:
@@ -109,10 +108,7 @@ class StravaActivity:
             try:
                 correct_elevation_option = self.web_driver_wait.until(
                     EC.element_to_be_clickable(
-                        (
-                            By.CSS_SELECTOR,
-                            "div[data-react-class='CorrectElevation']"
-                        )
+                        (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
                     )
                 )
                 correct_elevation_option.click()
@@ -128,10 +124,7 @@ class StravaActivity:
         """
         correct_activity_button = self.web_driver_wait.until(
             EC.element_to_be_clickable(
-                (
-                    By.CSS_SELECTOR,
-                    "button.Button--primary--cUgAV[type='submit']"
-                )
+                (By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']")
             )
         )
         correct_activity_button.click()

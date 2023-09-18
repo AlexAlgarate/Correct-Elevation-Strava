@@ -10,9 +10,6 @@ class Credentials:
         password (str): The password associated with the Strava account.
     """
 
-    email: str
-    password: str
-
-    def __init__(self, email: str, password: str):
-        self.email = email
-        self.password = password
+    def __init__(self, email: str, password: str) -> None:
+        self.email: str = email
+        self.password: str = password

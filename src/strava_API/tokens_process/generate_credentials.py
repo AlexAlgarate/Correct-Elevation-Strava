@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Any, Dict, Union
 
 import requests
 from dotenv import load_dotenv, set_key
@@ -12,9 +12,8 @@ from config import (
     refresh_token_env,
     token_url,
 )
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
-
 from logger.logger import ErrorLogger
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
 
 error_logger = ErrorLogger()
 
@@ -27,7 +26,7 @@ class GenerateAccessToken:
     def __init__(self) -> None:
         self.code = GetOauthCode()
 
-    def _access_token_get_request(self) -> Dict[str, Union[str, int]]:
+    def _access_token_post_request(self) -> Dict[str, Union[str, int]]:
         """
         Send a POST request to the API to get the access token response.
 
@@ -35,7 +34,7 @@ class GenerateAccessToken:
             The access token response as a dictionary.
         """
         try:
-            data_to_get_access_token = {
+            data_to_get_access_token: Dict[str, Any] = {
                 "client_id": CLIENT_ID,
                 "client_secret": SECRET_KEY,
                 "code": self.code.get_oauth_code(),
@@ -51,7 +50,7 @@ class GenerateAccessToken:
         except requests.RequestException as e:
             error_map = {
                 requests.exceptions.HTTPError: "HTTP error",
-                requests.exceptions.ConnectTimeout: "Timeout error",
+                requests.exceptions.ConnectTimeout: "ConnectTimeout error",
                 requests.exceptions.Timeout: "Timeout error",
                 requests.exceptions.ConnectionError: "Connection error",
             }
@@ -80,7 +79,7 @@ class GenerateAccessToken:
 
     def generate_access_token(self) -> None:
         try:
-            response = self._access_token_get_request()
+            response: Dict[str, str | int] = self._access_token_post_request()
             self._store_access_token_credentials(response)
 
         except Exception as e:

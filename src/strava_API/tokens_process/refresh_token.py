@@ -1,4 +1,4 @@
-import time
+from time import time
 from typing import Dict, Optional, Tuple, Union
 
 import requests
@@ -15,7 +15,6 @@ from config import (
 )
 from logger.logger import ErrorLogger
 
-
 error_logger = ErrorLogger()
 
 
@@ -23,11 +22,8 @@ class RefreshTokenManager:
 
     """
     A class to manage the refreshing proccess of the access token.
-    THis class is used by otheer files to check if the access token
-    has expired and refresh it by making a POST request to the Strava API
-    using a refresh token.
-    The new credentials are saved in the .env file.
-
+    If the access token has expired, it makes a POST request to the Strava API
+    using the refresh token and store the new credentials in the .env file.
     """
 
     def _check_expired(self) -> bool:
@@ -48,7 +44,7 @@ class RefreshTokenManager:
             error_logger.error("EXPIRES_AT value should be an integer")
             return False
 
-        current_time = int(time.time())
+        current_time: int = int(time())
         return expires_at < current_time
 
     def _update_env(
@@ -57,6 +53,10 @@ class RefreshTokenManager:
         """
         Update the access token and expires_at in the .env file.
 
+        Args:
+            - access_token: the string of the refreshed access token
+            - refresh_token: the string of the refresehd refresh token
+            - expires_at: the new expiration timestampt of the access token
         """
 
         try:
@@ -107,7 +107,7 @@ class RefreshTokenManager:
 
     def _extract_credentials(
         self, refresh_response_data: Dict[str, Union[str, int]]
-    ) -> Tuple[str, str, int]:
+    ) -> Tuple[str, int]:
         """
            Extract the access token, refresh token, and expiration time from the response data.
 
@@ -124,11 +124,13 @@ class RefreshTokenManager:
 
         return access_token, refresh_token, expires_at
 
-    def refresh_access_token(self):
+    def refresh_access_token(self) -> str:
         try:
-            params = refresh_data
-            request_to_refresh_token = self._make_refresh_post_request(params)
-            response_from_request = self._parse_refresh_request(
+            params: Dict[str, str | int] = refresh_data
+            request_to_refresh_token: requests.Response = (
+                self._make_refresh_post_request(params)
+            )
+            response_from_request: Dict[str, str | int] = self._parse_refresh_request(
                 request_to_refresh_token
             )
             access_token, refresh_token, expires_at = self._extract_credentials(

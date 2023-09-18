@@ -4,9 +4,8 @@ from typing import Dict, Union
 
 import requests
 
-from config import api_url
 from logger.logger import ErrorLogger
-from src.strava_api.tokens_process.access_token import GetAccessToken
+from src.strava_api.tokens_process.get_access_token import GetAccessToken
 
 logger = ErrorLogger()
 
@@ -20,7 +19,8 @@ class ActivityAPIRequest:
 
     """
 
-    def __init__(self, url: str = api_url) -> None:
+    # def __init__(self, url: str = api_url) -> None:
+    def __init__(self, api_url: str) -> None:
         """
         Initializes a new instance of the class with a Strava API URL.
 
@@ -28,7 +28,7 @@ class ActivityAPIRequest:
             url (str): The URL of the Strava API.
 
         """
-        self.api_url = url
+        self.api_url: str = api_url
         self.access_token = GetAccessToken()
 
     def get_activity(
@@ -43,7 +43,7 @@ class ActivityAPIRequest:
 
         """
         try:
-            response = requests.get(
+            response: requests.Response = requests.get(
                 self.api_url,
                 params={
                     "access_token": self.access_token.get_access_token(),

@@ -7,16 +7,10 @@ from config import elevation, elevation_column, id_activity, sports, sports_colu
 from logger.logger import ErrorLogger
 from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
 
-
 logger = ErrorLogger()
 
 
 class ActivityFilter:
-    # elevation: int = 0
-    # elevation_column: str = "total_elevation_gain"
-    # id: str = "id"
-    # sports: List[str] = ["Ride", "Run"]
-    # sports_column: str = "sport_type"
     dataframe: pd.DataFrame
     activities: ActivityFetcher
 

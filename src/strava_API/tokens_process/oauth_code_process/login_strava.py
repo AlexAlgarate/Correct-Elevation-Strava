@@ -19,7 +19,7 @@ class LoginStrava:
         Args:
             driver (WebDriver): The WebDriver object to be used for interacting with the browser.
         """
-        self.driver = driver
+        self.driver: WebDriver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
         self.credentials = Credentials(EMAIL, PASSWORD)
 
