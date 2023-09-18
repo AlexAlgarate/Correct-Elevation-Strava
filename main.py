@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-# from webdriver_manager.chrome import ChromeDriverManager
 
 from config import seconds
 from logger.logger import ErrorLogger, InfoLogger
@@ -11,12 +9,11 @@ from src.correct_elevation.get_latest_activities import LatestActivities
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 
-
 info_logger = InfoLogger()
 error_logger = ErrorLogger()
 
 
-def main():
+def main() -> None:
     try:
         service = Service()
 

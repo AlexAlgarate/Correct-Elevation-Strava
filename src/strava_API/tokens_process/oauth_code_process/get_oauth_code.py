@@ -1,14 +1,13 @@
+import time
+
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
 from config import seconds, url_to_get_OAuth_code
 from logger.logger import ErrorLogger
 from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
-import time
 
 error_logger = ErrorLogger()
 
@@ -30,13 +29,11 @@ class GetOauthCode:
         Returns:
             - The OAuth code required to obtain the access token.
         """
-        options = Options()
+        options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
         options.add_experimental_option("detach", True)
 
-        with webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()), options=options
-        ) as driver:
+        with webdriver.Chrome(service=Service(), options=options) as driver:
             driver.implicitly_wait(seconds)
             try:
                 strava = LoginStrava(driver)
