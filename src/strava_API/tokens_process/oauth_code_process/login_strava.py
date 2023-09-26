@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from config import EMAIL, PASSWORD, seconds, strava_login_url
+from config import seconds, strava_login_url
 from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
 
@@ -21,7 +21,24 @@ class LoginStrava:
         """
         self.driver: WebDriver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
-        self.credentials = Credentials(EMAIL, PASSWORD)
+        # self.credentials = Credentials(EMAIL, PASSWORD)
+
+    def _find_element(self, function: EC, locator: By, selector: str):
+        """
+        Find the element specified by the locator and selector.
+
+        Args:
+            locator (By): The method used to locate the element.
+            selector (str): The value used to locate the element.
+
+        Returns:
+            The found element or None if not found.
+        """
+        try:
+            element = self.web_driver_wait.until(function((locator, selector)))
+            return element
+        except NoSuchElementException:
+            return None
 
     def _open_login_url(self) -> None:
         """
@@ -29,34 +46,26 @@ class LoginStrava:
         """
         return self.driver.get(strava_login_url)
 
-    def _fill_fields(self, locator: By, selector: str) -> None:
+    def _fill_field(self, element, value: Credentials) -> None:
         """
-        Find the element specified by the locator and selector and fill it with the provided value.
+        Fill the provided field element with the given value.
 
         Args:
-            locator (By): The method used to locate the element.
-            selector (str): The value used to locate the element.
-
-        Returns:
-            The filled field element.
+            element: The field element to be filled.
+            value (str): The value to be filled in the field.
         """
-        field = self.web_driver_wait.until(
-            EC.visibility_of_element_located((locator, selector))
-        )
-        return field
+        if element:
+            return element.send_keys(value)
 
-    def _click_button(self, locator: By, selector: str) -> None:
+    def _click_button(self, element) -> None:
         """
-        Find the element specified by the locator and selector and click it.
+        Click the provided button element.
 
         Args:
-            locator (By): The method used to locate the element.
-            selector (str): The value used to locate the element.
+            element: The button element to be clicked.
         """
-        button = self.web_driver_wait.until(
-            EC.element_to_be_clickable((locator, selector))
-        )
-        return button.click()
+        if element:
+            return element.click()
 
     def login(self) -> None:
         """
@@ -66,11 +75,19 @@ class LoginStrava:
         """
         try:
             self._open_login_url()
-            email = self._fill_fields(By.ID, "email")
-            email.send_keys(self.credentials.email)
-            password = self._fill_fields(By.ID, "password")
-            password.send_keys(self.credentials.password)
-            self._click_button(By.CSS_SELECTOR, "button.btn.btn-primary")
+            email_field = self._find_element(
+                EC.visibility_of_element_located, By.ID, "email"
+            )
+            password_field = self._find_element(
+                EC.visibility_of_element_located, By.ID, "password"
+            )
+            login_button = self._find_element(
+                EC.element_to_be_clickable, By.CSS_SELECTOR, "button.btn.btn-primary"
+            )
 
-        except (NoSuchElementException, TimeoutError) as e:
+            self._fill_field(email_field, Credentials.email)
+            self._fill_field(password_field, Credentials.password)
+            self._click_button(login_button)
+
+        except (TimeoutError, Exception) as e:
             ErrorLogger.error(f"Error:  {e}")
