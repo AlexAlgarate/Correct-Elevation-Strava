@@ -11,8 +11,8 @@ from src.correct_elevation.credentials import Credentials
 
 
 class TestCredentials(unittest.TestCase):
-    email = EMAIL
-    password = PASSWORD
+    email = Credentials.email
+    password = Credentials.password
     credentials = Credentials(email, password)
 
     def test_credentials_instance(self):
