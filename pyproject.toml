@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "correct-elevation-strava"
+version = "0.1.0"
+description = ""
+authors = ["Alex Algarate <alex.algarate@gmail.com>"]
+readme = "README.md"
+packages = [{include = "correct_elevation_strava"}]
+
+[tool.poetry.dependencies]
+python = "^3.10.8"
+pandas = { version = ">=1.26.0,<3.13", python = "^3.10" }
+selenium = "^4.12.0"
+black = "^23.9.1"
+isort = "^5.12.0"
+flake8 = "^6.1.0"
+python-decouple = "^3.8"
+python-dotenv = "^1.0.0"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
