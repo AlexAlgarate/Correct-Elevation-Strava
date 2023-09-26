@@ -79,10 +79,10 @@ class RefreshTokenManager:
         Make a POST request to the token URL using the provided refresh data.
 
         Args:
-            params: The data for the refresh request.
+            params (Dict[str, Union[str, int]]): The data for the refresh request.
 
         Returns:
-            The response object.
+            requests.Response: The response object.
         """
         return requests.post(url=token_url, data=params)
 
@@ -93,13 +93,14 @@ class RefreshTokenManager:
         Parse the refresh response JSON data.
 
         Args:
-            refresh_response: The response object.
+            refresh_response (requests.Response): The response object.
 
         Returns:
-            The parsed response data.
+            Dict[str, Union[str, int]]: The parsed response data.
         """
         refresh_response.raise_for_status()
         refresh_response_data = refresh_response.json()
+
         for key in ("access_token", "refresh_token", "expires_at"):
             if key not in refresh_response_data:
                 raise ValueError("Missing key in response data: " + key)
@@ -112,10 +113,10 @@ class RefreshTokenManager:
            Extract the access token, refresh token, and expiration time from the response data.
 
         Args:
-            refresh_response_data: The parsed response data.
+            refresh_response_data (Dict[str, Union[str, int]]): The parsed response data.
 
         Returns:
-            A tuple containing the access token, refresh token, and expiration time.
+            Tuple[str, int]: A tuple containing the access token, refresh token and expiration time.
         """
 
         access_token: str = refresh_response_data.get("access_token")
@@ -125,6 +126,16 @@ class RefreshTokenManager:
         return access_token, refresh_token, expires_at
 
     def refresh_access_token(self) -> str:
+        """
+        Refresh the access token using the refresh token and update the credentials in .env file.
+
+        Returns:
+            str: The refreshed access token.
+
+        Raises:
+            requests.RequestException: If an error occurs during the request.
+        """
+
         try:
             params: Dict[str, str | int] = refresh_data
             request_to_refresh_token: requests.Response = (

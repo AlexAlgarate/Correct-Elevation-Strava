@@ -25,25 +25,20 @@ class GetAccessToken:
         a new access token.
 
     Attributes:
-        - refresh (RefreshTokenManager): an instance of the RefreshTokenManager
+        refresh (RefreshTokenManager): an instance of the RefreshTokenManager
         class to handle token refreshing.
     """
-
-    # def __init__(self) -> None:
-    #     self.refresh = RefreshTokenManager()
 
     def get_access_token(self) -> str:
         """
         Get the access token value from the .env to use the Strava API
-
         """
+
         try:
             if self._access_token_has_expired():
                 new_access_token: str = self._refresh_the_access_token()
                 os.environ[access_token_env] = new_access_token
-                # os.environ["STRAVA_ACCESS_TOKEN"] = new_access_token
             new_access_token = os.getenv(access_token_env)
-            # new_access_token = os.getenv("STRAVA_ACCESS_TOKEN")
             if new_access_token is None:
                 raise UndefinedValueError("Access token not found in the .env")
 
@@ -62,7 +57,6 @@ class GetAccessToken:
 
         Returns:
             bool: True if the access token has expired, False otherwise
-
         """
 
         return self.refresh._check_expired()
@@ -86,11 +80,10 @@ class GetAccessToken:
 
         Returns:
             str: The access token from the environment variables
-
         """
+
         load_dotenv()
         access_token_from_env: str = os.getenv(access_token_env)
-        # access_token_from_env = os.getenv("STRAVA_ACCESS_TOKEN")
         if access_token_from_env:
             return access_token_from_env
         else:
@@ -99,7 +92,6 @@ class GetAccessToken:
     def _get_new_access_token(self) -> None:
         """
         Get new credentials from the API and update the environment variables.
-
         """
 
         info_logger.info("Getting new credentials from the Strava API")

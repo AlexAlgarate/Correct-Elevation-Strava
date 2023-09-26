@@ -32,7 +32,10 @@ class GenerateAccessToken:
 
         Returns:
             The access token response as a dictionary.
+        Raises:
+            requests.RequestException if one of the errors of the dictionary has occurred
         """
+
         try:
             data_to_get_access_token: Dict[str, Any] = {
                 "client_id": CLIENT_ID,
@@ -66,8 +69,9 @@ class GenerateAccessToken:
         and store them in an .env file using the set_key function.
 
         Args:
-            response: The access token response as a dictionary.
+            response (Dict[str, Union[str, int]]): The access token response as a dictionary.
         """
+
         access_token: str = response.get("access_token")
         refresh_token: str = response.get("refresh_token")
         expires_at: str = response.get("expires_at")
@@ -78,6 +82,12 @@ class GenerateAccessToken:
         set_key(dot_env_file, expires_at_env, str(expires_at))
 
     def generate_access_token(self) -> None:
+        """
+        Generate and store the Strava access token.
+
+        Raises:
+            Exception if an error has occurred
+        """
         try:
             response: Dict[str, str | int] = self._access_token_post_request()
             self._store_access_token_credentials(response)
