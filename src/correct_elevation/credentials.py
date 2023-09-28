@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from config import EMAIL, PASSWORD
 
 
@@ -14,5 +15,7 @@ class Credentials:
     password: str = PASSWORD
 
     def __init__(self, email: str, password: str) -> None:
+        if email is None or password is None:
+            raise ValueError("Credentials must be provided.")
         self.email: str = email
         self.password: str = password
