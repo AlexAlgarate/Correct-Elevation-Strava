@@ -3,6 +3,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 from config import seconds, url_to_get_OAuth_code
 from logger.logger import ErrorLogger
@@ -30,7 +31,7 @@ class GetOauthCode:
             - The OAuth code required to obtain the access token.
         """
         options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
+        options.add_argument("--headless")
         options.add_experimental_option("detach", True)
 
         with webdriver.Chrome(service=Service(), options=options) as driver:
@@ -42,7 +43,12 @@ class GetOauthCode:
                 strava.login()
 
                 driver.get(url_to_get_OAuth_code)
-                strava._click_button(By.CSS_SELECTOR, "button#authorize")
+                authorize_button = strava._find_element(
+                    function=EC.element_to_be_clickable,
+                    locator=By.CSS_SELECTOR,
+                    selector="button#authorize",
+                )
+                strava._click_button(authorize_button)
                 time.sleep(2)
                 return get_code._extract_code()
             except Exception as e:
