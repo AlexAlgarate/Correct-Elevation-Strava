@@ -21,7 +21,6 @@ class LoginStrava:
         """
         self.driver: WebDriver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
-        # self.credentials = Credentials(EMAIL, PASSWORD)
 
     def _find_element(self, function: EC, locator: By, selector: str):
         """
@@ -75,19 +74,25 @@ class LoginStrava:
         """
         try:
             self._open_login_url()
-            email_field = self._find_element(
-                EC.visibility_of_element_located, By.ID, "email"
+            self.email_field = self._find_element(
+                function=EC.visibility_of_element_located,
+                locator=By.ID,
+                selector="email",
             )
-            password_field = self._find_element(
-                EC.visibility_of_element_located, By.ID, "password"
+            self.password_field = self._find_element(
+                function=EC.visibility_of_element_located,
+                locator=By.ID,
+                selector="password",
             )
-            login_button = self._find_element(
-                EC.element_to_be_clickable, By.CSS_SELECTOR, "button.btn.btn-primary"
+            self.login_button = self._find_element(
+                function=EC.element_to_be_clickable,
+                locator=By.CSS_SELECTOR,
+                selector="button.btn.btn-primary",
             )
 
-            self._fill_field(email_field, Credentials.email)
-            self._fill_field(password_field, Credentials.password)
-            self._click_button(login_button)
+            self._fill_field(element=self.email_field, value=Credentials.email)
+            self._fill_field(element=self.password_field, value=Credentials.password)
+            self._click_button(element=self.login_button)
 
         except (TimeoutError, Exception) as e:
             ErrorLogger.error(f"Error:  {e}")
