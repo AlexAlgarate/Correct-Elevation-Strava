@@ -1,2 +1,1 @@
-from src import correct_elevation
-from src import strava_api
+from src import correct_elevation, strava_api

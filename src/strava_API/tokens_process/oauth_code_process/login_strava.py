@@ -22,6 +22,12 @@ class LoginStrava:
         self.driver: WebDriver = driver
         self.web_driver_wait = WebDriverWait(driver, seconds)
 
+    def _open_login_url(self) -> None:
+        """
+        Open the login URL in the browser.
+        """
+        return self.driver.get(strava_login_url)
+
     def _find_element(self, function: EC, locator: By, selector: str):
         """
         Find the element specified by the locator and selector.
@@ -38,12 +44,6 @@ class LoginStrava:
             return element
         except NoSuchElementException:
             return None
-
-    def _open_login_url(self) -> None:
-        """
-        Open the login URL in the browser.
-        """
-        return self.driver.get(strava_login_url)
 
     def _fill_field(self, element, value: Credentials) -> None:
         """
