@@ -41,13 +41,3 @@ class TestCredentials:
     def test_null_values(self):
         with pytest.raises(ValueError):
             Credentials(None, None)
-
-
-# TODO
-
-# def test_code():
-#     oauth_code = GetOauthCode().get_oauth_code()
-
-#     assert oauth_code is not None
-#     assert isinstance(oauth_code, str)
-#     assert len(oauth_code) > 0

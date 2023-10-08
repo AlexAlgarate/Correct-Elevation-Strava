@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from config import ACCESS_TOKEN, EXPIRES_AT, REFRESH_TOKEN
+from utils.config import ACCESS_TOKEN, EXPIRES_AT, REFRESH_TOKEN
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

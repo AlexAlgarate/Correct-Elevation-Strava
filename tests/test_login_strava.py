@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from config import strava_login_url
+from utils.config import strava_login_url
 from src.correct_elevation.credentials import Credentials
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 
@@ -34,6 +34,11 @@ def strava_driver() -> WebDriver:
 
 
 @pytest.fixture
+def valid_credentials() -> Credentials:
+    return Credentials("example123@example.com", "password1234")
+
+
+@pytest.fixture
 def login_strava(strava_driver: WebDriver):
     return LoginStrava(strava_driver)
 
@@ -50,9 +55,7 @@ class TestStravaLoginPage:
             assert element is not None
 
     def test_fill_fields(
-        self,
-        valid_credentials: Credentials,
-        login_strava: LoginStrava,
+        self, login_strava: LoginStrava, valid_credentials: Credentials
     ):
         email_element = login_strava._find_element(*WEB_ELEMENTS_TO_FIND[0])
         password_element = login_strava._find_element(*WEB_ELEMENTS_TO_FIND[1])
