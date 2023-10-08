@@ -4,7 +4,8 @@ from typing import Dict, Optional, Tuple, Union
 import requests
 from dotenv import set_key
 
-from config import (
+from logger.logger import ErrorLogger
+from utils.config import (
     EXPIRES_AT,
     access_token_env,
     dot_env_file,
@@ -13,7 +14,6 @@ from config import (
     refresh_token_env,
     token_url,
 )
-from logger.logger import ErrorLogger
 
 error_logger = ErrorLogger()
 

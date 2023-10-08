@@ -5,10 +5,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from config import seconds, url_to_get_OAuth_code
 from logger.logger import ErrorLogger
 from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+from utils.config import seconds, url_to_get_OAuth_code
 
 error_logger = ErrorLogger()
 

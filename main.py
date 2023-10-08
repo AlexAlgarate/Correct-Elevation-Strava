@@ -3,7 +3,7 @@ from __future__ import annotations
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
-from config import seconds
+from utils.config import seconds
 from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.get_latest_activities import LatestActivities
 from src.correct_elevation.strava_activity import StravaActivity

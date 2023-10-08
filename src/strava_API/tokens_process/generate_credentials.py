@@ -3,7 +3,9 @@ from typing import Any, Dict, Union
 import requests
 from dotenv import load_dotenv, set_key
 
-from config import (
+from logger.logger import ErrorLogger
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
+from utils.config import (
     CLIENT_ID,
     SECRET_KEY,
     access_token_env,
@@ -12,8 +14,6 @@ from config import (
     refresh_token_env,
     token_url,
 )
-from logger.logger import ErrorLogger
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
 
 error_logger = ErrorLogger()
 

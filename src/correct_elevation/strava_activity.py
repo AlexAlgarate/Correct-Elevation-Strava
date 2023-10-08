@@ -6,8 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from config import seconds
 from logger.logger import ErrorLogger
+from utils.config import seconds
 
 error_logger = ErrorLogger()
 

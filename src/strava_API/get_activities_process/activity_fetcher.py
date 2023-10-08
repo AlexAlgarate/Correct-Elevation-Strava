@@ -1,9 +1,9 @@
 from typing import Dict, List, Union
 
-from config import api_url
 from src.strava_api.get_activities_process.activity_api_request import (
     ActivityAPIRequest,
 )
+from utils.config import api_url
 
 
 class ActivityFetcher:

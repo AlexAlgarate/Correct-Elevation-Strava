@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from config import EMAIL, PASSWORD
+from utils.config import EMAIL, PASSWORD
 
 
 class Credentials:

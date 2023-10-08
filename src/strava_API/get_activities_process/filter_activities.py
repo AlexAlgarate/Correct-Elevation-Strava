@@ -3,9 +3,9 @@ from typing import List
 import pandas as pd
 from pandas import json_normalize
 
-from config import elevation, elevation_column, id_activity, sports, sports_column
 from logger.logger import ErrorLogger
 from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
+from utils.config import elevation, elevation_column, id_activity, sports, sports_column
 
 logger = ErrorLogger()
 

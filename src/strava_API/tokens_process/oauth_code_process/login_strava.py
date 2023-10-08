@@ -6,9 +6,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from config import seconds, strava_login_url
 from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
+from utils.config import seconds, strava_login_url
 
 
 class LoginStrava:
