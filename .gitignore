@@ -7,6 +7,8 @@ logger/
 activities_prueba.py
 .vscode/
 readme.txt
+structure.txt
+logs/
 
 
 # C extensions
