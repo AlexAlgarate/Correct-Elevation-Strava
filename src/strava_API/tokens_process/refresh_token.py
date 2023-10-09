@@ -4,7 +4,7 @@ from typing import Dict, Optional, Tuple, Union
 import requests
 from dotenv import set_key
 
-from logger.logger import ErrorLogger
+from utils import exc_log
 from utils.config import (
     EXPIRES_AT,
     access_token_env,
@@ -14,8 +14,6 @@ from utils.config import (
     refresh_token_env,
     token_url,
 )
-
-error_logger = ErrorLogger()
 
 
 class RefreshTokenManager:
@@ -40,8 +38,8 @@ class RefreshTokenManager:
         try:
             expires_at = int(expires_at_str)
 
-        except ValueError:
-            error_logger.error("EXPIRES_AT value should be an integer")
+        except Exception as e:
+            exc_log.exception(f"Error while parsing EXPIRES_AT value: {e}")
             return False
 
         current_time: int = int(time())
@@ -66,11 +64,11 @@ class RefreshTokenManager:
                 set_key(dot_env_file, expires_at_env, str(expires_at))
 
         except FileNotFoundError as e:
-            error_logger.error(f"Could not find the .env file: {e}")
+            exc_log.exception(f"Could not find the .env file: {e}")
         except KeyError as e:
-            error_logger.error(f"Key error while updating the .env: {e}")
+            exc_log.exception(f"Key error while updating the .env: {e}")
         except Exception as e:
-            error_logger.error(f"Error while updating the .env: {e}")
+            exc_log.exception(f"Error while updating the .env: {e}")
 
     def _make_refresh_post_request(
         self, params: Dict[str, Union[str, int]]
@@ -158,5 +156,5 @@ class RefreshTokenManager:
                 requests.exceptions.ConnectionError: "Connection error",
             }
             error = error_map.get(type(e), "Other kind of error")
-            error_logger.error(f"Error: {e}. {error} occurred.")
+            exc_log.exception(f"Error: {e}. {error} occurred.")
             raise

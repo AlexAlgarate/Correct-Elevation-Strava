@@ -1,21 +1,11 @@
 import os
 
-# from decouple import UndefinedValueError
 from dotenv import load_dotenv
 
-from logger.logger import ErrorLogger, InfoLogger
 from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
+from utils import err_log, exc_log
 from utils.config import access_token_env
-
-# from utils.logging_config import exception_logger as exc_log
-# from utils.logging_config import error_logger as err_log
-
-from utils import exc_log
-from utils import err_log
-
-error_logger = ErrorLogger()
-info_logger = InfoLogger()
 
 
 class GetAccessToken:
@@ -47,16 +37,13 @@ class GetAccessToken:
             new_access_token = os.getenv(access_token_env)
             if new_access_token is None:
                 err_log.error("Access token not found in the .env")
-                # raise ValueError("Access token not found in the .env")
 
             return new_access_token
 
         except (ValueError, Exception) as e:
             exc_log.exception(e)
-            # error_logger.error("Access token not found in the .env")
             self._get_new_access_token()
             access_token = self._get_access_token_from_env()
-            # info_logger.info("Access token retrieved from the .env file")
             print(f"The acccess token has retrieved successfully: {access_token}")
             return access_token
 
@@ -78,10 +65,8 @@ class GetAccessToken:
             str: A new access token string
         """
         print("The access token has expired.\nRefreshing the access token...")
-        # info_logger.info("The access token has expired. Refreshing the access token...")
         access_token = self.refresh.refresh_access_token()
         print(f"The new access token is: {access_token}")
-        # info_logger.info("Access token refreshed successfully")
         return access_token
 
     def _get_access_token_from_env(self) -> str:
@@ -98,20 +83,12 @@ class GetAccessToken:
                 return access_token_from_env
         except Exception as e:
             exc_log.exception(e)
-        # load_dotenv()
-        # access_token_from_env: str = os.getenv(access_token_env)
-        # if access_token_from_env:
-        #     return access_token_from_env
-        # else:
-        #     raise ValueError("ACCESS_TOKEN not found in the env file")
 
     def _get_new_access_token(self) -> None:
         """
         Get new credentials from the API and update the environment variables.
         """
         print("Getting new credentials from the Strava API")
-        # info_logger.info("Getting new credentials from the Strava API")
         credentials_handler = GenerateAccessToken()
         credentials_handler.generate_access_token()
         print("Credentials updated successfully")
-        # info_logger.info("Credentials updated successfully")

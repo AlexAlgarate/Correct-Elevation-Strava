@@ -4,11 +4,9 @@ from typing import List
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
-from logger.logger import ErrorLogger
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.get_activities_process.filter_activities import ActivityFilter
-
-logger = ErrorLogger()
+from utils import exc_log
 
 
 class LatestActivities:
@@ -26,4 +24,4 @@ class LatestActivities:
                 for activity_id in filtered_activities
             ]
         except Exception as e:
-            logger.error(f"An error has occurred: {e}")
+            exc_log.exception(e)

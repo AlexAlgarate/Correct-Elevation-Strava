@@ -6,8 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from logger.logger import ErrorLogger
 from src.correct_elevation.credentials import Credentials
+from utils import exc_log
 from utils.config import seconds, strava_login_url
 
 
@@ -42,7 +42,8 @@ class LoginStrava:
         try:
             element = self.web_driver_wait.until(function((locator, selector)))
             return element
-        except NoSuchElementException:
+        except NoSuchElementException as e:
+            exc_log.exception(e)
             return None
 
     def _fill_field(self, element, value: Credentials) -> None:
@@ -95,4 +96,4 @@ class LoginStrava:
             self._click_button(element=self.login_button)
 
         except (TimeoutError, Exception) as e:
-            ErrorLogger.error(f"Error:  {e}")
+            exc_log.exception(f"Error:  {e}")

@@ -2,13 +2,6 @@ import logging
 import os
 
 
-# log_file = "logger/my_log_file.log"
-
-# log_format = '%(asctime)s | %(levelname)s | %(filename)s:%(funcName)s | line:%(lineno)d | %(message)s'
-# logging.basicConfig(format=log_format, filename=log_file, level=logging.INFO)
-# logger = logging.getLogger('logger')
-
-
 def configure_logger(logger_name: str, log_file: str) -> logging.Logger:
     """
     Configure and return a logger object.

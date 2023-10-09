@@ -3,11 +3,9 @@ from typing import List
 import pandas as pd
 from pandas import json_normalize
 
-from logger.logger import ErrorLogger
 from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
+from utils import exc_log
 from utils.config import elevation, elevation_column, id_activity, sports, sports_column
-
-logger = ErrorLogger()
 
 
 class ActivityFilter:
@@ -36,7 +34,7 @@ class ActivityFilter:
             ].to_list()
 
         except Exception as e:
-            logger.error(f"Error fetching activities from Strava:{e}")
+            exc_log.exception(f"Error fetching activities from Strava:{e}")
             return []
 
         if not filtered_activities:

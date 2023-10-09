@@ -4,10 +4,8 @@ from typing import Dict, Union
 
 import requests
 
-from logger.logger import ErrorLogger
 from src.strava_api.tokens_process.get_access_token import GetAccessToken
-
-logger = ErrorLogger()
+from utils import exc_log
 
 
 class ActivityAPIRequest:
@@ -61,9 +59,9 @@ class ActivityAPIRequest:
                 requests.exceptions.ConnectionError: "Connection error",
             }
             error = error_map.get(type(e), "Other kind of error")
-            logger.error(f"Error: {e}. {error} occurred.")
+            exc_log.exception(f"Error: {e}. {error} occurred.")
             raise
 
         except Exception as e:
-            logger.error(f"Other error has occurred: {e}")
+            exc_log.exception(f"Other error has occurred: {e}")
             raise

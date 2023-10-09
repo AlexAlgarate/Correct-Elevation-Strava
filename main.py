@@ -3,14 +3,11 @@ from __future__ import annotations
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
-from utils.config import seconds
-from logger.logger import ErrorLogger, InfoLogger
 from src.correct_elevation.get_latest_activities import LatestActivities
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
-
-info_logger = InfoLogger()
-error_logger = ErrorLogger()
+from utils import exc_log, inf_log
+from utils.config import seconds
 
 
 def main() -> None:
@@ -31,11 +28,11 @@ def main() -> None:
                 strava_activity = StravaActivity(driver, activity.id)
                 strava_activity.open_url()
                 strava_activity.correct_elevation()
-                info_logger.info(f"Activity id: {activity.id}")
+                inf_log.info(f"The activity id: {activity.id} has been corrected.")
         driver.quit()
 
     except Exception as e:
-        error_logger.error(f"Error: {e} in '{__name__}'")
+        exc_log.exception(e)
 
 
 if __name__ == "__main__":

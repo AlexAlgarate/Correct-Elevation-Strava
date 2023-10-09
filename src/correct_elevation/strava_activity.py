@@ -6,10 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from logger.logger import ErrorLogger
+from utils import exc_log
 from utils.config import seconds
-
-error_logger = ErrorLogger()
 
 
 class StravaActivity:
@@ -52,7 +50,8 @@ class StravaActivity:
                 .text
             )
             return indoor_activity_type.casefold() in activity_type.casefold()
-        except NoSuchElementException:
+        except NoSuchElementException as e:
+            exc_log.exception(e)
             return False
 
     def options_button(self) -> bool:
@@ -71,7 +70,8 @@ class StravaActivity:
             )
             options_button.click()
             return True
-        except Exception:
+        except Exception as e:
+            exc_log.exception(e)
             return False
 
     def presence_revert_elevation(self) -> bool:
@@ -93,7 +93,8 @@ class StravaActivity:
                 )
             ).text
             return revert_text.casefold() in revert_button.casefold()
-        except NoSuchElementException:
+        except NoSuchElementException as e:
+            exc_log.exception(e)
             return False
 
     def correct_button(self) -> bool:
@@ -113,7 +114,8 @@ class StravaActivity:
                 )
                 correct_elevation_option.click()
                 return True
-            except Exception:
+            except Exception as e:
+                exc_log.exception(e)
                 return False
         return True
 
@@ -147,4 +149,4 @@ class StravaActivity:
             self.click_correct()
             return True
         except NoSuchElementException as e:
-            error_logger.error(f"Error: {e}")
+            exc_log.exception(e)

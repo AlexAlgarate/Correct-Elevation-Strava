@@ -3,8 +3,8 @@ from typing import Any, Dict, Union
 import requests
 from dotenv import load_dotenv, set_key
 
-from logger.logger import ErrorLogger
 from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
+from utils import err_log, exc_log
 from utils.config import (
     CLIENT_ID,
     SECRET_KEY,
@@ -14,8 +14,6 @@ from utils.config import (
     refresh_token_env,
     token_url,
 )
-
-error_logger = ErrorLogger()
 
 load_dotenv()
 
@@ -58,7 +56,7 @@ class GenerateAccessToken:
                 requests.exceptions.ConnectionError: "Connection error",
             }
             error = error_map.get(type(e), "Other kind of error")
-            error_logger.error(f"Error: {e}. {error} occurred.")
+            err_log.error(f"Error: {e}. {error} occurred.")
             raise
 
     def _store_access_token_credentials(
@@ -76,7 +74,6 @@ class GenerateAccessToken:
         refresh_token: str = response.get("refresh_token")
         expires_at: str = response.get("expires_at")
 
-        # Set the environment variables
         set_key(dot_env_file, access_token_env, access_token)
         set_key(dot_env_file, refresh_token_env, refresh_token)
         set_key(dot_env_file, expires_at_env, str(expires_at))
@@ -93,4 +90,4 @@ class GenerateAccessToken:
             self._store_access_token_credentials(response)
 
         except Exception as e:
-            error_logger.error(f"Other kind of error has occurred: {e}")
+            exc_log.exception(f"Other kind of error has occurred: {e}")

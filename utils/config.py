@@ -3,10 +3,8 @@ from typing import Dict, List, Union
 
 from dotenv import find_dotenv, load_dotenv
 
-from logger.logger import ErrorLogger
 
-logger = ErrorLogger()
-
+from utils.logging_config import exception_logger as exc_log
 
 try:
     load_dotenv()
@@ -29,7 +27,7 @@ try:
     EXPIRES_AT: int = os.getenv(expires_at_env)
 
 except KeyError as e:
-    logger.error(f"Error trying to load the environment variable: {e}")
+    exc_log.exception(f"Error trying to load the environment variable: {e}")
 
 # Load other variables
 try:
@@ -73,4 +71,4 @@ try:
     sports_column: str = "sport_type"
 
 except KeyError as e:
-    logger.error(f"Error trying to load the variable: {e}")
+    exc_log.exception(f"Error trying to load the variable: {e}")
