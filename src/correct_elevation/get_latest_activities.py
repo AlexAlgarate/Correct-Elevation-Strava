@@ -13,10 +13,27 @@ class LatestActivities:
     filter: ActivityFilter
 
     def __init__(self, driver: WebDriver) -> None:
+        """
+        Initialize a LatestActivities instance.
+
+        Args:
+            driver (WebDriver): The WebDriver for browser interaction.
+        """
+
         self.filter = ActivityFilter()
         self.driver: WebDriver = driver
 
     def get_latest_activities(self, limit: int = 20) -> List[StravaActivity]:
+        """
+        Get the latest Strava activities.
+
+        Args:
+            limit (int): Maximum number of activities to retrieve. Default is 20.
+
+        Returns:
+            List[StravaActivity]: A list of StravaActivity instances.
+        """
+
         try:
             filtered_activities: List[int] = self.filter.filter_activities()[:limit]
             return [

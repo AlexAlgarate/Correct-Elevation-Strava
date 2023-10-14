@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+from typing import Any
+
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from .credentials import Credentials
 
-from src.correct_elevation.credentials import Credentials
 from utils import exc_log
 from utils.config import seconds, strava_login_url
 
@@ -26,9 +28,9 @@ class LoginStrava:
         """
         Open the login URL in the browser.
         """
-        return self.driver.get(strava_login_url)
+        self.driver.get(strava_login_url)
 
-    def _find_element(self, function: EC, locator: By, selector: str):
+    def _find_element(self, function: EC, locator: By, selector: str) -> Any | None:
         """
         Find the element specified by the locator and selector.
 
@@ -55,7 +57,7 @@ class LoginStrava:
             value (str): The value to be filled in the field.
         """
         if element:
-            return element.send_keys(value)
+            element.send_keys(value)
 
     def _click_button(self, element) -> None:
         """
@@ -65,7 +67,7 @@ class LoginStrava:
             element: The button element to be clicked.
         """
         if element:
-            return element.click()
+            element.click()
 
     def login(self) -> None:
         """
@@ -75,17 +77,17 @@ class LoginStrava:
         """
         try:
             self._open_login_url()
-            self.email_field = self._find_element(
+            self.email_field: Any | None = self._find_element(
                 function=EC.visibility_of_element_located,
                 locator=By.ID,
                 selector="email",
             )
-            self.password_field = self._find_element(
+            self.password_field: Any | None = self._find_element(
                 function=EC.visibility_of_element_located,
                 locator=By.ID,
                 selector="password",
             )
-            self.login_button = self._find_element(
+            self.login_button: Any | None = self._find_element(
                 function=EC.element_to_be_clickable,
                 locator=By.CSS_SELECTOR,
                 selector="button.btn.btn-primary",

@@ -1,6 +1,8 @@
 import pytest
 import os
 import sys
+from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
+from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -21,9 +23,12 @@ scope: str = f"scope={scopes}"
 url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
 
 
-def test_code():
-    oauth_code = GetOauthCode().get_oauth_code()
+class TestOauthCode:
+    def setup_method(self) -> str:
+        self.oauth_code: str = GetOauthCode().get_oauth_code()
+        return self.oauth_code
 
-    assert oauth_code is not None
-    assert isinstance(oauth_code, str)
-    assert len(oauth_code) > 0
+    def test_code(self) -> None:
+        assert self.oauth_code is not None
+        assert isinstance(self.oauth_code, str)
+        assert len(self.oauth_code) > 0

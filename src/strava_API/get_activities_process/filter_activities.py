@@ -27,7 +27,7 @@ class ActivityFilter:
         try:
             self.dataframe = json_normalize(self.activities.get_latest_activities())
 
-            filtered_activities = self.dataframe.loc[
+            filtered_activities: List[int] = self.dataframe.loc[
                 (self.dataframe[sports_column].isin(sports))
                 & (self.dataframe[elevation_column] == elevation),
                 id_activity,

@@ -43,7 +43,7 @@ class GetAccessToken:
         except (ValueError, Exception) as e:
             exc_log.exception(e)
             self._get_new_access_token()
-            access_token = self._get_access_token_from_env()
+            access_token: str = self._get_access_token_from_env()
             print(f"The acccess token has retrieved successfully: {access_token}")
             return access_token
 
@@ -65,7 +65,7 @@ class GetAccessToken:
             str: A new access token string
         """
         print("The access token has expired.\nRefreshing the access token...")
-        access_token = self.refresh.refresh_access_token()
+        access_token: str = self.refresh.refresh_access_token()
         print(f"The new access token is: {access_token}")
         return access_token
 

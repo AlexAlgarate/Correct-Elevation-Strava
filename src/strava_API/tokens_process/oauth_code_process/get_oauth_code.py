@@ -1,4 +1,5 @@
-import time
+from time import sleep
+from typing import Any
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -41,13 +42,14 @@ class GetOauthCode:
                 strava.login()
 
                 driver.get(url_to_get_OAuth_code)
-                authorize_button = strava._find_element(
+                authorize_button: Any | None = strava._find_element(
                     function=EC.element_to_be_clickable,
                     locator=By.CSS_SELECTOR,
                     selector="button#authorize",
                 )
                 strava._click_button(authorize_button)
-                time.sleep(2)
-                return get_code._extract_code()
+                sleep(2)
+                return get_code.extract_code()
+
             except Exception as e:
                 exc_log.exception(e)

@@ -1,4 +1,3 @@
-# import time
 from typing import List, Tuple, Union
 
 import pytest
@@ -24,11 +23,9 @@ WEB_ELEMENTS_TO_FIND: List[
 @pytest.fixture
 def strava_driver() -> WebDriver:
     options = webdriver.ChromeOptions()
-    # options.add_argument("--start-maximized")
     options.add_argument("--headless")
     driver = webdriver.Chrome(service=Service(), options=options)
     driver.get(strava_login_url)
-    # time.sleep(5)
     yield driver
     driver.quit()
 

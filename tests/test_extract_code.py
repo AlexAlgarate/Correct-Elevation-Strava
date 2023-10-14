@@ -5,31 +5,27 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support import expected_conditions as EC
 
-from utils.config import strava_login_url
-from src.correct_elevation.credentials import Credentials
 from src.strava_api.tokens_process.oauth_code_process.extract_code import (
-    ExtractCode as EC,
+    ExtractCode,
 )
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
-    GetOauthCode as GOC,
-)
+
 
 WEB_ELEMENTS_TO_FIND: List[
     Tuple[
         Union[
-            expected_conditions.visibility_of_element_located,
-            expected_conditions.element_to_be_clickable,
+            EC.visibility_of_element_located,
+            EC.element_to_be_clickable,
         ],
         By,
         str,
     ]
 ] = [
-    (expected_conditions.visibility_of_element_located, By.ID, "email"),
-    (expected_conditions.visibility_of_element_located, By.ID, "password"),
+    (EC.visibility_of_element_located, By.ID, "email"),
+    (EC.visibility_of_element_located, By.ID, "password"),
     (
-        expected_conditions.element_to_be_clickable,
+        EC.element_to_be_clickable,
         By.CSS_SELECTOR,
         "button.btn.btn-primary",
     ),
@@ -46,19 +42,34 @@ def driver() -> WebDriver:
 
 
 class TestExtractCode:
-    def test_extract_code_if_exists(self, driver):
-        driver.get("https://example.com/&code=abcdef&other_params=123")
-        extracted_code = EC(driver)._extract_code()
-        assert extracted_code == "abcdef"
+    def test_extract_code_if_exists(self, driver) -> None:
+        driver.get("https://example.com/&code=holacaracola&other_params=123")
+        extracted_code = ExtractCode(driver).extract_code()
+        assert extracted_code == "holacaracola"
 
-    def test_extract_code_when_not_found(self, driver):
+    def test_extract_code_when_not_found(self, driver) -> None:
         driver.get("https://example.com/&other_params=123")
-        extracted_code = EC(driver)._extract_code()
+        extracted_code = ExtractCode(driver).extract_code()
         assert extracted_code is None
 
-    def test_extract_code_error_handling(self, driver, caplog):
+    def test_extract_code_error_handling(self, driver, caplog) -> None:
         driver.get("https://example.com/?other_params=123")
-        extract_code = EC(driver)
-        extracted_code = extract_code._extract_code()
-        assert extracted_code is None
+        extract_code = ExtractCode(driver)
+        extracted_code = extract_code.extract_code()
         assert "Could not retrieve OAuth code from URL" in caplog.text
+        assert extracted_code is None
+
+    def test_extract_code_with_multiple_matches(self, driver) -> None:
+        driver.get("https://example.com/&code=abc&other_params=123&code=def")
+        extracted_code = ExtractCode(driver).extract_code()
+        assert extracted_code == "abc"
+
+    def test_extract_code_with_special_characters(self, driver) -> None:
+        driver.get("https://example.com/&code=gh%20ij&other_params=123")
+        extracted_code = ExtractCode(driver).extract_code()
+        assert extracted_code is None
+
+    def test_extract_code_with_malformed_url(self, driver) -> None:
+        driver.get("https://example.com/code=malformed")
+        extracted_code = ExtractCode(driver).extract_code()
+        assert extracted_code is None

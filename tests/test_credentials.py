@@ -3,7 +3,7 @@ from typing import Literal
 
 import pytest
 
-from src.correct_elevation.credentials import Credentials
+from src.strava_api.tokens_process.oauth_code_process.credentials import Credentials
 
 
 @pytest.fixture
@@ -22,22 +22,22 @@ def empty_credentials() -> Credentials:
 
 
 class TestCredentials:
-    def test_valid_credentials_instance(self, valid_credentials: Credentials):
+    def test_valid_credentials_instance(self, valid_credentials: Credentials) -> None:
         assert isinstance(valid_credentials, Credentials)
 
     def test_valid_email_format(
         self,
         valid_credentials: Credentials,
         invalid_email: Literal["example123example.com"],
-    ):
+    ) -> None:
         email_regex = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         assert re.match(email_regex, valid_credentials.email)
         assert not re.match(email_regex, invalid_email)
 
-    def test_empty_credentials_instance(self, empty_credentials: Credentials):
+    def test_empty_credentials_instance(self, empty_credentials: Credentials) -> None:
         assert empty_credentials.email == ""
         assert empty_credentials.password == ""
 
-    def test_null_values(self):
+    def test_null_values(self) -> None:
         with pytest.raises(ValueError):
             Credentials(None, None)

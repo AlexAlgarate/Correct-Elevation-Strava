@@ -24,7 +24,7 @@ class GenerateAccessToken:
     def __init__(self) -> None:
         self.code = GetOauthCode()
 
-    def _access_token_post_request(self) -> Dict[str, Union[str, int]]:
+    def _request_credentials(self) -> Dict[str, Union[str, int]]:
         """
         Send a POST request to the API to get the access token response.
 
@@ -35,16 +35,14 @@ class GenerateAccessToken:
         """
 
         try:
-            data_to_get_access_token: Dict[str, Any] = {
+            data: Dict[str, Any] = {
                 "client_id": CLIENT_ID,
                 "client_secret": SECRET_KEY,
                 "code": self.code.get_oauth_code(),
                 "grant_type": "authorization_code",
             }
 
-            response = requests.post(
-                url=token_url, data=data_to_get_access_token
-            ).json()
+            response = requests.post(url=token_url, data=data).json()
 
             return response
 
@@ -59,9 +57,7 @@ class GenerateAccessToken:
             err_log.error(f"Error: {e}. {error} occurred.")
             raise
 
-    def _store_access_token_credentials(
-        self, response: Dict[str, Union[str, int]]
-    ) -> None:
+    def _save_credentials_env(self, response: Dict[str, Union[str, int]]) -> None:
         """
         Extract the access token, refresh token, and expires_at from the access token response,
         and store them in an .env file using the set_key function.
@@ -86,8 +82,8 @@ class GenerateAccessToken:
             Exception if an error has occurred
         """
         try:
-            response: Dict[str, str | int] = self._access_token_post_request()
-            self._store_access_token_credentials(response)
+            response: Dict[str, str | int] = self._request_credentials()
+            self._save_credentials_env(response)
 
         except Exception as e:
             exc_log.exception(f"Other kind of error has occurred: {e}")

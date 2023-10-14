@@ -8,7 +8,7 @@ from src.strava_api.tokens_process.get_access_token import GetAccessToken
 from utils import exc_log
 
 
-class ActivityAPIRequest:
+class RequestActivities:
     access_token: GetAccessToken
     url: str
 
@@ -17,7 +17,6 @@ class ActivityAPIRequest:
 
     """
 
-    # def __init__(self, url: str = api_url) -> None:
     def __init__(self, api_url: str) -> None:
         """
         Initializes a new instance of the class with a Strava API URL.
@@ -36,32 +35,24 @@ class ActivityAPIRequest:
         Makes a GET request to the Strava API for fetching activities for a specific page.
         Max page size available: 200
 
+        Args:
+            page (int): The page number.
+            page_size (int): The number of activities per page.
+
         Returns:
             The response from the API in a JSON format.
 
         """
         try:
-            response: requests.Response = requests.get(
-                self.api_url,
-                params={
-                    "access_token": self.access_token.get_access_token(),
-                    "per_page": page_size,
-                    "page": page,
-                },
-            )
-
+            params: Dict[str, Union[int, str]] = {
+                "access_token": self.access_token.get_access_token(),
+                "per_page": page_size,
+                "page": page,
+            }
+            response: requests.Response = requests.get(self.api_url, params=params)
+            response.raise_for_status()
             return response.json()
 
-        except requests.RequestException as e:
-            error_map = {
-                requests.exceptions.HTTPError: "HTTP error",
-                requests.exceptions.ConnectTimeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error",
-            }
-            error = error_map.get(type(e), "Other kind of error")
-            exc_log.exception(f"Error: {e}. {error} occurred.")
-            raise
-
         except Exception as e:
-            exc_log.exception(f"Other error has occurred: {e}")
+            exc_log.exception(f"Error: {e}")
             raise
