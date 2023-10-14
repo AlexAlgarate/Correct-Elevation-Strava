@@ -6,7 +6,7 @@ from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginS
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import OauthCodeGetter
 
 
 authorization_url: str = "https://www.strava.com/oauth/authorize"
@@ -20,12 +20,12 @@ client_id: str = f"client_id={CLIENT_ID}"
 scopes: str = "read,read_all,activity:read,activity:read_all"
 scope: str = f"scope={scopes}"
 
-url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
+url_OAuth: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
 
 
 class TestOauthCode:
     def setup_method(self) -> str:
-        self.oauth_code: str = GetOauthCode().get_oauth_code()
+        self.oauth_code: str = OauthCodeGetter().get_oauth_code()
         return self.oauth_code
 
     def test_code(self) -> None:

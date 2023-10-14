@@ -3,7 +3,9 @@ from typing import Any, Dict, Union
 import requests
 from dotenv import load_dotenv, set_key
 
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import GetOauthCode
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
+    OauthCodeGetter,
+)
 from utils import err_log, exc_log
 from utils.config import (
     CLIENT_ID,
@@ -19,10 +21,10 @@ load_dotenv()
 
 
 class GenerateAccessToken:
-    code: GetOauthCode
+    code: OauthCodeGetter
 
     def __init__(self) -> None:
-        self.code = GetOauthCode()
+        self.code = OauthCodeGetter()
 
     def _request_credentials(self) -> Dict[str, Union[str, int]]:
         """

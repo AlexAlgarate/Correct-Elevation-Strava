@@ -7,10 +7,11 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from .credentials import Credentials
 
 from utils import exc_log
-from utils.config import seconds, strava_login_url
+from utils.config import seconds, url_login_strava
+
+from .credentials import Credentials
 
 
 class LoginStrava:
@@ -28,7 +29,7 @@ class LoginStrava:
         """
         Open the login URL in the browser.
         """
-        self.driver.get(strava_login_url)
+        self.driver.get(url_login_strava)
 
     def _find_element(self, function: EC, locator: By, selector: str) -> Any | None:
         """

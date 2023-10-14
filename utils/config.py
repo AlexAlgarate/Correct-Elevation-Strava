@@ -32,20 +32,13 @@ except KeyError as e:
 # Load other variables
 try:
     token_url: str = "https://www.strava.com/oauth/token"
-    refresh_token_grant_type: str = "refresh_token"
+    grant_type_refresh_token: str = "refresh_token"
     redirect_url: str = "http://localhost/exchange_token"
     authorization_url: str = "https://www.strava.com/oauth/authorize"
     scopes: str = "read,read_all,activity:read,activity:read_all"
     api_url: str = "https://www.strava.com/api/v3/activities"
     page_size: str = "200"
     dot_env_file = find_dotenv()
-    header_code_OAuth: Dict[str, Union[int, str]] = {
-        "client_id": CLIENT_ID,
-        "response_type": "code",
-        "redirect_uri": redirect_url,
-        "approval_prompt": "force",
-        "scope": scopes,
-    }
     seconds = 10
 
     client_id: str = f"client_id={CLIENT_ID}"
@@ -54,15 +47,15 @@ try:
     approval_prompt: str = "approval_prompt=force"
     scope: str = f"scope={scopes}"
 
-    url_to_get_OAuth_code: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
+    url_OAuth: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
 
     refresh_data: Dict[str, Union[str, int]] = {
         "client_id": CLIENT_ID,
         "client_secret": SECRET_KEY,
-        "grant_type": refresh_token_grant_type,
+        "grant_type": grant_type_refresh_token,
         "refresh_token": REFRESH_TOKEN,
     }
-    strava_login_url: str = "https://www.strava.com/login"
+    url_login_strava: str = "https://www.strava.com/login"
 
     elevation: int = 0
     elevation_column: str = "total_elevation_gain"

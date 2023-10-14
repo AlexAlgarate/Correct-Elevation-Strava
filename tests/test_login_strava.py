@@ -7,8 +7,8 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from utils.config import strava_login_url
-from src.correct_elevation.credentials import Credentials
+from utils.config import url_login_strava
+from src.strava_api.tokens_process.oauth_code_process.credentials import Credentials
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 
 WEB_ELEMENTS_TO_FIND: List[
@@ -25,7 +25,7 @@ def strava_driver() -> WebDriver:
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     driver = webdriver.Chrome(service=Service(), options=options)
-    driver.get(strava_login_url)
+    driver.get(url_login_strava)
     yield driver
     driver.quit()
 
@@ -42,7 +42,7 @@ def login_strava(strava_driver: WebDriver):
 
 class TestStravaLoginPage:
     def test_open_strava_page(self, strava_driver: WebDriver):
-        assert strava_driver.current_url == strava_login_url
+        assert strava_driver.current_url == url_login_strava
 
     def test_find_elements(self, strava_driver: WebDriver):
         for function, locator, selector in WEB_ELEMENTS_TO_FIND:

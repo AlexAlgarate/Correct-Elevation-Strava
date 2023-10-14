@@ -1,8 +1,6 @@
 from typing import Dict, List, Union
 
-from src.strava_api.get_activities_process.activity_api_request import (
-    RequestActivities,
-)
+from src.strava_api.get_activities_process.activity_api_request import RequestActivities
 from utils.config import api_url
 
 

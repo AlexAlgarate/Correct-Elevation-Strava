@@ -1,7 +1,7 @@
 from time import sleep
 from typing import Any
 
-from selenium import webdriver
+from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,31 +9,29 @@ from selenium.webdriver.support import expected_conditions as EC
 from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils import exc_log
-from utils.config import seconds, url_to_get_OAuth_code
+from utils.config import seconds, url_OAuth
 
 
-class GetOauthCode:
+class OauthCodeGetter:
     """
-    Class responsible for getting the OAuth code
-    required to obtain the access token.
+    A class responsible for obtaining the OAuth code needed to obtain an access token
 
     Methods:
-        - get_oauth_code() -> str: gets the OAuth code required
-        to obtain the access token.
+        - get_oauth_code() -> str: Retrieves the required OAuth code for acquiring an access token.
     """
 
     def get_oauth_code(self) -> str:
         """
-        Gets the OAuth code required to obtain the access token.
+        Retrieves the OAuth code neccessary to obtain an access token.
 
         Returns:
-            - The OAuth code required to obtain the access token.
+            str: The required  OAuth codefor obtaining an access token.
         """
-        options = webdriver.ChromeOptions()
+        options = ChromeOptions()
         options.add_argument("--headless")
         options.add_experimental_option("detach", True)
 
-        with webdriver.Chrome(service=Service(), options=options) as driver:
+        with Chrome(service=Service(), options=options) as driver:
             driver.implicitly_wait(seconds)
             try:
                 strava = LoginStrava(driver)
@@ -41,7 +39,7 @@ class GetOauthCode:
 
                 strava.login()
 
-                driver.get(url_to_get_OAuth_code)
+                driver.get(url_OAuth)
                 authorize_button: Any | None = strava._find_element(
                     function=EC.element_to_be_clickable,
                     locator=By.CSS_SELECTOR,

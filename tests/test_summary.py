@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken as GT
 from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
-    GetOauthCode as GC,
+    OauthCodeGetter as GC,
 )
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager as RT
 
