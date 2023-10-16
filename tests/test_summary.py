@@ -14,7 +14,6 @@ from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
 )
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager as RT
 
-
 # def test_strava_data():
 #     """
 #     Test if the OAuth code is a string

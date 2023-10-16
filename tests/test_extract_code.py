@@ -7,10 +7,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from src.strava_api.tokens_process.oauth_code_process.extract_code import (
-    ExtractCode,
-)
-
+from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
 
 WEB_ELEMENTS_TO_FIND: List[
     Tuple[

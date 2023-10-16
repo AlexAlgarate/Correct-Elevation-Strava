@@ -2,6 +2,7 @@ activities_prueba.py
 .vscode/
 readme.txt
 logs/
+driver.py
 
 
 # Byte-compiled / optimized / DLL files
