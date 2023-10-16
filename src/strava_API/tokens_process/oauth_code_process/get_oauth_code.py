@@ -40,12 +40,12 @@ class OauthCodeGetter:
                 strava.login()
 
                 driver.get(url_OAuth)
-                authorize_button: Any | None = strava._find_element(
+                authorize_button: Any | None = strava.find_element(
                     function=EC.element_to_be_clickable,
                     locator=By.CSS_SELECTOR,
                     selector="button#authorize",
                 )
-                strava._click_button(authorize_button)
+                strava.click_button(authorize_button)
                 sleep(2)
                 return get_code.extract_code()
 
