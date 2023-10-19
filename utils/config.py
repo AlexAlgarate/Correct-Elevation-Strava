@@ -3,7 +3,6 @@ from typing import Dict, List, Union
 
 from dotenv import find_dotenv, load_dotenv
 
-
 from utils.logging_config import exception_logger as exc_log
 
 try:
