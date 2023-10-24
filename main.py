@@ -19,14 +19,14 @@ def main() -> None:
         options.add_experimental_option("detach", True)
 
         with webdriver.Chrome(service=service, options=options) as driver:
-            driver.implicitly_wait(seconds)
-            login = LoginStrava(driver)
+            driver.implicitly_wait(time_to_wait=seconds)
+            login = LoginStrava(driver=driver)
             login.login()
-            get_activities = LatestActivities(driver)
+            get_activities = LatestActivities(driver=driver)
 
             for activity in get_activities.get_latest_activities(limit=3):
-                strava_activity = StravaActivity(driver, activity.id)
-                strava_activity.open_url()
+                strava_activity = StravaActivity(driver=driver, activity_id=activity.id)
+                strava_activity.open_activity_id_url()
                 strava_activity.correct_elevation()
                 inf_log.info(f"The activity id: {activity.id} has been corrected.")
         driver.quit()

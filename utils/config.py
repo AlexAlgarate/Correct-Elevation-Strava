@@ -3,20 +3,18 @@ from typing import Dict, List, Union
 
 from dotenv import find_dotenv, load_dotenv
 
-from utils.logging_config import exception_logger as exc_log
+from utils.logger import exception_logger as exc_log
 
 try:
     load_dotenv()
     client_id_env: str = "STRAVA_CLIENT_ID"
     secret_key_env: str = "STRAVA_SECRET_KEY"
-    engine_env: str = "POSTGRES_ENGINE"
     email_env: str = "STRAVA_EMAIL"
     password_env: str = "STRAVA_PASSWORD"
     access_token_env: str = "STRAVA_ACCESS_TOKEN"
     refresh_token_env: str = "STRAVA_REFRESH_TOKEN"
     expires_at_env: str = "STRAVA_EXPIRES_AT"
 
-    ENGINE: str = os.getenv(engine_env)
     EMAIL: str = os.getenv(email_env)
     PASSWORD: str = os.getenv(password_env)
     CLIENT_ID: int = int(os.getenv(client_id_env))
@@ -38,7 +36,7 @@ try:
     api_url: str = "https://www.strava.com/api/v3/activities"
     page_size: str = "200"
     dot_env_file = find_dotenv()
-    seconds = 10
+    seconds = 2
 
     client_id: str = f"client_id={CLIENT_ID}"
     redirect_uri: str = f"redirect_uri={redirect_url}"
@@ -46,7 +44,7 @@ try:
     approval_prompt: str = "approval_prompt=force"
     scope: str = f"scope={scopes}"
 
-    url_OAuth: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
+    OAuth_url: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
 
     refresh_data: Dict[str, Union[str, int]] = {
         "client_id": CLIENT_ID,
