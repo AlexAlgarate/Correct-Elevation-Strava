@@ -31,21 +31,27 @@ class GetAccessToken:
         """
 
         try:
+            access_token: str = os.getenv(access_token_env)
+
+            if access_token is None:
+                err_log.error("Access token has not found in the .env. Getting a new one...")
+                self._get_new_access_token()
+
             if self._access_token_has_expired():
-                new_access_token: str = self._refresh_the_access_token()
-                os.environ[access_token_env] = new_access_token
-            new_access_token = os.getenv(access_token_env)
-            if new_access_token is None:
+                refreshed_access_token: str = self._refresh_the_access_token()
+                os.environ[access_token_env] = refreshed_access_token
+            refreshed_access_token = os.getenv(access_token_env)
+            if refreshed_access_token is None:
                 err_log.error("Access token not found in the .env")
 
-            return new_access_token
+            return refreshed_access_token
 
-        except (ValueError, Exception) as e:
+        except (ValueError, Exception, TypeError) as e:
             exc_log.exception(e)
             self._get_new_access_token()
-            access_token: str = self._get_access_token_from_env()
-            print(f"The acccess token has retrieved successfully: {access_token}")
-            return access_token
+            new_access_token: str = self._get_access_token_from_env()
+            print(f"The acccess token has retrieved successfully: {new_access_token}")
+            return new_access_token
 
     def _access_token_has_expired(self) -> bool:
         """
@@ -78,9 +84,10 @@ class GetAccessToken:
         """
         try:
             load_dotenv()
-            access_token_from_env: str = os.getenv(access_token_env)
-            if access_token_from_env:
-                return access_token_from_env
+            access_token: str = os.getenv(access_token_env)
+            if not access_token:
+                return self._get_new_access_token()
+            return access_token
         except Exception as e:
             exc_log.exception(e)
 
@@ -89,6 +96,9 @@ class GetAccessToken:
         Get new credentials from the API and update the environment variables.
         """
         print("Getting new credentials from the Strava API")
+        load_dotenv()
         credentials_handler = GenerateAccessToken()
         credentials_handler.generate_access_token()
         print("Credentials updated successfully")
+        access_token: str = os.getenv(access_token_env)
+        return access_token
