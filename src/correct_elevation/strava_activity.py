@@ -1,20 +1,16 @@
 from __future__ import annotations
 
-from typing import Any
-
 from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.remote.webelement import WebElement
 
 from utils import exc_log
-from utils.config import seconds
+from utils.locators import correct_elevation_elements as correct_elements
+from utils.web_element_handler import WebElementHandler
 
 
 class StravaActivity:
     id: int
-    web_driver_wait: WebDriverWait
 
     def __init__(self, driver: WebDriver, activity_id: int) -> None:
         """
@@ -25,9 +21,9 @@ class StravaActivity:
             activity_id (int): The ID of the Strava activity.
         """
 
-        self.id = activity_id
+        self.id: int = activity_id
         self.driver: WebDriver = driver
-        self.web_driver_wait = WebDriverWait(driver, seconds)
+        self.element = WebElementHandler(driver=driver)
 
     def _get_activity_url(self) -> str:
         """
@@ -39,12 +35,12 @@ class StravaActivity:
 
         return f"https://www.strava.com/activities/{self.id}"
 
-    def open_url(self) -> None:
+    def open_activity_id_url(self) -> None:
         """
         Open the URL of the Strava activity in the browser.
         """
 
-        self.driver.get(self._get_activity_url())
+        self.element.open_url(url=self._get_activity_url())
 
     def is_activity_indoor_cycling(self) -> bool:
         """
@@ -54,17 +50,13 @@ class StravaActivity:
             bool: True if the activity is indoor cycling, False otherwise.
         """
         try:
-            indoor_activity_type = "spinning"
-            header: Any = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, "h2.text-title3.text-book.marginless")
+            indoor_activity_type: str = "spinning"
+            header: WebElement = self.element.find_element(*correct_elements["indoor_cyclig"])
+            activity_type: str = (
+                self.element.find_element(
+                    *correct_elements["title_header"], element_to_wait_for=header
                 )
-            )
-            activity_type: Any = (
-                WebDriverWait(header, seconds)
-                .until(EC.presence_of_element_located((By.CLASS_NAME, "title")))
-                .text
-            )
+            ).text
             return indoor_activity_type.casefold() in activity_type.casefold()
         except (NoSuchElementException, Exception) as e:
             exc_log.exception(e)
@@ -79,12 +71,10 @@ class StravaActivity:
         """
 
         try:
-            options_button: Any = self.web_driver_wait.until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "div.app-icon.icon-nav-more")
-                )
+            options_button: WebElement = self.element.find_element(
+                *correct_elements["options_button"]
             )
-            options_button.click()
+            self.element.click_button(options_button)
             return True
         except (NoSuchElementException, Exception) as e:
             exc_log.exception(e)
@@ -98,15 +88,8 @@ class StravaActivity:
             bool: True if the "Revert" button is present, False otherwise.
         """
         try:
-            revert_text = "Revertir"
-            revert_button: Any = self.web_driver_wait.until(
-                EC.presence_of_element_located(
-                    (
-                        By.CSS_SELECTOR,
-                        "div[data-react-class='CorrectElevation']",
-                    )
-                )
-            ).text
+            revert_text: str = "Revertir"
+            revert_button: str = self.element.find_element(*correct_elements["revert_button"]).text
             return revert_text.casefold() in revert_button.casefold()
         except NoSuchElementException as e:
             exc_log.exception(e)
@@ -122,12 +105,10 @@ class StravaActivity:
         """
         if not self.presence_revert_elevation():
             try:
-                correct_elevation_option: Any = self.web_driver_wait.until(
-                    EC.element_to_be_clickable(
-                        (By.CSS_SELECTOR, "div[data-react-class='CorrectElevation']")
-                    )
+                correct_elevation_option: WebElement = self.element.find_element(
+                    *correct_elements["correct_button"]
                 )
-                correct_elevation_option.click()
+                self.element.click_button(correct_elevation_option)
                 return True
             except Exception as e:
                 exc_log.exception(e)
@@ -136,15 +117,12 @@ class StravaActivity:
 
     def click_correct(self) -> bool:
         """
-        Clicks the "Correct" button to apply elevation
-        correction on the Strava activity page.
+        Clicks the "Correct elevation" button.
         """
-        correct_activity_button: Any = self.web_driver_wait.until(
-            EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, "button.Button--primary--cUgAV[type='submit']")
-            )
+        correct_activity_button: WebElement = self.element.find_element(
+            *correct_elements["click_correct_button"]
         )
-        correct_activity_button.click()
+        self.element.click_button(correct_activity_button)
 
     def correct_elevation(self) -> bool:
         """
