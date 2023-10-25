@@ -1,18 +1,22 @@
+from __future__ import annotations
+
 from time import sleep
-from typing import Any
 
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+
+from selenium.webdriver.remote.webelement import WebElement
 
 from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils import exc_log
-from utils.config import seconds, url_OAuth
+from utils.config import OAuth_url, seconds
+from utils.locators import oauth_elements
+from utils.web_element_handler import WebElementHandler
 
 
 class OauthCodeGetter:
+
     """
     A class responsible for obtaining the OAuth code needed to obtain an access token
 
@@ -32,21 +36,21 @@ class OauthCodeGetter:
         options.add_experimental_option("detach", True)
 
         with Chrome(service=Service(), options=options) as driver:
-            driver.implicitly_wait(seconds)
+            driver.implicitly_wait(time_to_wait=seconds)
             try:
-                strava = LoginStrava(driver)
-                get_code = ExtractCode(driver)
+                strava = LoginStrava(driver=driver)
+                get_code = ExtractCode(driver=driver)
+                web_elements = WebElementHandler(driver=driver)
 
                 strava.login()
 
-                driver.get(url_OAuth)
-                authorize_button: Any | None = strava.find_element(
-                    function=EC.element_to_be_clickable,
-                    locator=By.CSS_SELECTOR,
-                    selector="button#authorize",
+                web_elements.open_url(url=OAuth_url)
+                authorize_button: WebElement = web_elements.find_element(
+                    *oauth_elements["authorize_button"]
                 )
-                strava.click_button(authorize_button)
-                sleep(2)
+
+                web_elements.click_button(element=authorize_button)
+                sleep(1)
                 return get_code.extract_code()
 
             except Exception as e:

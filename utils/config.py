@@ -44,7 +44,9 @@ try:
     approval_prompt: str = "approval_prompt=force"
     scope: str = f"scope={scopes}"
 
-    OAuth_url: str = f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
+    OAuth_url: str = (
+        f"{authorization_url}?{client_id}&{response_type}&{redirect_uri}&{approval_prompt}&{scope}"
+    )
 
     refresh_data: Dict[str, Union[str, int]] = {
         "client_id": CLIENT_ID,

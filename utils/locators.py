@@ -16,9 +16,7 @@ login_elements: Dict[
     ),
 }
 
-alert_box_message: Dict[
-    str, Tuple[Union[EC.visibility_of_element_located, By, str]]
-] = {
+alert_box_message: Dict[str, Tuple[Union[EC.visibility_of_element_located, By, str]]] = {
     "alert_box": (
         EC.visibility_of_element_located,
         By.CLASS_NAME,

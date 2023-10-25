@@ -38,13 +38,11 @@ class RefreshTokenManager:
             expires_at: int = int(EXPIRES_AT)
             return expires_at < self.current_time
 
-        except (ValueError, TypeError) as e:
+        except Exception as e:
             exc_log.exception(f"Error while parsing EXIRES_AT value: {e}")
             return False
 
-    def _update_env(
-        self, access_token: str, refresh_token: str, expires_at: Optional[int]
-    ) -> None:
+    def _update_env(self, access_token: str, refresh_token: str, expires_at: Optional[int]) -> None:
         """
         Update the access token and expires_at in the .env file.
 
@@ -55,10 +53,22 @@ class RefreshTokenManager:
         """
 
         try:
-            set_key(dot_env_file, access_token_env, access_token)
-            set_key(dot_env_file, refresh_token_env, refresh_token)
+            set_key(
+                dotenv_path=dot_env_file,
+                key_to_set=access_token_env,
+                value_to_set=access_token,
+            )
+            set_key(
+                dotenv_path=dot_env_file,
+                key_to_set=refresh_token_env,
+                value_to_set=refresh_token,
+            )
             if expires_at is not None:
-                set_key(dot_env_file, expires_at_env, str(expires_at))
+                set_key(
+                    dotenv_path=dot_env_file,
+                    key_to_set=expires_at_env,
+                    value_to_set=str(expires_at),
+                )
 
         except FileNotFoundError as e:
             exc_log.exception(f"Could not find the .env file: {e}")
@@ -67,9 +77,7 @@ class RefreshTokenManager:
         except Exception as e:
             exc_log.exception(f"Error while updating the .env: {e}")
 
-    def _request_refresh_token(
-        self, params: Dict[str, Union[str, int]]
-    ) -> requests.Response:
+    def _request_refresh_token(self, params: Dict[str, Union[str, int]]) -> requests.Response:
         """
         Make a POST request to the token URL using the provided refresh data.
 
@@ -133,9 +141,7 @@ class RefreshTokenManager:
             params: Dict[str, str | int] = refresh_data
             request: requests.Response = self._request_refresh_token(params)
             response: Dict[str, str | int] = self._parse_refresh_request(request)
-            access_token, refresh_token, expires_at = self._extract_credentials(
-                response
-            )
+            access_token, refresh_token, expires_at = self._extract_credentials(response)
             self._update_env(access_token, refresh_token, expires_at)
             return access_token
 

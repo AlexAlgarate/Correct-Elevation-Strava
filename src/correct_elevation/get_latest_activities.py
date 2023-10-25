@@ -36,9 +36,6 @@ class LatestActivities:
 
         try:
             filtered_activities: List[int] = self.filter.filter_activities()[:limit]
-            return [
-                StravaActivity(self.driver, activity_id)
-                for activity_id in filtered_activities
-            ]
+            return [StravaActivity(self.driver, activity_id) for activity_id in filtered_activities]
         except Exception as e:
             exc_log.exception(e)

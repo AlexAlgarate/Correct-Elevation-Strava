@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Any
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -13,6 +14,10 @@ from utils.config import seconds
 
 
 class WebElementHandler:
+    """
+    A class for handling web elements using Selenium WebDriver.
+    """
+
     def __init__(self, driver: WebDriver) -> None:
         """
         Initialize the WebElementHandler object.
@@ -32,7 +37,7 @@ class WebElementHandler:
         self.driver.get(url)
 
     def find_element(
-        self, condition: EC, locator: By, selector: str, element_to_wait_for=None
+        self, condition: EC, locator: By, selector: str, element_to_wait_for: Any = None
     ) -> WebElement:
         """
         Find the element specified by the locator and selector.
@@ -41,7 +46,7 @@ class WebElementHandler:
             condition (EC): The expected condition to wait for.
             locator (By): The method used to locate the element.
             selector (str): The value used to locate the element.
-
+            element_to_wait_for (Any): The element to wait for load the DOM
         Returns:
             The found element or None if not found.
         """
@@ -51,36 +56,14 @@ class WebElementHandler:
                     driver=element_to_wait_for, timeout=seconds
                 ).until(condition((locator, selector)))
             else:
-                element: WebElement = WebDriverWait(
-                    driver=self.driver, timeout=seconds
-                ).until(condition((locator, selector)))
+                element: WebElement = WebDriverWait(driver=self.driver, timeout=seconds).until(
+                    condition((locator, selector))
+                )
             return element
 
         except NoSuchElementException as e:
             exc_log.exception(e)
             return None
-
-    # def find_element(self, condition: EC, locator: By, selector: str) -> WebElement:
-    #     """
-    #     Find the element specified by the locator and selector.
-
-    #     Args:
-    #         condition (EC): The expected condition to wait for.
-    #         locator (By): The method used to locate the element.
-    #         selector (str): The value used to locate the element.
-
-    #     Returns:
-    #         The found element or None if not found.
-    #     """
-    #     try:
-    #         element: WebElement = WebDriverWait(
-    #             driver=self.driver, timeout=seconds
-    #         ).until(condition((locator, selector)))
-    #         return element
-
-    #     except NoSuchElementException as e:
-    #         exc_log.exception(e)
-    #         return None
 
     def fill_field(self, element: WebElement, value: Credentials) -> None:
         """

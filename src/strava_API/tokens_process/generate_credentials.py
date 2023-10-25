@@ -72,9 +72,21 @@ class GenerateAccessToken:
         refresh_token: str = response.get("refresh_token")
         expires_at: str = response.get("expires_at")
 
-        set_key(dot_env_file, access_token_env, access_token)
-        set_key(dot_env_file, refresh_token_env, refresh_token)
-        set_key(dot_env_file, expires_at_env, str(expires_at))
+        set_key(
+            dotenv_path=dot_env_file,
+            key_to_set=access_token_env,
+            value_to_set=access_token,
+        )
+        set_key(
+            dotenv_path=dot_env_file,
+            key_to_set=refresh_token_env,
+            value_to_set=refresh_token,
+        )
+        set_key(
+            dotenv_path=dot_env_file,
+            key_to_set=expires_at_env,
+            value_to_set=str(expires_at),
+        )
 
     def generate_access_token(self) -> None:
         """

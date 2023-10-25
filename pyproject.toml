@@ -24,3 +24,14 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 skip = [".gitignore", ".dockerignore"]
+
+[tool.pytest.ini_options]
+addopts = "-v -ra --no-header"
+testpaths = [
+    "tests",
+    "integration",
+]
+
+[tool.black]
+line-length = 100
+exclude = ".venv/"
