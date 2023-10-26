@@ -10,26 +10,46 @@ from utils import exc_log, inf_log
 from utils.config import seconds
 
 
+def setup_driver() -> webdriver.Chrome:
+    """
+    Initializes a instance of the ChromeDriver class.
+
+    Returns:
+        A instance of the ChromeDriver class.
+    """
+    service = Service()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-extensions")
+    options.add_experimental_option("detach", True)
+    return webdriver.Chrome(service=service, options=options)
+
+
+def proccess_activity(driver: webdriver.Chrome, activity: StravaActivity) -> None:
+    """
+    Proccess the Strava activity, correct its elevation and create a new instance in the log file.
+
+    Args:
+        driver (webdriver.Chrome): webdriver instance
+        activity (StravaActivity): id of the activity
+    """
+    strava_activity = StravaActivity(driver=driver, activity_id=activity.id)
+    strava_activity.open_activity_id_url()
+    strava_activity.correct_elevation()
+    inf_log.info(f"The activity id: {activity.id} has been corrected.")
+
+
 def main() -> None:
     try:
-        service = Service()
-
-        options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
-        options.add_experimental_option("detach", True)
-
-        with webdriver.Chrome(service=service, options=options) as driver:
+        with setup_driver() as driver:
             driver.implicitly_wait(time_to_wait=seconds)
             login = LoginStrava(driver=driver)
             login.login()
             get_activities = LatestActivities(driver=driver)
 
             for activity in get_activities.get_latest_activities(limit=3):
-                strava_activity = StravaActivity(driver=driver, activity_id=activity.id)
-                strava_activity.open_activity_id_url()
-                strava_activity.correct_elevation()
-                inf_log.info(f"The activity id: {activity.id} has been corrected.")
-        driver.quit()
+                proccess_activity(driver=driver, activity=activity)
 
     except Exception as e:
         exc_log.exception(e)

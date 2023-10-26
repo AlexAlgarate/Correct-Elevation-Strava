@@ -45,9 +45,7 @@ class OauthCodeGetter:
                 strava.login()
 
                 web_elements.open_url(url=OAuth_url)
-                authorize_button: WebElement = web_elements.find_element(
-                    *oauth_elements["authorize_button"]
-                )
+                authorize_button: WebElement = web_elements.find_element(*oauth_elements["authorize_button"])
 
                 web_elements.click_button(element=authorize_button)
                 sleep(1)

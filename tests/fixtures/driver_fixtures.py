@@ -4,11 +4,12 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+
 from utils.web_element_handler import WebElementHandler
 
 
 @pytest.fixture
-def driver() -> WebDriver:
+def driver() -> Chrome:
     options = ChromeOptions()
     # options.add_argument("--start-maximized")
     options.add_argument("--headless")

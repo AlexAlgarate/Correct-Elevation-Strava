@@ -9,9 +9,7 @@ from utils.config import ACCESS_TOKEN, EXPIRES_AT, REFRESH_TOKEN
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken as GT
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
-    OauthCodeGetter as GC,
-)
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import OauthCodeGetter as GC
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager as RT
 
 # def test_strava_data():
