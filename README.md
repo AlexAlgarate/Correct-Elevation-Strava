@@ -4,9 +4,9 @@
 - [ ] Test filter activities
 - [x] Test credentials
 - [x] Test extract code
-- [ ] Test generate credentials
+- [x] Test request credentials
 - [ ] Test get access token
-- [ ] Test refresh token
+- [x] Test refresh token
 - [ ] Test summary
 - [ ] Test strava activities
 - [x] Test login strava

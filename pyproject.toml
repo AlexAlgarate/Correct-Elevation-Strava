@@ -28,7 +28,7 @@ skip = [".gitignore", ".dockerignore"]
 [tool.pytest.ini_options]
 addopts = "-v -ra --no-header"
 testpaths = [
-    "tests",
+    ".tests/",
     "integration",
 ]
 

@@ -1,4 +1,4 @@
-from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webelement import WebElement
 
 from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import OauthCodeGetter
@@ -29,13 +29,13 @@ class TestOauthCode:
         )
         assert expected_url == OAuth_url
 
-    def test_access_oauth_code_url_when_no_logged_in(self, driver) -> None:
+    def test_access_oauth_code_url_when_no_logged_in(self, driver: Chrome) -> None:
         driver.get(url=OAuth_url)
         assert driver.current_url == "https://www.strava.com/login"
         assert OAuth_url != driver.current_url
 
     def test_access_oauth_code_url(
-        self, driver: WebDriver, element: WebElementHandler, login_strava: LoginStrava
+        self, driver: Chrome, element: WebElementHandler, login_strava: LoginStrava
     ) -> None:
         # Check if accessing OAuth URL after login is successful
         login_strava

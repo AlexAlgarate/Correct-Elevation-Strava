@@ -4,7 +4,6 @@ from time import sleep
 
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
-
 from selenium.webdriver.remote.webelement import WebElement
 
 from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
@@ -33,6 +32,8 @@ class OauthCodeGetter:
         """
         options = ChromeOptions()
         options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-extensions")
         options.add_experimental_option("detach", True)
 
         with Chrome(service=Service(), options=options) as driver:
@@ -45,7 +46,9 @@ class OauthCodeGetter:
                 strava.login()
 
                 web_elements.open_url(url=OAuth_url)
-                authorize_button: WebElement = web_elements.find_element(*oauth_elements["authorize_button"])
+                authorize_button: WebElement = web_elements.find_element(
+                    *oauth_elements["authorize_button"]
+                )
 
                 web_elements.click_button(element=authorize_button)
                 sleep(1)

@@ -1,5 +1,6 @@
 from time import time
 from typing import Dict, Optional, Tuple, Union
+from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Timeout
 
 import requests
 from dotenv import set_key
@@ -17,7 +18,6 @@ from utils.config import (
 
 
 class RefreshTokenManager:
-
     """
     A class to manage the refreshing proccess of the access token.
     If the access token has expired, it makes a POST request to the Strava API
@@ -38,9 +38,17 @@ class RefreshTokenManager:
             expires_at: int = int(EXPIRES_AT)
             return expires_at < self.current_time
 
+        except ValueError as e:
+            exc_log.exception(f"Error while parsing EXPIRES_AT value: {e}")
+            raise ValueError("EXPIRES_AT value is not a valid integer timestamp")
+
+        except TypeError as e:
+            exc_log.exception(f"Error while parsing EXPIRES_AT value: {e}")
+            raise TypeError("EXPIRES_AT has to be an integer, not a string")
+
         except Exception as e:
-            exc_log.exception(f"Error while parsing EXIRES_AT value: {e}")
-            return False
+            exc_log.exception(f"An unexpected error occurred: {e}")
+            raise
 
     def _update_env(self, access_token: str, refresh_token: str, expires_at: Optional[int]) -> None:
         """
@@ -145,13 +153,9 @@ class RefreshTokenManager:
             self._update_env(access_token, refresh_token, expires_at)
             return access_token
 
-        except requests.RequestException as e:
-            error_map = {
-                requests.exceptions.HTTPError: "HTTP error",
-                requests.exceptions.ConnectTimeout: "Timeout error",
-                requests.exceptions.Timeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error",
-            }
-            error = error_map.get(type(e), "Other kind of error")
-            exc_log.exception(f"Error: {e}. {error} occurred.")
+        except (HTTPError, ConnectTimeout, Timeout, ConnectionError) as e:
+            exc_log.exception(f"Error: {e}. {type(e)} occurred.")
+            raise
+        except Exception as e:
+            exc_log.exception(f"Error: {e}. {type(e)} occurred.")
             raise

@@ -17,13 +17,12 @@ def setup_driver() -> webdriver.Chrome:
     Returns:
         A instance of the ChromeDriver class.
     """
-    service = Service()
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-extensions")
     options.add_experimental_option("detach", True)
-    return webdriver.Chrome(service=service, options=options)
+    return webdriver.Chrome(service=Service(), options=options)
 
 
 def proccess_activity(driver: webdriver.Chrome, activity: StravaActivity) -> None:

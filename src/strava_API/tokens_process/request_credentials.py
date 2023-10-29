@@ -1,12 +1,13 @@
-from typing import Any, Dict, Union
+from typing import Dict, Union
 
 import requests
 from dotenv import load_dotenv, set_key
+from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Timeout
 
 from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
     OauthCodeGetter,
 )
-from utils import err_log, exc_log
+from utils import exc_log
 from utils.config import (
     CLIENT_ID,
     SECRET_KEY,
@@ -20,11 +21,21 @@ from utils.config import (
 load_dotenv()
 
 
-class GenerateAccessToken:
-    code: OauthCodeGetter
-
+class RequestAccessToken:
     def __init__(self) -> None:
         self.code = OauthCodeGetter()
+        self.client_id: int = CLIENT_ID
+        self.client_secret: str = SECRET_KEY
+        self.url = token_url
+
+    def get_data_for_request(self) -> Dict[str, Union[str, int]]:
+        data = {
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "code": self.code.get_oauth_code(),
+            "grant_type": "authorization_code",
+        }
+        return data
 
     def _request_credentials(self) -> Dict[str, Union[str, int]]:
         """
@@ -37,26 +48,15 @@ class GenerateAccessToken:
         """
 
         try:
-            data: Dict[str, Any] = {
-                "client_id": CLIENT_ID,
-                "client_secret": SECRET_KEY,
-                "code": self.code.get_oauth_code(),
-                "grant_type": "authorization_code",
-            }
-
-            response = requests.post(url=token_url, data=data).json()
-
+            data: Dict[str, Union[str, int]] = self.get_data_for_request()
+            response = requests.post(url=self.url, data=data).json()
             return response
 
-        except requests.RequestException as e:
-            error_map = {
-                requests.exceptions.HTTPError: "HTTP error",
-                requests.exceptions.ConnectTimeout: "ConnectTimeout error",
-                requests.exceptions.Timeout: "Timeout error",
-                requests.exceptions.ConnectionError: "Connection error",
-            }
-            error = error_map.get(type(e), "Other kind of error")
-            err_log.error(f"Error: {e}. {error} occurred.")
+        except (HTTPError, ConnectTimeout, Timeout, ConnectionError) as e:
+            exc_log.exception(f"Error: {e}. {type(e)} occurred.")
+            raise
+        except Exception as e:
+            exc_log.exception(f"Error: {e}. {type(e)} occurred.")
             raise
 
     def _save_credentials_env(self, response: Dict[str, Union[str, int]]) -> None:
@@ -96,8 +96,8 @@ class GenerateAccessToken:
             Exception if an error has occurred
         """
         try:
-            response: Dict[str, str | int] = self._request_credentials()
+            response: Dict[str, Union[str, int]] = self._request_credentials()
             self._save_credentials_env(response)
 
         except Exception as e:
-            exc_log.exception(f"Other kind of error has occurred: {e}")
+            exc_log.exception(e)

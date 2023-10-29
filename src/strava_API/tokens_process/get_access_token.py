@@ -2,8 +2,10 @@ import os
 
 from dotenv import load_dotenv
 
-from src.strava_api.tokens_process.generate_credentials import GenerateAccessToken
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
+from src.strava_api.tokens_process.request_credentials import (
+    RequestAccessToken,
+)
 from utils import err_log, exc_log
 from utils.config import access_token_env
 
@@ -97,7 +99,7 @@ class GetAccessToken:
         """
         print("Getting new credentials from the Strava API")
         load_dotenv()
-        credentials_handler = GenerateAccessToken()
+        credentials_handler = RequestAccessToken()
         credentials_handler.generate_access_token()
         print("Credentials updated successfully")
         access_token: str = os.getenv(access_token_env)
