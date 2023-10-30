@@ -7,6 +7,13 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.get_activities_process.filter_activities import ActivityFilter
 from utils import exc_log
+from utils.config import (
+    elevation_column,
+    id_activity_column,
+    meters_elevation_gain,
+    sports_column,
+    sports_to_correct,
+)
 
 
 class LatestActivities:
@@ -35,7 +42,13 @@ class LatestActivities:
         """
 
         try:
-            filtered_activities: List[int] = self.filter.filter_activities()[:limit]
+            filtered_activities: List[int] = self.filter.filter_activities(
+                columns_sport=sports_column,
+                sports=sports_to_correct,
+                elevation_column=elevation_column,
+                meters_elevation=meters_elevation_gain,
+                id_actvity=id_activity_column,
+            )[:limit]
             return [StravaActivity(self.driver, activity_id) for activity_id in filtered_activities]
         except Exception as e:
             exc_log.exception(e)

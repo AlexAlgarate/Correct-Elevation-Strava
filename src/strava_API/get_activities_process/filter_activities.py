@@ -5,7 +5,6 @@ from pandas import json_normalize
 
 from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
 from utils import exc_log
-from utils.config import elevation, elevation_column, id_activity, sports, sports_column
 
 
 class ActivityFilter:
@@ -15,7 +14,14 @@ class ActivityFilter:
     def __init__(self) -> None:
         self.activities = ActivityFetcher()
 
-    def filter_activities(self) -> List[int]:
+    def filter_activities(
+        self,
+        columns_sport: str,
+        sports: List[str],
+        elevation_column: str,
+        meters_elevation: int,
+        id_actvity: str
+    ) -> List[int]:
         """
         Filter activities based on the sports type "Ride" and "Run" and
         a total elevation gain of 0 meters.
@@ -28,9 +34,9 @@ class ActivityFilter:
             self.dataframe = json_normalize(self.activities.get_latest_activities())
 
             filtered_activities: List[int] = self.dataframe.loc[
-                (self.dataframe[sports_column].isin(sports))
-                & (self.dataframe[elevation_column] == elevation),
-                id_activity,
+                (self.dataframe[columns_sport].isin(sports))
+                & (self.dataframe[elevation_column] == meters_elevation),
+                id_actvity,
             ].to_list()
 
         except Exception as e:

@@ -56,10 +56,10 @@ try:
     }
     url_login_strava: str = "https://www.strava.com/login"
 
-    elevation: int = 0
+    meters_elevation_gain: int = 0
     elevation_column: str = "total_elevation_gain"
-    id_activity: str = "id"
-    sports: List[str] = ["Ride", "Run"]
+    id_activity_column: str = "id"
+    sports_to_correct: List[str] = ["Ride", "Run"]
     sports_column: str = "sport_type"
 
 except KeyError as e:
