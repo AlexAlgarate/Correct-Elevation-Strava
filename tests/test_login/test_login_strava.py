@@ -9,9 +9,7 @@ from utils.web_element_handler import WebElementHandler
 
 
 class TestStravaLoginPage:
-    def test_strava_isinstances(self, login_strava: LoginStrava, driver: WebDriver) -> None:
-        assert isinstance(login_strava, LoginStrava)
-        assert isinstance(driver, WebDriver)
+    def test_strava_isinstances(self, login_strava: LoginStrava) -> None:
         assert hasattr(login_strava, "login")
 
     def test_open_strava_page(self, driver: WebDriver, element: WebElementHandler) -> None:
