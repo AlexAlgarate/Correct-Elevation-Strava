@@ -66,6 +66,6 @@ correct_elevation_elements: Dict[
     "click_correct_button": (
         EC.element_to_be_clickable,
         By.CSS_SELECTOR,
-        "button.Button--primary--cUgAV[type='submit']",
+        "button.Button--primary--js2Gt[type='submit']",
     ),
 }
