@@ -3,16 +3,13 @@ import os
 from dotenv import load_dotenv
 
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
-from src.strava_api.tokens_process.request_credentials import (
-    RequestAccessToken,
-)
+from src.strava_api.tokens_process.request_credentials import RequestAccessToken
 from utils import err_log, exc_log
 from utils.config import access_token_env
 
 
 class GetAccessToken:
     refresh: RefreshTokenManager = RefreshTokenManager()
-
     """
         Return the access token from the .env file.
         Firstly, check if the access token has expired or not.
@@ -72,9 +69,7 @@ class GetAccessToken:
         Returns:
             str: A new access token string
         """
-        print("The access token has expired.\nRefreshing the access token...")
         access_token: str = self.refresh.refresh_access_token()
-        print(f"The new access token is: {access_token}")
         return access_token
 
     def _get_access_token_from_env(self) -> str:

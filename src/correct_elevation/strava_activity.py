@@ -32,7 +32,6 @@ class StravaActivity:
         Returns:
             str: The URL of the activity
         """
-
         return f"https://www.strava.com/activities/{self.id}"
 
     def open_activity_id_url(self) -> None:

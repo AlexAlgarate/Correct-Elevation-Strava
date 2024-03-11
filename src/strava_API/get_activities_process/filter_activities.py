@@ -20,7 +20,7 @@ class ActivityFilter:
         sports: List[str],
         elevation_column: str,
         meters_elevation: int,
-        id_actvity: str
+        id_actvity: str,
     ) -> List[int]:
         """
         Filter activities based on the sports type "Ride" and "Run" and

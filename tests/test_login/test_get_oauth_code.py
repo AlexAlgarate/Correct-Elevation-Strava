@@ -54,7 +54,9 @@ class TestOauthCode:
         element.click_button(authorize_button)
 
         # Check if the URL with the OAuth code matches the expected format
-        url_with_oauth_code: str = "http://localhost/exchange_token?state=&code=a9ac7dc9ccfb13678d2f3c0104d8fdc8fdb72193&scope=read,activity:read,activity:read_all,read_all"
+        url_with_oauth_code: str = (
+            "http://localhost/exchange_token?state=&code=a9ac7dc9ccfb13678d2f3c0104d8fdc8fdb72193&scope=read,activity:read,activity:read_all,read_all"
+        )
         assert driver.current_url.startswith(url_with_oauth_code[:44])
 
     def test_code_properties(self):

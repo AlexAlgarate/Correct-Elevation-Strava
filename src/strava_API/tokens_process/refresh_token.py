@@ -1,9 +1,9 @@
 from time import time
 from typing import Dict, Optional, Tuple, Union
-from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Timeout
 
 import requests
-from dotenv import set_key
+from dotenv import load_dotenv, set_key
+from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Timeout
 
 from utils import exc_log
 from utils.config import (
@@ -18,6 +18,7 @@ from utils.config import (
 
 
 class RefreshTokenManager:
+    load_dotenv()
     """
     A class to manage the refreshing proccess of the access token.
     If the access token has expired, it makes a POST request to the Strava API
@@ -36,6 +37,8 @@ class RefreshTokenManager:
 
         try:
             expires_at: int = int(EXPIRES_AT)
+            if expires_at < self.current_time:
+                print("EL TOKEN HAS EXPIRED!!!!!!")
             return expires_at < self.current_time
 
         except ValueError as e:

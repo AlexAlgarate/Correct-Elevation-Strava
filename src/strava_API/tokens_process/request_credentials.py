@@ -4,9 +4,7 @@ import requests
 from dotenv import load_dotenv, set_key
 from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Timeout
 
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
-    OauthCodeGetter,
-)
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import OauthCodeGetter
 from utils import exc_log
 from utils.config import (
     CLIENT_ID,
@@ -22,6 +20,7 @@ load_dotenv()
 
 
 class RequestAccessToken:
+
     def __init__(self) -> None:
         self.code = OauthCodeGetter()
         self.client_id: int = CLIENT_ID

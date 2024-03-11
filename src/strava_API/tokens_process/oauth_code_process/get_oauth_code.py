@@ -15,7 +15,6 @@ from utils.web_element_handler import WebElementHandler
 
 
 class OauthCodeGetter:
-
     """
     A class responsible for obtaining the OAuth code needed to obtain an access token
 

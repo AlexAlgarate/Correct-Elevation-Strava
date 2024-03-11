@@ -47,7 +47,7 @@ def main() -> None:
             login.login()
             get_activities = LatestActivities(driver=driver)
 
-            for activity in get_activities.get_latest_activities(limit=3):
+            for activity in get_activities.get_latest_activities():
                 proccess_activity(driver=driver, activity=activity)
 
     except Exception as e:
