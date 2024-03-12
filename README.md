@@ -18,7 +18,6 @@ The program automates the process of correcting elevation data on Strava for act
 </a>
 
 <br>
-<br>
 
 **2.** Fill in the required credentials (CLIENT_ID, SECRET_KEY, USER, PASSWORD) in a .env file.
 
@@ -29,8 +28,6 @@ The program automates the process of correcting elevation data on Strava for act
 </a>
 
 <br>
-<br>
-
 
 **3.** Setup virtual environment
 
@@ -79,7 +76,6 @@ Additionally, it's worth mentioning that the program automatically handles token
 </a>
 
 <br>
-<br>
 
 - Example of an activity recorded by Garmin Fenix with 0 meters of elevation gain, requiring correction using Strava options.
 
@@ -89,7 +85,6 @@ Additionally, it's worth mentioning that the program automatically handles token
     />
 </a>
 
-<br>
 <br>
 
 - This is the menu options of each activity where various parameters can be edited, including the one we need, 'correct elevation'. 
@@ -101,7 +96,6 @@ Additionally, it's worth mentioning that the program automatically handles token
 </a>
 
 <br>
-<br>
 
 - When we click on the 'correct elevation' button, a popup window appears where we confirm the operation.
 
@@ -111,7 +105,6 @@ Additionally, it's worth mentioning that the program automatically handles token
     />
 </a>
 
-<br>
 <br>
 
 - And this is the final result, an activity whose elevation has been corrected using Strava's databases.
