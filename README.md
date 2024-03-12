@@ -10,10 +10,26 @@ Strava's elevation correction process involves cross-referencing GPS data with t
 The program automates the process of correcting elevation data on Strava for activities recorded with Garmin Fenix devices experiencing barometric sensor issues. It follows a set of steps outlined below:
 
 **1.** Create a Strava API using *[the provided guide](https://developers.strava.com/docs/getting-started/)*.
-![Image of the .env file with the mandatory variables](/images/strava_api_example.png){:width="450px" height="450px"}
+
+<a>
+    <img
+  alt="Image of Strava webpage where you can create the API" src="/images/strava_api_example.png" style="box-shadow: 5px 5px 5px grey; width:75%; height:75%; border:2px"
+    />
+</a>
+
+<br>
+<br>
+
 **2.** Fill in the required credentials (CLIENT_ID, SECRET_KEY, USER, PASSWORD) in a .env file.
 
-![Image of the .env file with the mandatory variables](/images/env.png){:width="100px" height="100px"}
+<a>
+    <img
+  alt="Image of the .env file with the name of variables and theis example values" src="/images/env.png" style="box-shadow: 5px 5px 5px grey; width:75%; height:75%; border:2px"
+    />
+</a>
+
+<br>
+<br>
 
 
 **3.** Setup virtual environment
@@ -58,7 +74,7 @@ Additionally, it's worth mentioning that the program automatically handles token
 
 <a>
     <img
-  alt="Image of Strava webpage displaying some sport activities" src="/images/activities.png" style="box-shadow: 5px 5px 5px grey; width:100%; height:100%; border:2px"
+  alt="Image of Strava webpage displaying some sport activities" src="/images/activities.png" style="box-shadow: 5px 5px 5px grey; width:75%; height:75%; border:2px"
     />
 </a>
 
@@ -67,10 +83,9 @@ Additionally, it's worth mentioning that the program automatically handles token
 
 - Example of an activity recorded by Garmin Fenix with 0 meters of elevation gain, requiring correction using Strava options.
 
-
 <a>
     <img
-  alt="Image of Strava webpage of some sport activities" src="/images/preview_0m.png" style="box-shadow: 5px 5px 5px grey; width:100%; height:100%; border:2px"
+  alt="Image of Strava webpage of one running activity with 0 meters of elevation gain" src="/images/preview_0m.png" style="box-shadow: 5px 5px 5px grey; width:75%; height:75%; border:2px"
     />
 </a>
 
@@ -79,11 +94,9 @@ Additionally, it's worth mentioning that the program automatically handles token
 
 - This is the menu options of each activity where various parameters can be edited, including the one we need, 'correct elevation'. 
 
-
-
 <a>
     <img
-  alt="Image of Strava webpage of some sport activities" src="/images/options_correct_elevation.png" style="box-shadow: 5px 5px 5px grey; width:30%; height:30%; border:2px"
+  alt="Image of the menu options of the running activity" src="/images/options_correct_elevation.png" style="box-shadow: 5px 5px 5px grey; width:30%; height:30%; border:2px"
     />
 </a>
 
@@ -94,7 +107,7 @@ Additionally, it's worth mentioning that the program automatically handles token
 
 <a>
     <img
-  alt="Image of Strava webpage of some sport activities" src="/images/click_correct.png" style="box-shadow: 5px 5px 5px grey; width:100%; height:100%; border:2px"
+  alt="Image of the popup window where you can confirm the proccess" src="/images/click_correct.png" style="box-shadow: 5px 5px 5px grey; width:100%; height:100%; border:2px"
     />
 </a>
 
@@ -105,7 +118,7 @@ Additionally, it's worth mentioning that the program automatically handles token
 
 <a>
     <img
-  alt="Image of Strava webpage of some sport activities" src="/images/activity_corrected.png" style="box-shadow: 5px 5px 5px grey; width:100%; height:100%; border:2px"
+  alt="Image of Strava webpage where the activity has been corrected" src="/images/activity_corrected.png" style="box-shadow: 5px 5px 5px grey; width:100%; height:100%; border:2px"
     />
 </a>
 
