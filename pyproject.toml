@@ -8,14 +8,14 @@ packages = [{include = "correct_elevation_strava"}]
 
 [tool.poetry.dependencies]
 python = "^3.10.8"
-pandas = { version = ">=1.26.0,<3.13", python = "^3.10" }
-black = "^24.1.1"
-selenium = "^4.17.2"
+pandas = "^2.2.2"
+black = "^24.4.2"
+selenium = "^4.21.0"
 isort = "^5.13.2"
 flake8 = "^7.0.0"
 python-dotenv = "^1.0.1"
-requests = "^2.31.0"
-pytest = "^8.0.0"
+requests = "^2.32.2"
+pytest = "^8.2.1"
 
 
 

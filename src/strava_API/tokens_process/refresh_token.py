@@ -38,7 +38,7 @@ class RefreshTokenManager:
         try:
             expires_at: int = int(EXPIRES_AT)
             if expires_at < self.current_time:
-                print("EL TOKEN HAS EXPIRED!!!!!!")
+                print("The access token has expired.")
             return expires_at < self.current_time
 
         except ValueError as e:
