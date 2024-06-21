@@ -2,7 +2,7 @@ pandas
 black
 selenium
 isort
-flake8
+ruff
 python-dotenv
 requests
 pytest

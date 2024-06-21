@@ -9,12 +9,16 @@ from utils.web_element_handler import WebElementHandler
 
 
 class TestStravaLoginPage:
-    def test_strava_isinstances(self, login_strava: LoginStrava, driver: WebDriver) -> None:
+    def test_strava_isinstances(
+        self, login_strava: LoginStrava, driver: WebDriver
+    ) -> None:
         assert isinstance(login_strava, LoginStrava)
         assert isinstance(driver, WebDriver)
         assert hasattr(login_strava, "login")
 
-    def test_open_strava_page(self, driver: WebDriver, element: WebElementHandler) -> None:
+    def test_open_strava_page(
+        self, driver: WebDriver, element: WebElementHandler
+    ) -> None:
         element.open_url(url=url_login_strava)
         assert "https://www.strava.com/login" == driver.current_url
 

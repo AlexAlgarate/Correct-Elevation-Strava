@@ -50,7 +50,9 @@ class StravaActivity:
         """
         try:
             indoor_activity_type: str = "spinning"
-            header: WebElement = self.element.find_element(*correct_elements["indoor_cyclig"])
+            header: WebElement = self.element.find_element(
+                *correct_elements["indoor_cyclig"]
+            )
             activity_type: str = (
                 self.element.find_element(
                     *correct_elements["title_header"], element_to_wait_for=header
@@ -88,7 +90,9 @@ class StravaActivity:
         """
         try:
             revert_text: str = "Revertir"
-            revert_button: str = self.element.find_element(*correct_elements["revert_button"]).text
+            revert_button: str = self.element.find_element(
+                *correct_elements["revert_button"]
+            ).text
             return revert_text.casefold() in revert_button.casefold()
         except NoSuchElementException as e:
             exc_log.exception(e)

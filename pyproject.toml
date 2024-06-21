@@ -12,10 +12,10 @@ pandas = "^2.2.2"
 black = "^24.4.2"
 selenium = "^4.21.0"
 isort = "^5.13.2"
-flake8 = "^7.0.0"
 python-dotenv = "^1.0.1"
 requests = "^2.32.2"
 pytest = "^8.2.1"
+ruff = "^0.4.9"
 
 
 
@@ -34,7 +34,6 @@ testpaths = [
 ]
 
 [tool.black]
-line-length = 100
 exclude = '''
 /(
   \.git
@@ -50,3 +49,58 @@ exclude = '''
 )/
 '''
 target-version = ["py38", "py39", "py310", "py311"]
+
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 88
+indent-width = 4
+
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B"]
+ignore = ["E501", "B904"]
+fixable = ["ALL"]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"**/{tests,docs,tools}/*" = ["E402"]

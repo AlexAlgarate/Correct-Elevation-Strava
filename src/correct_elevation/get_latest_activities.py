@@ -49,6 +49,9 @@ class LatestActivities:
                 meters_elevation=meters_elevation_gain,
                 id_actvity=id_activity_column,
             )[:limit]
-            return [StravaActivity(self.driver, activity_id) for activity_id in filtered_activities]
+            return [
+                StravaActivity(self.driver, activity_id)
+                for activity_id in filtered_activities
+            ]
         except Exception as e:
             exc_log.exception(e)

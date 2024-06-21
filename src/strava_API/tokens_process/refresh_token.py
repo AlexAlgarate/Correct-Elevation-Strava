@@ -53,7 +53,9 @@ class RefreshTokenManager:
             exc_log.exception(f"An unexpected error occurred: {e}")
             raise
 
-    def _update_env(self, access_token: str, refresh_token: str, expires_at: Optional[int]) -> None:
+    def _update_env(
+        self, access_token: str, refresh_token: str, expires_at: Optional[int]
+    ) -> None:
         """
         Update the access token and expires_at in the .env file.
 
@@ -88,7 +90,9 @@ class RefreshTokenManager:
         except Exception as e:
             exc_log.exception(f"Error while updating the .env: {e}")
 
-    def _request_refresh_token(self, params: Dict[str, Union[str, int]]) -> requests.Response:
+    def _request_refresh_token(
+        self, params: Dict[str, Union[str, int]]
+    ) -> requests.Response:
         """
         Make a POST request to the token URL using the provided refresh data.
 
@@ -152,7 +156,9 @@ class RefreshTokenManager:
             params: Dict[str, str | int] = refresh_data
             request: requests.Response = self._request_refresh_token(params)
             response: Dict[str, str | int] = self._parse_refresh_request(request)
-            access_token, refresh_token, expires_at = self._extract_credentials(response)
+            access_token, refresh_token, expires_at = self._extract_credentials(
+                response
+            )
             self._update_env(access_token, refresh_token, expires_at)
             return access_token
 

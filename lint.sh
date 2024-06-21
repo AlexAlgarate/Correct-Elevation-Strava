@@ -1,6 +1,4 @@
-isort src/
-black src/
-isort tests/
-black tests/
-flake8 src/
-flake8 tests/
+directories=("src" "tests")
+for dir in "${directories[@]}"; do
+    isort $dir && black $dir && ruff check $dir
+done

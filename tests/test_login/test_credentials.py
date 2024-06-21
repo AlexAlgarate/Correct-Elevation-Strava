@@ -11,7 +11,9 @@ class TestCredentials:
         assert isinstance(strava_credentials, Credentials)
 
     def test_valid_email_format(
-        self, strava_credentials: Credentials, invalid_email: Literal["example123example.com"]
+        self,
+        strava_credentials: Credentials,
+        invalid_email: Literal["example123example.com"],
     ) -> None:
         email_regex = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         assert re.match(email_regex, strava_credentials.email)

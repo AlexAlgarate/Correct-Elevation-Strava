@@ -33,7 +33,9 @@ class GetAccessToken:
             access_token: str = os.getenv(access_token_env)
 
             if access_token is None:
-                err_log.error("Access token has not found in the .env. Getting a new one...")
+                err_log.error(
+                    "Access token has not found in the .env. Getting a new one..."
+                )
                 self._get_new_access_token()
 
             if self._access_token_has_expired():

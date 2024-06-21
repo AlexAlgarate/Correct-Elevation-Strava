@@ -1,7 +1,9 @@
 from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webelement import WebElement
 
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import OauthCodeGetter
+from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
+    OauthCodeGetter,
+)
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils.config import (
     CLIENT_ID,
@@ -47,7 +49,9 @@ class TestOauthCode:
         assert driver.current_url == expected_url
 
         # Find the authorize_button
-        authorize_button: WebElement = element.find_element(*oauth_elements["authorize_button"])
+        authorize_button: WebElement = element.find_element(
+            *oauth_elements["authorize_button"]
+        )
         assert authorize_button is not None
 
         # Click on the authorize_button
