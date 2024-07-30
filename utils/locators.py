@@ -38,7 +38,7 @@ oauth_elements: Dict[str, Tuple[Union[EC.element_to_be_clickable, By, str]]] = {
     )
 }
 
-correct_elevation_elements: Dict[
+web_elements_correct_elevation: Dict[
     str,
     Tuple[Union[EC.visibility_of_element_located, EC.element_to_be_clickable], By, str],
 ] = {

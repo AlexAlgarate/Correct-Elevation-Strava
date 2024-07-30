@@ -34,10 +34,11 @@ try:
     authorization_url: str = "https://www.strava.com/oauth/authorize"
     scopes: str = "read,read_all,activity:read,activity:read_all"
     api_url: str = "https://www.strava.com/api/v3/activities"
+    url_strava_activities = "https://www.strava.com/activities/"
     page_size: str = "200"
     dot_env_file = find_dotenv()
     seconds = 2
-
+    limit_of_activities = 1
     client_id: str = f"client_id={CLIENT_ID}"
     redirect_uri: str = f"redirect_uri={redirect_url}"
     response_type: str = "response_type=code"

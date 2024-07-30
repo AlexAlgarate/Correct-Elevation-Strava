@@ -5,16 +5,7 @@ from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
     OauthCodeGetter,
 )
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
-from utils.config import (
-    CLIENT_ID,
-    OAuth_url,
-    approval_prompt,
-    authorization_url,
-    client_id,
-    redirect_uri,
-    response_type,
-    scope,
-)
+from utils import config
 from utils.locators import oauth_elements
 from utils.web_element_handler import WebElementHandler
 
@@ -22,36 +13,35 @@ from utils.web_element_handler import WebElementHandler
 class TestOauthCode:
     def test_construct_oauth_url(self):
         expected_url: str = (
-            f"{authorization_url}?"
-            f"{client_id}&"
-            f"{response_type}&"
-            f"{redirect_uri}&"
-            f"{approval_prompt}&"
-            f"{scope}"
+            f"{config.authorization_url}?"
+            f"{config.client_id}&"
+            f"{config.response_type}&"
+            f"{config.redirect_uri}&"
+            f"{config.approval_prompt}&"
+            f"{config.scope}"
         )
-        assert expected_url == OAuth_url
+        assert expected_url == config.OAuth_url
 
     def test_access_oauth_code_url_when_no_logged_in(self, driver: Chrome) -> None:
-        driver.get(url=OAuth_url)
+        driver.get(url=config.OAuth_url)
         assert driver.current_url == "https://www.strava.com/login"
-        assert OAuth_url != driver.current_url
+        assert config.OAuth_url != driver.current_url
 
     def test_access_oauth_code_url(
         self, driver: Chrome, element: WebElementHandler, login_strava: LoginStrava
     ) -> None:
         # Check if accessing OAuth URL after login is successful
-        login_strava
-        driver.get(url=OAuth_url)
+        assert login_strava is not None
+
+        driver.get(url=config.OAuth_url)
         expected_url: str = (
             "https://www.strava.com/oauth/authorize?"
-            f"client_id={CLIENT_ID}&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=read,read_all,activity:read,activity:read_all"
+            f"client_id={config.CLIENT_ID}&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=read,read_all,activity:read,activity:read_all"
         )
         assert driver.current_url == expected_url
 
         # Find the authorize_button
-        authorize_button: WebElement = element.find_element(
-            *oauth_elements["authorize_button"]
-        )
+        authorize_button: WebElement = element.find_element(*oauth_elements["authorize_button"])
         assert authorize_button is not None
 
         # Click on the authorize_button

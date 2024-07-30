@@ -8,12 +8,20 @@ from utils.web_element_handler import WebElementHandler
 
 
 @pytest.fixture
-def driver() -> Chrome:
+def driver():
     options = ChromeOptions()
     # options.add_argument("--start-maximized")
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-extensions")
+    arguments = [
+        "--headless",
+        "--disable-gpu",
+        "--disable-extensions",
+    ]
+    for args in arguments:
+        options.add_argument(args)
+    # options.add_argument("--headless")
+    # options.add_argument("--disable-gpu")
+    # options.add_argument("--disable-extensions")
+    options.page_load_strategy = "eager"
     driver = Chrome(service=Service(), options=options)
     yield driver
     driver.quit()
@@ -21,9 +29,9 @@ def driver() -> Chrome:
 
 @pytest.fixture
 def login_strava(driver: WebDriver) -> LoginStrava:
-    login_strava = LoginStrava(driver)
-    login_strava.login()
-    return login_strava
+    login_instance = LoginStrava(driver)
+    login_instance.login()
+    return login_instance
 
 
 @pytest.fixture

@@ -7,7 +7,7 @@ from src.correct_elevation.get_latest_activities import LatestActivities
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils import exc_log, inf_log
-from utils.config import seconds
+from utils import config
 
 
 def setup_driver() -> webdriver.Chrome:
@@ -18,9 +18,13 @@ def setup_driver() -> webdriver.Chrome:
         A instance of the ChromeDriver class.
     """
     options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-extensions")
+    arguments = [
+        "--start-maximized",
+        "--disable-gpu",
+        "--disable-extensions",
+    ]
+    for args in arguments:
+        options.add_argument(args)
     options.add_experimental_option("detach", True)
     return webdriver.Chrome(service=Service(), options=options)
 
@@ -42,12 +46,14 @@ def proccess_activity(driver: webdriver.Chrome, activity: StravaActivity) -> Non
 def main() -> None:
     try:
         with setup_driver() as driver:
-            driver.implicitly_wait(time_to_wait=seconds)
+            driver.implicitly_wait(time_to_wait=config.seconds)
             login = LoginStrava(driver=driver)
             login.login()
             get_activities = LatestActivities(driver=driver)
 
-            for activity in get_activities.get_latest_activities():
+            for activity in get_activities.get_latest_activities(
+                limit_of_activities=config.limit_of_activities
+            ):
                 proccess_activity(driver=driver, activity=activity)
 
     except Exception as e:

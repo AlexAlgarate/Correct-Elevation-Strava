@@ -7,16 +7,7 @@ from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Time
 from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
     OauthCodeGetter,
 )
-from utils import exc_log
-from utils.config import (
-    CLIENT_ID,
-    SECRET_KEY,
-    access_token_env,
-    dot_env_file,
-    expires_at_env,
-    refresh_token_env,
-    token_url,
-)
+from utils import config, exc_log
 
 load_dotenv()
 
@@ -25,9 +16,9 @@ class RequestAccessToken:
 
     def __init__(self) -> None:
         self.code = OauthCodeGetter()
-        self.client_id: int = CLIENT_ID
-        self.client_secret: str = SECRET_KEY
-        self.url = token_url
+        self.client_id: int = config.CLIENT_ID
+        self.client_secret: str = config.SECRET_KEY
+        self.url = config.token_url
 
     def get_data_for_request(self) -> Dict[str, Union[str, int]]:
         data = {
@@ -74,18 +65,18 @@ class RequestAccessToken:
         expires_at: str = response.get("expires_at")
 
         set_key(
-            dotenv_path=dot_env_file,
-            key_to_set=access_token_env,
+            dotenv_path=config.dot_env_file,
+            key_to_set=config.access_token_env,
             value_to_set=access_token,
         )
         set_key(
-            dotenv_path=dot_env_file,
-            key_to_set=refresh_token_env,
+            dotenv_path=config.dot_env_file,
+            key_to_set=config.refresh_token_env,
             value_to_set=refresh_token,
         )
         set_key(
-            dotenv_path=dot_env_file,
-            key_to_set=expires_at_env,
+            dotenv_path=config.dot_env_file,
+            key_to_set=config.expires_at_env,
             value_to_set=str(expires_at),
         )
 

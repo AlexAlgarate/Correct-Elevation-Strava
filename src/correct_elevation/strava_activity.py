@@ -4,8 +4,7 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from utils import exc_log
-from utils.locators import correct_elevation_elements as correct_elements
+from utils import config, exc_log, locators
 from utils.web_element_handler import WebElementHandler
 
 
@@ -32,7 +31,7 @@ class StravaActivity:
         Returns:
             str: The URL of the activity
         """
-        return f"https://www.strava.com/activities/{self.id}"
+        return f"{config.url_strava_activities}{self.id}"
 
     def open_activity_id_url(self) -> None:
         """
@@ -51,11 +50,12 @@ class StravaActivity:
         try:
             indoor_activity_type: str = "spinning"
             header: WebElement = self.element.find_element(
-                *correct_elements["indoor_cyclig"]
+                *locators.web_elements_correct_elevation["indoor_cycling"]
             )
             activity_type: str = (
                 self.element.find_element(
-                    *correct_elements["title_header"], element_to_wait_for=header
+                    *locators.web_elements_correct_elevation["title_header"],
+                    element_to_wait_for=header,
                 )
             ).text
             return indoor_activity_type.casefold() in activity_type.casefold()
@@ -73,7 +73,7 @@ class StravaActivity:
 
         try:
             options_button: WebElement = self.element.find_element(
-                *correct_elements["options_button"]
+                *locators.web_elements_correct_elevation["options_button"]
             )
             self.element.click_button(options_button)
             return True
@@ -88,10 +88,11 @@ class StravaActivity:
         Returns:
             bool: True if the "Revert" button is present, False otherwise.
         """
+
         try:
             revert_text: str = "Revertir"
             revert_button: str = self.element.find_element(
-                *correct_elements["revert_button"]
+                *locators.web_elements_correct_elevation["revert_button"]
             ).text
             return revert_text.casefold() in revert_button.casefold()
         except NoSuchElementException as e:
@@ -106,10 +107,11 @@ class StravaActivity:
             bool: True if the correct elevation button was
             successfully clicked, False otherwise.
         """
+
         if not self.presence_revert_elevation():
             try:
                 correct_elevation_option: WebElement = self.element.find_element(
-                    *correct_elements["correct_button"]
+                    *locators.web_elements_correct_elevation["correct_button"]
                 )
                 self.element.click_button(correct_elevation_option)
                 return True
@@ -122,8 +124,9 @@ class StravaActivity:
         """
         Clicks the "Correct elevation" button.
         """
+
         correct_activity_button: WebElement = self.element.find_element(
-            *correct_elements["click_correct_button"]
+            *locators.web_elements_correct_elevation["click_correct_button"]
         )
         self.element.click_button(correct_activity_button)
 
@@ -135,6 +138,7 @@ class StravaActivity:
             bool: True if the elevation correction was successful,
             False otherwise.
         """
+
         try:
             if self.is_activity_indoor_cycling():
                 return False

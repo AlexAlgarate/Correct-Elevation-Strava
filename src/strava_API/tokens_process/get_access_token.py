@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 
 from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
 from src.strava_api.tokens_process.request_credentials import RequestAccessToken
-from utils import err_log, exc_log
-from utils.config import access_token_env
+from utils import config, err_log, exc_log
 
 
 class GetAccessToken:
@@ -30,7 +29,7 @@ class GetAccessToken:
         """
 
         try:
-            access_token: str = os.getenv(access_token_env)
+            access_token: str = os.getenv(config.access_token_env)
 
             if access_token is None:
                 err_log.error(
@@ -40,8 +39,8 @@ class GetAccessToken:
 
             if self._access_token_has_expired():
                 refreshed_access_token: str = self._refresh_the_access_token()
-                os.environ[access_token_env] = refreshed_access_token
-            refreshed_access_token = os.getenv(access_token_env)
+                os.environ[config.access_token_env] = refreshed_access_token
+            refreshed_access_token = os.getenv(config.access_token_env)
             if refreshed_access_token is None:
                 err_log.error("Access token not found in the .env")
 
@@ -83,7 +82,7 @@ class GetAccessToken:
         """
         try:
             load_dotenv()
-            access_token: str = os.getenv(access_token_env)
+            access_token: str = os.getenv(config.access_token_env)
             if not access_token:
                 return self._get_new_access_token()
             return access_token
@@ -99,5 +98,5 @@ class GetAccessToken:
         credentials_handler = RequestAccessToken()
         credentials_handler.generate_access_token()
         print("Credentials updated successfully")
-        access_token: str = os.getenv(access_token_env)
+        access_token: str = os.getenv(config.access_token_env)
         return access_token

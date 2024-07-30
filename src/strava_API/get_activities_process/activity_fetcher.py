@@ -1,14 +1,14 @@
 from typing import Dict, List, Union
 
 from src.strava_api.get_activities_process.activity_api_request import RequestActivities
-from utils.config import api_url
+from utils import config
 
 
 class ActivityFetcher:
     api_request: RequestActivities
 
     def __init__(self) -> None:
-        self.api_request = RequestActivities(api_url=api_url)
+        self.api_request = RequestActivities(api_url=config.api_url)
 
     def get_latest_activities(
         self, page_size: int = 100

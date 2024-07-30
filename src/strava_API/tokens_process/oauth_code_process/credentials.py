@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from utils.config import EMAIL, PASSWORD
+from utils import config
 
 
 class Credentials:
@@ -12,11 +12,11 @@ class Credentials:
         password (str): The password associated with the Strava account.
     """
 
-    email: str = EMAIL
-    password: str = PASSWORD
+    email: str = config.EMAIL
+    password: str = config.PASSWORD
 
     def __init__(self, email: str, password: str) -> None:
-        if email is None or password is None:
-            raise ValueError("Credentials must be provided.")
         self.email: str = email
         self.password: str = password
+        if self.email and self.password is None:
+            raise ValueError("Credentials must be provided.")

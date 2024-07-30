@@ -5,8 +5,7 @@ from typing import Dict
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from utils import exc_log
-from utils.config import url_login_strava
+from utils import config, exc_log
 from utils.locators import login_elements
 from utils.web_element_handler import WebElementHandler
 
@@ -31,7 +30,7 @@ class LoginStrava:
         This method opens the login URL, fills in the email and password fields, and clicks the login button.
         """
         try:
-            self.element.open_url(url=url_login_strava)
+            self.element.open_url(url=config.url_login_strava)
             elements: Dict[str, WebElement] = {
                 element_name: self.element.find_element(*element_data)
                 for element_name, element_data in login_elements.items()

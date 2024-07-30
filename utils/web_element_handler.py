@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from src.strava_api.tokens_process.oauth_code_process.credentials import Credentials
 from utils import exc_log
-from utils.config import seconds
+from utils import config
 
 
 class WebElementHandler:
@@ -53,12 +53,12 @@ class WebElementHandler:
         try:
             if element_to_wait_for:
                 element: WebElement = WebDriverWait(
-                    driver=element_to_wait_for, timeout=seconds
+                    driver=element_to_wait_for, timeout=config.seconds
                 ).until(condition((locator, selector)))
             else:
-                element: WebElement = WebDriverWait(driver=self.driver, timeout=seconds).until(
-                    condition((locator, selector))
-                )
+                element: WebElement = WebDriverWait(
+                    driver=self.driver, timeout=config.seconds
+                ).until(condition((locator, selector)))
             return element
 
         except NoSuchElementException as e:

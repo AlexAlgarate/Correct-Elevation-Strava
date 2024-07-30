@@ -5,16 +5,8 @@ import requests
 from dotenv import load_dotenv, set_key
 from requests.exceptions import ConnectionError, ConnectTimeout, HTTPError, Timeout
 
+from utils import config as config
 from utils import exc_log
-from utils.config import (
-    EXPIRES_AT,
-    access_token_env,
-    dot_env_file,
-    expires_at_env,
-    refresh_data,
-    refresh_token_env,
-    token_url,
-)
 
 
 class RefreshTokenManager:
@@ -36,7 +28,7 @@ class RefreshTokenManager:
         """
 
         try:
-            expires_at: int = int(EXPIRES_AT)
+            expires_at: int = int(config.EXPIRES_AT)
             if expires_at < self.current_time:
                 print("The access token has expired.")
             return expires_at < self.current_time
@@ -67,19 +59,19 @@ class RefreshTokenManager:
 
         try:
             set_key(
-                dotenv_path=dot_env_file,
-                key_to_set=access_token_env,
+                dotenv_path=config.dot_env_file,
+                key_to_set=config.access_token_env,
                 value_to_set=access_token,
             )
             set_key(
-                dotenv_path=dot_env_file,
-                key_to_set=refresh_token_env,
+                dotenv_path=config.dot_env_file,
+                key_to_set=config.refresh_token_env,
                 value_to_set=refresh_token,
             )
             if expires_at is not None:
                 set_key(
-                    dotenv_path=dot_env_file,
-                    key_to_set=expires_at_env,
+                    dotenv_path=config.dot_env_file,
+                    key_to_set=config.expires_at_env,
                     value_to_set=str(expires_at),
                 )
 
@@ -102,7 +94,7 @@ class RefreshTokenManager:
         Returns:
             requests.Response: The response object.
         """
-        return requests.post(url=token_url, data=params)
+        return requests.post(url=config.token_url, data=params)
 
     def _parse_refresh_request(
         self, refresh_response: requests.Response
@@ -153,7 +145,7 @@ class RefreshTokenManager:
         """
 
         try:
-            params: Dict[str, str | int] = refresh_data
+            params: Dict[str, str | int] = config.refresh_data
             request: requests.Response = self._request_refresh_token(params)
             response: Dict[str, str | int] = self._parse_refresh_request(request)
             access_token, refresh_token, expires_at = self._extract_credentials(

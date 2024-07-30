@@ -8,8 +8,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
 from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
-from utils import exc_log
-from utils.config import OAuth_url, seconds
+from utils import config, exc_log
 from utils.locators import oauth_elements
 from utils.web_element_handler import WebElementHandler
 
@@ -36,7 +35,7 @@ class OauthCodeGetter:
         options.add_experimental_option("detach", True)
 
         with Chrome(service=Service(), options=options) as driver:
-            driver.implicitly_wait(time_to_wait=seconds)
+            driver.implicitly_wait(time_to_wait=config.seconds)
             try:
                 strava = LoginStrava(driver=driver)
                 get_code = ExtractCode(driver=driver)
@@ -44,7 +43,7 @@ class OauthCodeGetter:
 
                 strava.login()
 
-                web_elements.open_url(url=OAuth_url)
+                web_elements.open_url(url=config.OAuth_url)
                 authorize_button: WebElement = web_elements.find_element(
                     *oauth_elements["authorize_button"]
                 )

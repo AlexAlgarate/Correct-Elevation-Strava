@@ -6,14 +6,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 
 from src.correct_elevation.strava_activity import StravaActivity
 from src.strava_api.get_activities_process.filter_activities import ActivityFilter
-from utils import exc_log
-from utils.config import (
-    elevation_column,
-    id_activity_column,
-    meters_elevation_gain,
-    sports_column,
-    sports_to_correct,
-)
+from utils import config, exc_log
 
 
 class LatestActivities:
@@ -30,7 +23,7 @@ class LatestActivities:
         self.filter = ActivityFilter()
         self.driver: WebDriver = driver
 
-    def get_latest_activities(self, limit: int = 20) -> List[StravaActivity]:
+    def get_latest_activities(self, limit_of_activities: int) -> List[StravaActivity]:
         """
         Get the latest Strava activities.
 
@@ -43,12 +36,12 @@ class LatestActivities:
 
         try:
             filtered_activities: List[int] = self.filter.filter_activities(
-                columns_sport=sports_column,
-                sports=sports_to_correct,
-                elevation_column=elevation_column,
-                meters_elevation=meters_elevation_gain,
-                id_actvity=id_activity_column,
-            )[:limit]
+                columns_sport=config.sports_column,
+                sports=config.sports_to_correct,
+                elevation_column=config.elevation_column,
+                meters_elevation=config.meters_elevation_gain,
+                id_actvity=config.id_activity_column,
+            )[:limit_of_activities]
             return [
                 StravaActivity(self.driver, activity_id)
                 for activity_id in filtered_activities
