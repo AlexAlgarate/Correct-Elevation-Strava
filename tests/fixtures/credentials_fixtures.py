@@ -1,6 +1,6 @@
 import pytest
 
-from src.strava_api.tokens_process.oauth_code_process.credentials import Credentials
+from src.strava_API.tokens_process.oauth_code_process.credentials import Credentials
 
 
 @pytest.fixture

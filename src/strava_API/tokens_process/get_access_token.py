@@ -2,8 +2,8 @@ import os
 
 from dotenv import load_dotenv
 
-from src.strava_api.tokens_process.refresh_token import RefreshTokenManager
-from src.strava_api.tokens_process.request_credentials import RequestAccessToken
+from src.strava_API.tokens_process.refresh_token import RefreshTokenManager
+from src.strava_API.tokens_process.request_credentials import RequestAccessToken
 from utils import config, err_log, exc_log
 
 

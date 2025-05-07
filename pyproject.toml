@@ -1,90 +1,20 @@
-[tool.poetry]
+[project]
 name = "correct-elevation-strava"
 version = "0.1.0"
-description = ""
-authors = ["Alex Algarate <alex.algarate@gmail.com>"]
+description = "Add your description here"
 readme = "README.md"
-packages = [{include = "correct_elevation_strava"}]
-
-[tool.poetry.dependencies]
-python = "^3.10.8"
-pandas = "^2.2.2"
-black = "^24.4.2"
-selenium = "^4.21.0"
-isort = "^5.13.2"
-python-dotenv = "^1.0.1"
-requests = "^2.32.2"
-pytest = "^8.2.1"
-ruff = "^0.4.9"
-
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.isort]
-skip = [".gitignore", ".dockerignore"]
-
-[tool.pytest.ini_options]
-addopts = "-v -ra --no-header"
-testpaths = [
-    ".tests/",
-    "integration",
+requires-python = ">=3.12"
+dependencies = [
+    "mypy>=1.15.0",
+    "pandas==2.2.2",
+    "pytest==8.2.1",
+    "python-dotenv==1.0.1",
+    "requests==2.32.2",
+    "ruff>=0.11.8",
+    "selenium==4.21.0",
 ]
 
-[tool.black]
-exclude = '''
-/(
-  \.git
-| \.hg
-| \.mypy_cache
-| \.tox
-| \.venv
-| _build
-| buck-out
-| build
-| dist
-| node_modules
-)/
-'''
-target-version = ["py38", "py39", "py310", "py311"]
 
-
-[tool.ruff]
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".ipynb_checkpoints",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pyenv",
-    ".pytest_cache",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    ".vscode",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "site-packages",
-    "venv",
-]
-
-line-length = 88
-indent-width = 4
-
-target-version = "py38"
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "B"]

@@ -5,9 +5,8 @@ from selenium.webdriver.chrome.service import Service
 
 from src.correct_elevation.get_latest_activities import LatestActivities
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
-from utils import exc_log, inf_log
-from utils import config
+from src.strava_API.tokens_process.oauth_code_process.login_strava import LoginStrava
+from utils import config, exc_log, inf_log
 
 
 def setup_driver() -> webdriver.Chrome:

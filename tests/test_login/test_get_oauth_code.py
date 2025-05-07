@@ -1,10 +1,10 @@
 from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webelement import WebElement
 
-from src.strava_api.tokens_process.oauth_code_process.get_oauth_code import (
+from src.strava_API.tokens_process.oauth_code_process.get_oauth_code import (
     OauthCodeGetter,
 )
-from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+from src.strava_API.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils import config
 from utils.locators import oauth_elements
 from utils.web_element_handler import WebElementHandler
@@ -41,16 +41,16 @@ class TestOauthCode:
         assert driver.current_url == expected_url
 
         # Find the authorize_button
-        authorize_button: WebElement = element.find_element(*oauth_elements["authorize_button"])
+        authorize_button: WebElement = element.find_element(
+            *oauth_elements["authorize_button"]
+        )
         assert authorize_button is not None
 
         # Click on the authorize_button
         element.click_button(authorize_button)
 
         # Check if the URL with the OAuth code matches the expected format
-        url_with_oauth_code: str = (
-            "http://localhost/exchange_token?state=&code=a9ac7dc9ccfb13678d2f3c0104d8fdc8fdb72193&scope=read,activity:read,activity:read_all,read_all"
-        )
+        url_with_oauth_code: str = "http://localhost/exchange_token?state=&code=a9ac7dc9ccfb13678d2f3c0104d8fdc8fdb72193&scope=read,activity:read,activity:read_all,read_all"
         assert driver.current_url.startswith(url_with_oauth_code[:44])
 
     def test_code_properties(self):

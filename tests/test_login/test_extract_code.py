@@ -1,6 +1,6 @@
 from selenium.webdriver import Chrome
 
-from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
+from src.strava_API.tokens_process.oauth_code_process.extract_code import ExtractCode
 
 
 class TestExtractCode:

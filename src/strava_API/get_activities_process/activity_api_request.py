@@ -2,7 +2,7 @@ from typing import Dict, Union
 
 import requests
 
-from src.strava_api.tokens_process.get_access_token import GetAccessToken
+from src.strava_API.tokens_process.get_access_token import GetAccessToken
 from utils import exc_log
 
 

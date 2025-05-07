@@ -6,8 +6,8 @@ from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.webelement import WebElement
 
-from src.strava_api.tokens_process.oauth_code_process.extract_code import ExtractCode
-from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+from src.strava_API.tokens_process.oauth_code_process.extract_code import ExtractCode
+from src.strava_API.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils import config, exc_log
 from utils.locators import oauth_elements
 from utils.web_element_handler import WebElementHandler

@@ -3,7 +3,7 @@ from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.webdriver import WebDriver
 
-from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+from src.strava_API.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils.web_element_handler import WebElementHandler
 
 

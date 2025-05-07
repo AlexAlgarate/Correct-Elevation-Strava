@@ -5,7 +5,7 @@ from typing import List
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from src.correct_elevation.strava_activity import StravaActivity
-from src.strava_api.get_activities_process.filter_activities import ActivityFilter
+from src.strava_API.get_activities_process.filter_activities import ActivityFilter
 from utils import config, exc_log
 
 

@@ -3,7 +3,7 @@ from typing import List
 import pandas as pd
 from pandas import json_normalize
 
-from src.strava_api.get_activities_process.activity_fetcher import ActivityFetcher
+from src.strava_API.get_activities_process.activity_fetcher import ActivityFetcher
 from utils import exc_log
 
 

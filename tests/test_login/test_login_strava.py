@@ -1,8 +1,8 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from src.strava_api.tokens_process.oauth_code_process.credentials import Credentials
-from src.strava_api.tokens_process.oauth_code_process.login_strava import LoginStrava
+from src.strava_API.tokens_process.oauth_code_process.credentials import Credentials
+from src.strava_API.tokens_process.oauth_code_process.login_strava import LoginStrava
 from utils import config
 from utils.locators import ALERT_MESSAGES, alert_box_message, login_elements
 from utils.web_element_handler import WebElementHandler

@@ -2,7 +2,7 @@ from typing import Dict, Union
 
 import pytest
 
-from src.strava_api.tokens_process.request_credentials import RequestAccessToken
+from src.strava_API.tokens_process.request_credentials import RequestAccessToken
 
 
 class MockOauthCodeGetter:

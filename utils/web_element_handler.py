@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Any
 
 from selenium.common.exceptions import NoSuchElementException
@@ -8,9 +9,8 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from src.strava_api.tokens_process.oauth_code_process.credentials import Credentials
-from utils import exc_log
-from utils import config
+from src.strava_API.tokens_process.oauth_code_process.credentials import Credentials
+from utils import config, exc_log
 
 
 class WebElementHandler:

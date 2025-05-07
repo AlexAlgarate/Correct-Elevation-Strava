@@ -1,8 +1,7 @@
-pandas
-black
-selenium
-isort
-ruff
-python-dotenv
-requests
-pytest
+pandas==2.2.2
+selenium==4.21.0
+python-dotenv==1.0.1
+requests==2.32.2
+pytest==8.2.1
+ruff==0.11.8
+mypy==1.15.0
