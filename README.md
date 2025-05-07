@@ -1,12 +1,19 @@
-# Correct elevation from Strava activities 
+# Correct elevation from Strava activities
+
+## Next Steps
+
+Refactor to avoid CAPTCHA when Chrome is launched
 
 ## Overview
+
 This project addresses the issue of the malfunctioning barometric sensor in Garmin Fenix devices, causing inaccurate elevation data to be displayed (*[it's a widespread issue in the Garmin Fenix 3 range](https://forums.garmin.com/outdoor-recreation/outdoor-recreation-archive/f/fenix-5-series/168518/fenix-3-hr---temperature-and-baromerter-not-working)*). By leveraging Strava's correction feature for elevation data, the project aims to provide a solution to this problem (*[as you can see in this example, many people have the same issue as me with older activities](https://communityhub.strava.com/t5/strava-features-chat/elevation-correction/td-p/23187#:~:text=If%20you%20record%20with%20one,our%20database%20of%20barometric%20data.)*).
 
 ## How it Works *[(Strava Documentation)](https://support.strava.com/hc/en-us/articles/216919447-Elevation-for-Your-Activity)*
+
 Strava's elevation correction process involves cross-referencing GPS data with their database of barometric data to ensure accurate elevation readings. Elevation data on Strava is smoothed and thresholds are set to maintain accuracy, particularly for activities recorded on devices without a barometric altimeter.
 
 ## Functionality
+
 The program automates the process of correcting elevation data on Strava for activities recorded with Garmin Fenix devices experiencing barometric sensor issues. It follows a set of steps outlined below:
 
 **1.** Create a Strava API using *[the provided guide](https://developers.strava.com/docs/getting-started/)*.
@@ -47,13 +54,11 @@ python -m venv .venv
 
 **4.** Install the project dependencies using PIP
 
-
 ```python
 pip install -r .\requirements.txt
 ```
 
 The following steps are automated when running the program:
-
 
 ```python
 python ./main.py
@@ -87,7 +92,7 @@ Additionally, it's worth mentioning that the program automatically handles token
 
 <br>
 
-- This is the menu options of each activity where various parameters can be edited, including the one we need, 'correct elevation'. 
+- This is the menu options of each activity where various parameters can be edited, including the one we need, 'correct elevation'.
 
 <a>
     <img
@@ -118,8 +123,8 @@ Additionally, it's worth mentioning that the program automatically handles token
 <br>
 
 ## Conclusion
-By automating the elevation correction process on Strava, users can ensure accurate elevation data for their activities, mitigating the impact of barometric sensor issues in Garmin Fenix devices. The project provides a practical solution for maintaining the integrity of elevation data in fitness tracking and analysis.
 
+By automating the elevation correction process on Strava, users can ensure accurate elevation data for their activities, mitigating the impact of barometric sensor issues in Garmin Fenix devices. The project provides a practical solution for maintaining the integrity of elevation data in fitness tracking and analysis.
 
 # TODO
 
